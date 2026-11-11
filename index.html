@@ -142,9 +142,10 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 .bodies>div{max-width:190px}
 #det,#gc{display:none!important}
 #mus{z-index:14}#mus .sheet{min-height:60vh}.mh{border-top:1px solid var(--bd);padding:10px 0}.mh b{font-size:14px}.mh .d{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mh .d span{color:var(--mu);font-size:12px}.mh p{margin:4px 0 0;font-size:13px;color:var(--mu)}.trd{font-size:13px;margin:8px 0 0;text-align:center}.trd b{color:var(--ac)}
+#gear{margin-left:auto;background:none;border:0;color:#b0101e;padding:6px;cursor:pointer;display:flex}#gear.hide{display:none}#set{z-index:14}
 </style></head>
 <body><main>
-<h1><img id="tli" src="tab-train-red-v2.png" alt=""><span id="ttl">Entraînement</span></h1>
+<h1><img id="tli" src="tab-train-red-v2.png" alt=""><span id="ttl">Entraînement</span><button id="gear" class="hide" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></h1>
 <div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red-v2.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red-v2.png" alt=""><i>Profil</i></button></div>
 
 <section id="p1">
@@ -179,7 +180,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 36</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 37</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -193,12 +194,6 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
   <div id="cdet"></div>
  </div>
  <div class="card" id="histc"><b>Historique</b><div id="hl"></div></div>
- <div class="card" id="bkc"><b>Mes données</b><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
-  <div style="display:flex;gap:8px"><button class="sa" id="bkx" style="width:50%;font-size:13px">⬇ Exporter</button><button class="sa" id="bki" style="width:50%;font-size:13px">⬆ Importer</button></div>
-  <input type="file" accept=".json,application/json" id="bkf" class="hide">
-  <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
-  <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
- </div>
  <div class="card hide" id="det"><b id="dt"></b><div id="dl"></div></div>
  <div class="card hide" id="gc">
   <select id="exo" class="hide"></select>
@@ -207,6 +202,14 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
  </div>
 </section>
  <div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
+ <div id="set" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="scl" aria-label="Fermer">✕</button><b>Paramètres</b><span style="width:34px"></span></div>
+<div id="bkc"><p style="margin:4px 0 0;font-weight:600">Sauvegarde et import</p><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
+  <div style="display:flex;gap:8px"><button class="sa" id="bkx" style="width:50%;font-size:13px">⬇ Exporter</button><button class="sa" id="bki" style="width:50%;font-size:13px">⬆ Importer</button></div>
+  <input type="file" accept=".json,application/json" id="bkf" class="hide">
+  <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
+  <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
+ </div>
+ </div></div>
 </main>
 <script>
 var data={entries:[]},ref=null,tab=1,exo='',metric='w',grp='',per={n:7,u:'j'},cur=null,ph={},refP=null,rend=0,pk='';
@@ -345,7 +348,7 @@ function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||
 $('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
 function render(){renderId();renderMex();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
- tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red-v2.png':'tab-prof-red-v2.png';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
+ tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red-v2.png':'tab-prof-red-v2.png';$('#gear').classList.toggle('hide',n!==2);$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
 $('#t1').onclick=function(){show(1)};
@@ -529,6 +532,7 @@ function renderMus(){
 }
 function openMus(g){mg=g;renderMus();$('#mus').classList.remove('hide');$('#mus .sheet').scrollTop=0}
 function closeMus(){$('#mus').classList.add('hide');grp='';renderBody()}
+$('#gear').onclick=function(){$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
 
 function csvParse(t){var rows=[],r=[],c='',q=false;t=t.replace(/^﻿/,'');for(var i=0;i<t.length;i++){var ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===','){r.push(c);c=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;r.push(c);c='';rows.push(r);r=[]}else c+=ch}if(c!==''||r.length){r.push(c);rows.push(r)}return rows.filter(function(x){return x.length>1||(x[0]||'')!==''})}
