@@ -120,10 +120,17 @@ main{padding-bottom:124px}#rest{bottom:calc(88px + env(safe-area-inset-bottom,0p
 .tabs img{height:32px}
 .tabs button i{font-size:12px}
 main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0px)*.3)}
+
+.tabs{border:0!important;bottom:calc(env(safe-area-inset-bottom,0px)*.3 + 9px);box-shadow:0 10px 30px rgba(0,0,0,.4)!important}
+.tabs::before{display:none!important}
+.tabs .pill{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:linear-gradient(180deg,rgba(235,50,70,.34),rgba(170,20,38,.26));box-shadow:0 0 18px rgba(209,23,43,.28);pointer-events:none;will-change:transform}
+.tabs:has(#t2.on) .pill{transform:translateX(100%)}
+.tabs button i{transition:color .3s}
+#rest{bottom:calc(75px + env(safe-area-inset-bottom,0px)*.3)}
 </style></head>
 <body><main>
 <h1>🏋️ Suivi d’entraînement</h1>
-<div class="tabs"><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red.png" alt=""><i>Profil</i></button></div>
+<div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red.png" alt=""><i>Profil</i></button></div>
 
 <section id="p1">
  <div id="home">
@@ -293,6 +300,9 @@ function renderChart(){
 function firstD(){var m='';data.entries.forEach(function(e){if(!m||e.d<m)m=e.d});return m}
 function perLabel(){if(per.u==='all')return 'depuis le premier entraînement';var u={j:per.n>1?'jours':'jour',s:per.n>1?'semaines':'semaine',m:'mois',a:per.n>1?'ans':'an'}[per.u];return per.n+' '+u}
 function perFrom(){if(per.u==='all')return firstD()||'0000';var d=new Date();if(per.u==='j')d.setDate(d.getDate()-per.n);else if(per.u==='s')d.setDate(d.getDate()-7*per.n);else if(per.u==='m')d.setMonth(d.getMonth()-per.n);else d.setFullYear(d.getFullYear()-per.n);return d.toLocaleDateString('sv-SE')}
+function tabAnim(n){try{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;var p=document.querySelector('.tabs .pill');if(!p||!p.animate)return;var w=p.offsetWidth,a=n===2?0:w,b=n===2?w:0;
+p.animate([{transform:'translateX('+a+'px) scale(1,1)'},{transform:'translateX('+(a+b)/2+'px) scale(1.5,.86)',offset:.45},{transform:'translateX('+b+'px) scale(1,1)'}],{duration:520,easing:'cubic-bezier(.3,1.2,.5,1)'});
+var im=document.querySelector('.tabs button.on .r');if(im&&im.animate)im.animate([{transform:'scale(.78)',opacity:.4},{transform:'scale(1.12)',opacity:1,offset:.6},{transform:'scale(1)',opacity:1}],{duration:460,easing:'ease-out'})}catch(e){}}
 function renderBody(){
  var from=perFrom(),t={},mx=0;$('#pbtn').textContent='Période : '+perLabel()+' ▾';
  data.entries.forEach(function(e){if(e.d>=from){gsOf(e).forEach(function(g){t[g]=(t[g]||0)+e.s;mx=Math.max(mx,t[g])})}});
@@ -314,7 +324,7 @@ function renderDet(){
 function render(){fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
  tab=n;$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
- $('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);
+ var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
 $('#t1').onclick=function(){show(1)};
 $('#t2').onclick=function(){show(2);render()};
