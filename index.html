@@ -183,7 +183,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
  <div class="card" id="idc" style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.01em;text-transform:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div><div style="text-align:right;flex:none;line-height:1.1"><b id="pnb" style="font-family:Oswald,sans-serif;font-size:26px;font-weight:600">0</b><div class="mu" style="font-size:11px">entraînements</div></div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
-  <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
+  <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="c">semaine en cours (lun. → dim.)</option><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
     <div class="bodies" id="bodies"></div>
   <p class="lbl" id="lbl2">Touche un muscle pour voir tes exercices</p>
   <div class="seg"><button id="ga">Autre / non classé</button></div>
@@ -209,11 +209,11 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 40</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 41</p>
  </div></div>
 </main>
 <script>
-var data={entries:[]},ref=null,tab=1,exo='',metric='w',grp='',per={n:7,u:'j'},cur=null,ph={},refP=null,rend=0,pk='';
+var data={entries:[]},ref=null,tab=1,exo='',metric='w',grp='',per={n:7,u:'c'},cur=null,ph={},refP=null,rend=0,pk='';
 var GR=[['pecs','Pectoraux'],['dos','Dos'],['epaules','Épaules'],['biceps','Biceps'],['triceps','Triceps'],['avbras','Avant-bras'],['abdos','Abdos'],['quads','Quadriceps'],['ischios','Ischio-jambiers'],['fessiers','Fessiers'],['mollets','Mollets'],['autre','Autre']];
 function R(g,x,y,w,h,r){return '<rect class="m" data-g="'+g+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+r+'"/>'}
 function E(g,cx,cy,rx,ry){return '<ellipse class="m" data-g="'+g+'" cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'"/>'}
@@ -321,8 +321,8 @@ function renderChart(){
 }
 
 function firstD(){var m='';data.entries.forEach(function(e){if(!m||e.d<m)m=e.d});return m}
-function perLabel(){if(per.u==='all')return 'depuis le premier entraînement';var u={j:per.n>1?'jours':'jour',s:per.n>1?'semaines':'semaine',m:'mois',a:per.n>1?'ans':'an'}[per.u];return per.n+' '+u}
-function perFrom(){if(per.u==='all')return firstD()||'0000';var d=new Date();if(per.u==='j')d.setDate(d.getDate()-per.n);else if(per.u==='s')d.setDate(d.getDate()-7*per.n);else if(per.u==='m')d.setMonth(d.getMonth()-per.n);else d.setFullYear(d.getFullYear()-per.n);return d.toLocaleDateString('sv-SE')}
+function perLabel(){if(per.u==='c')return 'semaine en cours';if(per.u==='all')return 'depuis le premier entraînement';var u={j:per.n>1?'jours':'jour',s:per.n>1?'semaines':'semaine',m:'mois',a:per.n>1?'ans':'an'}[per.u];return per.n+' '+u}
+function perFrom(){if(per.u==='all')return firstD()||'0000';var d=new Date();if(per.u==='c'){d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toLocaleDateString('sv-SE')}if(per.u==='j')d.setDate(d.getDate()-per.n);else if(per.u==='s')d.setDate(d.getDate()-7*per.n);else if(per.u==='m')d.setMonth(d.getMonth()-per.n);else d.setFullYear(d.getFullYear()-per.n);return d.toLocaleDateString('sv-SE')}
 function tabAnim(n){try{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;var p=document.querySelector('.tabs .pill');if(!p||!p.animate)return;var w=p.offsetWidth,a=n===2?0:w,b=n===2?w:0;
 p.animate([{transform:'translateX('+a+'px) scale(1,1)'},{transform:'translateX('+(a+b)/2+'px) scale(1.5,.86)',offset:.45},{transform:'translateX('+b+'px) scale(1,1)'}],{duration:520,easing:'cubic-bezier(.3,1.2,.5,1)'});
 var im=document.querySelector('.tabs button.on .r');if(im&&im.animate)im.animate([{transform:'scale(.78)',opacity:.4},{transform:'scale(1.12)',opacity:1,offset:.6},{transform:'scale(1)',opacity:1}],{duration:460,easing:'ease-out'})}catch(e){}}
@@ -582,8 +582,8 @@ $('#hvf').onchange=function(){var f=this.files[0];if(!f)return;var fr=new FileRe
 $('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;grp=g;exo='';renderBody();openMus(g)};
 $('#ga').onclick=function(){grp='autre';renderBody();openMus('autre')};
 $('#dl').onclick=function(e){var r=e.target.closest('.ex');if(!r)return;exo=r.getAttribute('data-x');render()};
-(function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;
-function ap(){per.n=+$('#pn').value;per.u=$('#pu').value;$('#pn').style.display=per.u==='all'?'none':'';renderBody()}
+(function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;$('#pu').value='c';$('#pn').style.display='none';
+function ap(){per.n=+$('#pn').value;per.u=$('#pu').value;$('#pn').style.display=(per.u==='all'||per.u==='c')?'none':'';renderBody()}
 $('#pn').onchange=$('#pu').onchange=ap;
 $('#pbtn').onclick=function(){var o=$('#ppan').style.display==='none';$('#ppan').style.display=o?'flex':'none'}})();
 try{ph=JSON.parse(localStorage.getItem('muscu_ph')||'{}')}catch(e){}
