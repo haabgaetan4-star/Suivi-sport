@@ -179,7 +179,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 35</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 36</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -534,16 +534,17 @@ $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)clos
 function csvParse(t){var rows=[],r=[],c='',q=false;t=t.replace(/^﻿/,'');for(var i=0;i<t.length;i++){var ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===','){r.push(c);c=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;r.push(c);c='';rows.push(r);r=[]}else c+=ch}if(c!==''||r.length){r.push(c);rows.push(r)}return rows.filter(function(x){return x.length>1||(x[0]||'')!==''})}
 var HM={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11,janv:0,'févr':1,fev:1,mars:2,avr:3,mai:4,juin:5,juil:6,'août':7,aout:7,sept:8,déc:11};
 function hvDate(v){v=String(v||'').trim();if(!v)return null;var m=v.match(/(\d{1,2})\s+([A-Za-zéûû\.]+?)\.?\s+(\d{4}),?\s*(\d{1,2}):(\d{2})/);if(m){var mo=HM[m[2].toLowerCase().slice(0,m[2].length>4?4:m[2].length)];if(mo===undefined)mo=HM[m[2].toLowerCase().slice(0,3)];if(mo!==undefined)return new Date(+m[3],mo,+m[1],+m[4],+m[5])}var d=new Date(v.replace(' ','T'));return isNaN(d)?null:d}
-var KW=[['cardio',/\bcourse\b|running|\btapis\b|\bv[ée]lo\b|cycling|rameur|rowing machine|elliptique|\bmarche\b|walking|natation|swim|corde [àa] sauter|stairmaster|escalier|\bcardio\b/i],
-['mollets',/mollet|calf|soleus/i],['addu',/adduct/i],['abdos',/abdo|crunch|gainage|plank|releve de jambes|relevé de jambes|leg raise|sit-up|situp|ab wheel|roue/i],['obliq',/oblique|russian twist|bûcheron|woodchop/i],
-['triceps',/triceps|skull|barre front|dips? (?:machine|banc|assist)|kickback|close grip/i],['biceps',/biceps|curl(?! (?:de )?jambe| ischio| leg| allong| couch)|marteau|hammer|pupitre|preacher/i],
-['avbras',/avant-bras|poignet|forearm|wrist/i],['trap',/shrug|trap[eè]ze|haussement/i],
+var KW=[['cardio',/\bcourse\b|running|\btapis\b|\bv[ée]lo\b|spinning|cycling|rameur|rowing machine|elliptique|\bmarche\b|walking|natation|swim|corde [àa] sauter|stairmaster|escalier|\bcardio\b/i],
+['mollets',/mollet|calf|soleus/i],['addu',/adduct/i],['abdos',/abdo|crunch|gainage|plank|releve de jambes|relevé de jambes|leg raise|sit[- ]?up|ab wheel|roue/i],['obliq',/oblique|russian twist|bûcheron|woodchop/i],
+['avbras',/avant[- ]?bras|poignet|forearm|wrist|curl invers[ée]|reverse curl/i],
+['ischios',/ischio|leg curl|curl (?:de )?jambe|curl allong|curl couch|romanian|roumain|stiff/i],
+['triceps',/triceps|skull|barre front|dips|kickback|close grip/i],['biceps',/biceps|curl|marteau|hammer|pupitre|preacher/i],
+['trap',/shrug|trap[eè]ze|haussement/i],
 ['lomb',/lombaire|hyperextension|back extension|good morning|extension dos/i],
-['ischios',/ischio|leg curl|curl (?:de )?jambe|curl allong|curl couch|romanian|roumain|soulev[ée] de terre jambes tendues|stiff/i],
-['fessiers',/hip thrust|fessier|glute|abduct|kickback fess|pont/i],
-['quads',/squat|presse|leg press|extension (?:de )?jambe|leg extension|fente|lunge|hack|quadri|step-?up/i],
-['pecs',/d[ée]velopp[ée] (?:couch[ée]|inclin|d[ée]clin)|bench|pec|[ée]cart[ée]|fly|pompe|push-?up|dips|butterfly|chest/i],
-['delt',/[ée]paule|[ée]l[ée]vation lat|[ée]l[ée]vation front|militaire|overhead|shoulder|lateral raise|oiseau|rear delt|face pull|arnold|d[ée]velopp[ée] (?:assis|haltères? assis)/i],
+['fessiers',/hip thrust|fessier|glute|abduct|extension hanche|pont/i],
+['delt',/[ée]paule|[ée]l[ée]vation lat|[ée]l[ée]vation front|militaire|overhead press|shoulder|lateral raise|oiseau|rear delt|face pull|vers visage|arnold|d[ée]velopp[ée] debout|d[ée]velopp[ée] assis/i],
+['quads',/squat|presse|leg press|extensions? (?:de |une )?jambes?|leg extension|fente|lunge|hack|quadri|step-?up|pendulum/i],
+['pecs',/d[ée]velopp[ée] (?:couch[ée]|inclin|d[ée]clin)|bench|pec|[ée]cart[ée]|fly|pompe|push-?up|butterfly|chest/i],
 ['dorsaux',/traction|pull-?up|chin-?up|tirage|rowing|row|dorsa|pullover|lat pull|pulldown/i]];
 function hvGroups(x){var l=libList().filter(function(o){return o.x.toLowerCase()===x.toLowerCase()})[0];if(l&&l.g&&l.g!=='autre')return{g:l.g,gs:l.gs};if(/soulev[ée] de terre|deadlift/i.test(x)&&!/jambes tendues|roumain|romanian/i.test(x))return{g:'lomb',gs:['lomb','fessiers','ischios']};for(var i=0;i<KW.length;i++)if(KW[i][1].test(x))return{g:KW[i][0]};return{g:'autre'}}
 function hevyImport(txt){
@@ -559,8 +560,9 @@ function hevyImport(txt){
   var kg=iKg>=0&&r[iKg]!==''?parseFloat(r[iKg]):(iLb>=0&&r[iLb]!==''?parseFloat(r[iLb])*0.45359237:0),rp=iR>=0?parseInt(r[iR]):0,du=iDu>=0?parseFloat(r[iDu]):0;
   if(isNaN(kg))kg=0;if(isNaN(rp))rp=0;if(isNaN(du))du=0;
   if(rp>0)w.s.push({x:x,r:rp,w:Math.round(kg*100)/100});else if(du>0)w.c[x]=(w.c[x]||0)+du});
- var n=0,ns=0,nw=0,unk={},id=Date.now();
+ var n=0,ns=0,nw=0,unk={},id=Date.now();var sig={};data.entries.forEach(function(e){sig[e.d+'|'+String(e.x).toLowerCase()+'|'+e.r+'|'+e.w]=1});
  order.forEach(function(k){var w=W[k],d=w.st,ds=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2),wk=+k,any=false;
+  if(w.s.some(function(s){return sig[ds+'|'+s.x.toLowerCase()+'|'+s.r+'|'+s.w]})){skip++;return}
   w.s.forEach(function(s){var g=hvGroups(s.x);if(g.g==='autre')unk[s.x]=1;var e={id:id+n++,d:ds,x:s.x,s:1,r:s.r,w:s.w,g:g.g,wk:wk,wn:w.n,du:w.du};if(g.gs)e.gs=g.gs;data.entries.push(e);ns++;any=true});
   Object.keys(w.c).forEach(function(x){data.entries.push({id:id+n++,d:ds,x:x,s:1,r:0,w:0,g:'cardio',dur:Math.round(w.c[x]),wk:wk,wn:w.n,du:w.du});any=true});
   if(any)nw++});
