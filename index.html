@@ -129,9 +129,10 @@ main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0p
 #rest{bottom:calc(75px + env(safe-area-inset-bottom,0px)*.3)}
 
 .tabs .pill{background:rgba(0,0,0,.55);box-shadow:none}
+h1{display:flex;align-items:center;gap:10px}#tli{height:34px;width:auto;display:block}
 </style></head>
 <body><main>
-<h1 id="ttl">Entraînement</h1>
+<h1><img id="tli" src="tab-train-red.png" alt=""><span id="ttl">Entraînement</span></h1>
 <div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red.png" alt=""><i>Profil</i></button></div>
 
 <section id="p1">
@@ -328,7 +329,7 @@ function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||
 $('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
 function render(){renderId();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
- tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
+ tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red.png':'tab-prof-red.png';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
 $('#t1').onclick=function(){show(1)};
