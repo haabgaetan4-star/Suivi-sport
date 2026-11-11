@@ -113,6 +113,13 @@ main{padding-bottom:140px}#rest{bottom:calc(100px + env(safe-area-inset-bottom,0
 .tabs button i{font-style:normal;font-family:"Avenir Next","Avenir",system-ui,sans-serif;font-size:13px;font-weight:500;letter-spacing:.01em;line-height:1;color:#fff;text-transform:none}
 .tabs button.on i{color:#e3243a}
 main{padding-bottom:124px}#rest{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+
+.tabs{bottom:calc(env(safe-area-inset-bottom,0px)*.3 + 4px);padding:4px}
+.tabs::before{top:4px;bottom:4px;left:4px;width:calc(50% - 4px)}
+.tabs button{padding:5px 2px 4px;gap:2px}
+.tabs img{height:32px}
+.tabs button i{font-size:12px}
+main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0px)*.3)}
 </style></head>
 <body><main>
 <h1>🏋️ Suivi d’entraînement</h1>
