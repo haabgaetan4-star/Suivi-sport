@@ -140,6 +140,8 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 .bz .m.t{fill:var(--ac);fill-opacity:calc(var(--o,1)*.8)}
 .bz .m.sel{stroke:var(--tx);stroke-width:5}
 .bodies>div{max-width:190px}
+#det,#gc{display:none!important}
+#mus{z-index:14}#mus .sheet{min-height:60vh}.mh{border-top:1px solid var(--bd);padding:10px 0}.mh b{font-size:14px}.mh .d{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mh .d span{color:var(--mu);font-size:12px}.mh p{margin:4px 0 0;font-size:13px;color:var(--mu)}.trd{font-size:13px;margin:8px 0 0;text-align:center}.trd b{color:var(--ac)}
 </style></head>
 <body><main>
 <h1><img id="tli" src="tab-train-red-v2.png" alt=""><span id="ttl">Entraînement</span></h1>
@@ -177,7 +179,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 33</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 34</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -203,6 +205,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
   <div id="chart"></div>
  </div>
 </section>
+ <div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
 </main>
 <script>
 var data={entries:[]},ref=null,tab=1,exo='',metric='w',grp='',per={n:7,u:'j'},cur=null,ph={},refP=null,rend=0,pk='';
@@ -488,8 +491,46 @@ $('#nsv').onclick=function(){var x=$('#nn').value.trim();if(!x){toast('Donne un 
  if(npx){ph[pk2(x)]=npx;savePh()}
  ned=null;save();saveCur();render();$('#nw').classList.add('hide');renderPick();toast(was?'Exercice modifié':'Exercice ajouté à ta liste')};
 
-$('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;grp=grp===g?'':g;exo='';render();if(grp){try{$('#det').scrollIntoView({block:'nearest',behavior:'smooth'})}catch(x){}}};
-$('#ga').onclick=function(){grp=grp==='autre'?'':'autre';exo='';render()};
+
+var mg='',mmet='w';
+function musData(g){
+ var es=data.entries.filter(function(e){return e.g!=='cardio'&&gsOf(e).indexOf(g)>=0}),ss={};
+ es.forEach(function(e){var k=String(e.wk||('d'+e.d)),o=ss[k]=ss[k]||{d:e.d,n:e.wn||'Entraînement',ex:{},vol:0,mw:0,sets:0};o.d=e.d<o.d?e.d:o.d;var x=o.ex[e.x]=o.ex[e.x]||[];for(var i=0;i<(e.s||1);i++)x.push([e.r,e.w]);o.vol+=(e.s||1)*e.r*e.w;o.mw=Math.max(o.mw,e.w);o.sets+=(e.s||1)});
+ return Object.keys(ss).map(function(k){return ss[k]}).sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0});
+}
+function fd(d){return d.split('-').reverse().join('/')}
+function musChart(L){
+ var pts=L.map(function(o){return[o.d,mmet==='w'?o.mw:Math.round(o.vol)]});
+ if(!pts.length)return '';
+ var vals=pts.map(function(p){return p[1]}),lo=Math.min.apply(null,vals),hi=Math.max.apply(null,vals);if(lo===hi){lo-=1;hi+=1}
+ var W=320,H=180,Lf=40,R=12,T=14,B=28;
+ var X=function(i){return pts.length>1?Lf+i*(W-Lf-R)/(pts.length-1):(Lf+W-R)/2},Y=function(v){return H-B-(v-lo)/(hi-lo)*(H-T-B)};
+ var r1=function(v){return Math.round(v*10)/10};
+ return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Progression">'
+  +'<line x1="'+Lf+'" y1="'+Y(lo)+'" x2="'+(W-R)+'" y2="'+Y(lo)+'" stroke="var(--bd)"/><line x1="'+Lf+'" y1="'+Y(hi)+'" x2="'+(W-R)+'" y2="'+Y(hi)+'" stroke="var(--bd)"/>'
+  +'<text x="'+(Lf-6)+'" y="'+(Y(hi)+4)+'" text-anchor="end" font-size="11" fill="var(--mu)">'+r1(hi)+'</text><text x="'+(Lf-6)+'" y="'+(Y(lo)+4)+'" text-anchor="end" font-size="11" fill="var(--mu)">'+r1(lo)+'</text>'
+  +(pts.length>1?'<polyline points="'+pts.map(function(p,i){return X(i)+','+Y(p[1])}).join(' ')+'" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linejoin="round"/>':'')
+  +pts.map(function(p,i){return '<circle cx="'+X(i)+'" cy="'+Y(p[1])+'" r="4" fill="var(--ac)"/>'}).join('')
+  +'<text x="'+Lf+'" y="'+(H-8)+'" font-size="11" fill="var(--mu)">'+fd(pts[0][0]).slice(0,5)+'</text>'
+  +(pts.length>1?'<text x="'+(W-R)+'" y="'+(H-8)+'" text-anchor="end" font-size="11" fill="var(--mu)">'+fd(pts[pts.length-1][0]).slice(0,5)+'</text>':'')+'</svg>';
+}
+function renderMus(){
+ var L=musData(mg),nm=GR.filter(function(x){return x[0]===mg})[0];$('#mtt').textContent=nm?nm[1]:mg;
+ if(!L.length){$('#mbody').innerHTML='<p class="mu">Aucun entraînement enregistré pour ce muscle.</p>';return}
+ var sets=0,rec=0,vt=0;L.forEach(function(o){sets+=o.sets;rec=Math.max(rec,o.mw);vt+=o.vol});
+ var v=L.map(function(o){return mmet==='w'?o.mw:o.vol}),av=function(a){return a.reduce(function(x,y){return x+y},0)/a.length};
+ var tr='';if(L.length>=2){var k=Math.min(3,Math.floor(L.length/2)),a=av(v.slice(0,k)),b=av(v.slice(-k)),p=a?Math.round((b-a)/a*100):0;tr=p>=3?'<b>En progression</b> ('+(p>0?'+':'')+p+' % sur les dernières séances)':p<=-3?'<b>En baisse</b> ('+p+' %)':'<b>Stable</b> ('+(p>0?'+':'')+p+' %)'}else tr='Une seule séance pour l’instant';
+ var h=L.slice().reverse().map(function(o){return '<div class="mh"><div class="d"><b>'+fd(o.d)+' · '+esc(o.n)+'</b><span>'+o.sets+' série(s)</span></div>'+Object.keys(o.ex).map(function(x){var g={},ord=[];o.ex[x].forEach(function(t){var key=t[0]+'×'+t[1];if(!g[key]){g[key]=0;ord.push(key)}g[key]++});return '<p>'+esc(x)+' : '+ord.map(function(key){var t=key.split('×');return (g[key]>1?g[key]+' × ':'')+t[0]+' reps à '+t[1]+' kg'}).join(', ')+'</p>'}).join('')+'</div>'}).join('');
+ $('#mbody').innerHTML='<div class="stats"><div><b>'+L.length+'</b><span>Séances</span></div><div><b>'+sets+'</b><span>Séries</span></div><div><b>'+rec+' kg</b><span>Record</span></div></div>'
+  +'<div class="seg"><button id="mm1" class="'+(mmet==='w'?'on':'')+'">Poids max</button><button id="mm2" class="'+(mmet==='v'?'on':'')+'">Volume total</button></div>'
+  +'<div style="margin-top:8px">'+musChart(L)+'</div><p class="trd">'+tr+'</p><div class="day" style="margin-top:14px">Historique</div>'+h;
+ $('#mm1').onclick=function(){mmet='w';renderMus()};$('#mm2').onclick=function(){mmet='v';renderMus()};
+}
+function openMus(g){mg=g;renderMus();$('#mus').classList.remove('hide');$('#mus .sheet').scrollTop=0}
+function closeMus(){$('#mus').classList.add('hide');grp='';renderBody()}
+$('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
+$('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;grp=g;exo='';renderBody();openMus(g)};
+$('#ga').onclick=function(){grp='autre';renderBody();openMus('autre')};
 $('#dl').onclick=function(e){var r=e.target.closest('.ex');if(!r)return;exo=r.getAttribute('data-x');render()};
 (function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;
 function ap(){per.n=+$('#pn').value;per.u=$('#pu').value;$('#pn').style.display=per.u==='all'?'none':'';renderBody()}
