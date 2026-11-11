@@ -1,5 +1,5 @@
-const C = 'muscu-v4';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
+const C = 'muscu-v5';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-v4-192.png', './icon-v4-512.png', './touch-v4.png'];
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(FILES))); });
 self.addEventListener('activate', e => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== C).map(x => caches.delete(x)))).then(() => self.clients.claim())));
 // Réseau d'abord (pour recevoir les mises à jour), cache en secours (hors connexion).
