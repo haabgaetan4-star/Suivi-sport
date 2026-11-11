@@ -149,6 +149,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
  <div id="home">
   <button class="add" id="start">Démarrer un entraînement vide</button>
   <div class="day">Mes routines</div><div id="rts"></div>
+  <div class="day">Mes exercices</div><button class="add gh2" id="mex" style="margin:0 0 12px"></button>
   
  </div>
  <div id="live" class="hide">
@@ -176,7 +177,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 28</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 29</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -338,7 +339,7 @@ function renderDet(){
 }
 function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||nm}catch(e){}$('#pnm').textContent=nm;var k={};data.entries.forEach(function(e){k[String(e.wk||('d'+e.d))]=1});$('#pnb').textContent=Object.keys(k).length}
 $('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
-function render(){renderId();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
+function render(){renderId();renderMex();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
  tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red-v2.png':'tab-prof-red-v2.png';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
@@ -447,7 +448,11 @@ function renderPick(){plib=libList();if(!plib.length){$('#plist').innerHTML='<p 
  var T={h:'Haut du corps',b:'Bas du corps',o:'Cardio et autres'},h='';
  ['h','b','o'].forEach(function(z){var r=plib.map(function(o,i){return zone(o.g)===z?pRow(o,i):''}).join('');if(r)h+='<div class="day" style="display:flex;align-items:center;gap:6px;text-transform:none;font-weight:700">'+zi(z)+' '+T[z]+'</div>'+r});
  $('#plist').innerHTML=h}
-function openPick(){if(!cur)return;pdel=-1;renderPick();$('#pick').classList.remove('hide')}
+var pmode='add';function setPT(){$('#pick .sh b').textContent=pmode==='mgr'?'Mes exercices':'Choisir un exercice'}
+function openPick(){if(!cur)return;pmode='add';setPT();pdel=-1;renderPick();$('#pick').classList.remove('hide')}
+function openMgr(){pmode='mgr';setPT();pdel=-1;renderPick();$('#pick').classList.remove('hide')}
+function renderMex(){var n=libList().length;$('#mex').textContent='Gérer mes exercices ('+n+')'}
+$('#mex').onclick=openMgr;
 function addEx(o){if(!cur)return;cur.ex.push(o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:RESTS.indexOf(o.rest)>=0?o.rest:120,sets:mkSets(o.x)});saveCur();renderLive()}
 function showRestRow(){$('#nrw').classList.toggle('hide',nsel.indexOf('cardio')>=0)}
 function openNew(o){ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?gsOf(o).slice():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
@@ -456,6 +461,7 @@ $('#plist').onclick=function(e){
  if(d){var i=+d.getAttribute('data-pd');if(pdel===i){var k=plib[i].x.toLowerCase();data.lib=(data.lib||[]).filter(function(o){return o.x.toLowerCase()!==k});data.hid=data.hid||[];if(data.hid.indexOf(k)<0)data.hid.push(k);pdel=-1;save();renderPick();toast('Exercice retiré de la liste (ton historique est conservé)')}else{pdel=i;renderPick()}return}
  if(ed){pdel=-1;openNew(plib[+ed.getAttribute('data-pe')]);return}
  if(!r)return;
+ if(pmode==='mgr'){pdel=-1;openNew(plib[+r.getAttribute('data-pi')]);return}
  pdel=-1;addEx(plib[+r.getAttribute('data-pi')]);$('#pick').classList.add('hide')};
 $('#pick').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#pcl').onclick=function(){$('#pick').classList.add('hide')};
