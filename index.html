@@ -13,8 +13,8 @@
 <title>Suivi muscu</title>
 <style>
 :root{--bg:#f3f3f4;--card:#fff;--tx:#141416;--mu:#6c6c72;--ac:#8a0b14;--bd:#e2e2e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e10;--card:#1a1a1d;--tx:#f4f4f5;--mu:#9a9aa2;--ac:#d1172b;--bd:#2c2c31;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e0e10;--card:#1a1a1d;--tx:#f4f4f5;--mu:#9a9aa2;--ac:#d1172b;--bd:#2c2c31;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e10;--card:#1a1a1d;--tx:#f4f4f5;--mu:#9a9aa2;--ac:#b0101e;--bd:#2c2c31;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0e10;--card:#1a1a1d;--tx:#f4f4f5;--mu:#9a9aa2;--ac:#b0101e;--bd:#2c2c31;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 main{max-width:520px;margin:0 auto;padding:16px 16px 96px}
@@ -111,7 +111,7 @@ main{padding-bottom:140px}#rest{bottom:calc(100px + env(safe-area-inset-bottom,0
 .tabs button{flex-direction:column;gap:3px;padding:7px 2px 6px}
 .tabs img{height:44px}
 .tabs button i{font-style:normal;font-family:"Avenir Next","Avenir",system-ui,sans-serif;font-size:13px;font-weight:500;letter-spacing:.01em;line-height:1;color:#fff;text-transform:none}
-.tabs button.on i{color:#e3243a}
+.tabs button.on i{color:#b0101e}
 main{padding-bottom:124px}#rest{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 
 .tabs{bottom:calc(env(safe-area-inset-bottom,0px)*.3 + 4px);padding:4px}
@@ -130,7 +130,7 @@ main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0p
 
 .tabs .pill{background:rgba(0,0,0,.55);box-shadow:none}
 h1{display:flex;align-items:center;gap:10px}#tli{height:34px;width:auto;display:block}
-h1{color:#e3243a}
+h1{color:#b0101e}
 
 :root{padding:0!important}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
@@ -142,8 +142,8 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 .bodies>div{max-width:190px}
 </style></head>
 <body><main>
-<h1><img id="tli" src="tab-train-red.png" alt=""><span id="ttl">Entraînement</span></h1>
-<div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red.png" alt=""><i>Profil</i></button></div>
+<h1><img id="tli" src="tab-train-red-v2.png" alt=""><span id="ttl">Entraînement</span></h1>
+<div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red-v2.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red-v2.png" alt=""><i>Profil</i></button></div>
 
 <section id="p1">
  <div id="home">
@@ -176,7 +176,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 27</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 28</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -340,7 +340,7 @@ function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||
 $('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
 function render(){renderId();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
- tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red.png':'tab-prof-red.png';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
+ tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red-v2.png':'tab-prof-red-v2.png';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
 $('#t1').onclick=function(){show(1)};
