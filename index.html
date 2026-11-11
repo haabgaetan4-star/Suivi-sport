@@ -131,7 +131,7 @@ main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0p
 .tabs .pill{background:rgba(0,0,0,.55);box-shadow:none}
 </style></head>
 <body><main>
-<h1>🏋️ Suivi d’entraînement</h1>
+<h1 id="ttl">Entraînement</h1>
 <div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red.png" alt=""><i>Profil</i></button></div>
 
 <section id="p1">
@@ -165,6 +165,7 @@ main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0p
 </section>
 
 <section id="p2" class="hide">
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -323,9 +324,11 @@ function renderDet(){
  $('#dl').innerHTML=ks.length?ks.map(function(k){var o=by[k];return '<div class="it ex'+(k===exo?' on':'')+'" data-x="'+esc(k)+'"><div><b>'+esc(k)+'</b><span>'+Object.keys(o.n).length+' séance(s), dernière le '+o.l.split('-').reverse().join('/')+'</span></div><span>'+o.w+' kg max</span></div>'}).join(''):'<p class="mu">Aucun exercice enregistré pour ce muscle.</p>';
  $('#gc').classList.toggle('hide',!ks.length);
 }
-function render(){fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
+function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||nm}catch(e){}$('#pnm').textContent=nm;var k={};data.entries.forEach(function(e){k[String(e.wk||('d'+e.d))]=1});$('#pnb').textContent=Object.keys(k).length}
+$('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
+function render(){renderId();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
- tab=n;$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
+ tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
 $('#t1').onclick=function(){show(1)};
