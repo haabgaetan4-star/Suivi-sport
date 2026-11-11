@@ -131,6 +131,10 @@ main{padding-bottom:104px}#rest{bottom:calc(70px + env(safe-area-inset-bottom,0p
 .tabs .pill{background:rgba(0,0,0,.55);box-shadow:none}
 h1{display:flex;align-items:center;gap:10px}#tli{height:34px;width:auto;display:block}
 h1{color:#e3243a}
+
+:root{padding:0!important}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:none}
 </style></head>
 <body><main>
 <h1><img id="tli" src="tab-train-red.png" alt=""><span id="ttl">Entraînement</span></h1>
@@ -267,7 +271,7 @@ function editW(k){
   if(e.g==='cardio'){o.acc=(o.acc||0)+(e.dur||0);o.min=String(Math.round(o.acc/60*100)/100)}else for(var i=0;i<(e.s||1);i++)o.sets.push({w:String(e.w),r:String(e.r),ok:true})});
  var f=es[0],du=f.du||0;
  cur={t0:Date.now()-du*1000,name:f.wn||'Entraînement',rid:0,ex:ex,edit:k,wk:f.wk||Date.now(),d:f.d,du:du};
- saveCur();show(1);render();window.scrollTo(0,0);
+ saveCur();show(1);render();window.scrollTo(0,0);$('main').scrollTop=0;
 }
 function renderChart(){
  var names=[...new Set(data.entries.filter(function(e){return gsOf(e).indexOf(grp)>=0}).map(function(e){return e.x}))].sort();
