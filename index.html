@@ -180,7 +180,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 37</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 38</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -395,7 +395,11 @@ function renderLive(){
   +'<div style="display:flex;gap:8px"><button class="sa" data-as="'+i+'" style="width:50%;font-size:13px">+ Ajouter une série</button><button class="sa" data-ds="'+i+'" style="width:50%;font-size:13px;color:#e03131">− Supprimer une série</button></div></div>';
  }).join('');
 }
-function tickFn(){if(!cur)return;$('#tm').textContent=fmtT((Date.now()-cur.t0)/1000);document.querySelectorAll('[data-ct]').forEach(function(el){var o=cur.ex[el.getAttribute('data-ct')];if(o)el.textContent=fmtT(ct(o))});var l=Math.ceil((rend-Date.now())/1000);if(rend&&l>0){$('#rest').classList.remove('hide');$('#rv').textContent=fmtT(l)}else{if(rend){rend=0;try{navigator.vibrate&&navigator.vibrate(300)}catch(e){}}$('#rest').classList.add('hide')}}
+var AC=null;
+function audUnlock(){try{if(navigator.audioSession)navigator.audioSession.type='playback';if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state!=='running')AC.resume()}catch(e){}}
+['touchstart','touchend','click'].forEach(function(ev){document.addEventListener(ev,audUnlock,{passive:true})});
+function beep(){try{audUnlock();if(!AC)return;var t=AC.currentTime+.02;[0,.28,.56].forEach(function(o,i){var os=AC.createOscillator(),g=AC.createGain();os.type='sine';os.frequency.value=i===2?1175:880;g.gain.setValueAtTime(0,t+o);g.gain.linearRampToValueAtTime(.5,t+o+.02);g.gain.exponentialRampToValueAtTime(.001,t+o+.22);os.connect(g);g.connect(AC.destination);os.start(t+o);os.stop(t+o+.25)})}catch(e){}}
+function tickFn(){if(!cur)return;$('#tm').textContent=fmtT((Date.now()-cur.t0)/1000);document.querySelectorAll('[data-ct]').forEach(function(el){var o=cur.ex[el.getAttribute('data-ct')];if(o)el.textContent=fmtT(ct(o))});var l=Math.ceil((rend-Date.now())/1000);if(rend&&l>0){$('#rest').classList.remove('hide');$('#rv').textContent=fmtT(l)}else{if(rend){rend=0;beep();try{navigator.vibrate&&navigator.vibrate(300)}catch(e){}}$('#rest').classList.add('hide')}}
 function finish(mode){
  if(mode==='n'){cur=null;saveCur();render();return}
  var d=cur.d||today(),n=0,nm=$('#wn').value.trim()||'Entraînement',du=cur.edit?cur.du:Math.round((Date.now()-cur.t0)/1000),wk=cur.edit?cur.wk:cur.t0;
