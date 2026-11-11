@@ -56,7 +56,7 @@ svg{width:100%;height:auto;display:block;margin-top:10px}
 .top{display:flex;gap:10px;align-items:center}.tm{font-size:22px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums}
 .chk{display:flex;gap:8px;align-items:center;margin:12px 0;font-size:15px}.chk input{width:auto}
 #live{padding-bottom:70px}
-#toast{position:fixed;left:16px;right:16px;bottom:150px;z-index:20;max-width:480px;margin:0 auto;background:var(--tx);color:var(--bg);padding:12px 14px;border-radius:12px;font-weight:600;font-size:14px;text-align:center}#toast.hide{display:none}
+#toast{position:fixed;left:16px;right:16px;top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto;z-index:500;pointer-events:none;max-width:480px;margin:0 auto;background:var(--tx);color:var(--bg);padding:12px 14px;border-radius:12px;font-weight:600;font-size:14px;text-align:center}#toast.hide{display:none}
 .ov{position:fixed;inset:0;z-index:12;background:#0008;display:flex;align-items:flex-end;justify-content:center}.ov.hide{display:none}
 .sheet{background:var(--bg);width:100%;max-width:520px;max-height:85vh;overflow:auto;border-radius:16px 16px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px))}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;position:sticky;top:-14px;background:var(--bg);padding:4px 0;z-index:1}
@@ -177,7 +177,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 </section>
 
 <section id="p2" class="hide">
- <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 32</div></div>
+ <div class="card" id="idc"><div id="pnm" role="button" tabindex="0" style="font-family:Oswald,'Avenir Next Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.03em;text-transform:uppercase"></div><div class="stats" style="grid-template-columns:1fr;margin-top:8px;text-align:left"><div><b id="pnb">0</b><span>entraînements au total</span></div></div><div class="mu" style="font-size:11px;margin-top:10px;opacity:.6">Version 33</div></div>
  <div class="card">
   <button class="add gh2" id="pbtn" style="margin:0 0 10px;width:100%">Période : 7 jours ▾</button>
   <div id="ppan" class="hide" style="display:none;gap:8px;margin:0 0 10px"><select id="pn" aria-label="Nombre"></select><select id="pu" aria-label="Unité"><option value="j">jour(s)</option><option value="s">semaine(s)</option><option value="m">mois</option><option value="a">an(s)</option><option value="all">depuis le premier entraînement</option></select></div>
@@ -362,7 +362,7 @@ var BACK='<defs><filter id="bvB" x="-5%" y="-5%" width="110%" height="110%" colo
 function durOf(o){var m=num(o.min);return m>0?Math.round(m*60):Math.round(ct(o))}
 function ct(o){return (o.acc||0)+(o.st?(Date.now()-o.st)/1000:0)}
 function cardioCard(o,i){return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">Cardio</span></div><button class="del" data-rx="'+i+'">✕</button></div><div class="cd'+(o.ok?' ok':'')+'"><span class="ct" data-ct="'+i+'">'+fmtT(ct(o))+'</span><input class="cm" data-cm="'+i+'" inputmode="numeric" placeholder="min" aria-label="Durée en minutes" value="'+esc(o.min||'')+'"><button class="sa" data-tg="'+i+'">'+(o.st?'⏸ Pause':'▶ Démarrer')+'</button><button class="ck" data-cc="'+i+'">✓</button></div></div>'}
-var tt=0;function toast(m){var t=$('#toast');t.textContent=m;t.classList.remove('hide');clearTimeout(tt);tt=setTimeout(function(){t.classList.add('hide')},4000)}
+var tt=0;function toast(m){var t=$('#toast');t.textContent=m;t.classList.remove('hide');clearTimeout(tt);tt=setTimeout(function(){t.classList.add('hide')},1800)}
 function nOk(){var n=0,p=0;cur.ex.forEach(function(o){if(o.g==='cardio'){if(o.ok)n++;else if(durOf(o)>=1)p++}o.sets.forEach(function(s){if(s.ok)n++;else if(String(s.w).trim()!==''&&String(s.r).trim()!=='')p++})});return[n,p]}
 var RESTS=[120,150,180,210,240];
 function fmtT(s){s=Math.max(0,Math.round(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+':'+('0'+m).slice(-2):m)+':'+('0'+s%60).slice(-2)}
