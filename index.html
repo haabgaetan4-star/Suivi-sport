@@ -168,6 +168,9 @@ main{z-index:1;background:transparent}
 #glow{background:radial-gradient(90% 50% at 50% 0%,rgba(96,32,14,.32),transparent 70%),radial-gradient(rgba(240,112,60,.16) 1px,transparent 1.4px) 0 0/18px 18px,#0a0707}
 #glow i{display:none}
 .card{background:linear-gradient(180deg,rgba(24,17,16,.94),rgba(17,12,12,.94));border-color:rgba(110,54,34,.38)}.sheet{background:#110c0b}}
+
+#rest{left:50%;right:auto;transform:translateX(-50%);width:min(290px,calc(100% - 32px));box-sizing:border-box;bottom:calc(env(safe-area-inset-bottom,0px)*.3 + 76px);padding:5px 5px 5px 16px;border-radius:999px;background:rgba(12,12,15,.9);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:0 10px 30px rgba(0,0,0,.4);color:var(--g2);font-size:14px;white-space:nowrap}
+#rest div{gap:4px}#rest button{border-radius:999px;padding:7px 10px;font-size:12px;background:rgba(255,255,255,.1);color:#fff}
 </style></head>
 <body><div id="glow"><i></i><i></i></div>
 <main>
@@ -235,7 +238,7 @@ main{z-index:1;background:transparent}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 45</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 46</p>
  </div></div>
 </main>
 <script>
