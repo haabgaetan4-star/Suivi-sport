@@ -306,6 +306,9 @@ html{background:#0a0707}
 .xfh>div:last-child{min-width:0}.xfh b{display:block;font-size:19px;line-height:1.2;margin-bottom:4px}.xfh span{display:block;font-size:13px;color:var(--mu)}
 
 #exf .sh{position:sticky}#xfe{background:rgba(255,255,255,.08);border:1px solid var(--bd);color:var(--g2);font:inherit;font-size:13px;font-weight:600;padding:6px 10px;border-radius:999px}
+
+.xfh{flex-direction:column;align-items:center;text-align:center;gap:10px}.xfh img{width:min(100%,320px);height:auto;aspect-ratio:1;border-radius:18px}.xfh .xfi{width:120px;height:120px}
+.xfh b{font-size:21px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -375,7 +378,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 72</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 73</p>
  </div></div>
 </main>
 <script>
@@ -549,7 +552,7 @@ function gl(g){var f=GR.filter(function(x){return x[0]===g})[0];return f?f[1]:'A
 function pk2(x){return 'k'+x.toLowerCase().split('').map(function(c){return c.charCodeAt(0).toString(36)}).join('_')}
 function thumb(x,g){return ph[pk2(x)]?'<img src="'+ph[pk2(x)]+'" alt="">':zi(zone(g)).replace('width:16px;height:22px;max-width:16px','width:26px;height:36px;max-width:26px').replace('vertical-align:-5px','vertical-align:0')}
 function saveCur(){try{if(cur)localStorage.setItem('muscu_cur',JSON.stringify(cur));else localStorage.removeItem('muscu_cur')}catch(e){}}
-async function savePh(){try{localStorage.setItem('muscu_ph',JSON.stringify(ph))}catch(e){}if(refP){try{await refP.set(ph)}catch(e){}}}
+async function savePh(){try{localStorage.setItem('muscu_ph',JSON.stringify(ph))}catch(e){try{toast('Mémoire pleine : la photo n’a pas pu être enregistrée')}catch(x){}}if(refP){try{await refP.set(ph)}catch(e){}}}
 function prev(x){var es=data.entries.filter(function(e){return e.x===x}),l='',o=[];es.forEach(function(e){if(e.d>l)l=e.d});es.filter(function(e){return e.d===l}).forEach(function(e){for(var i=0;i<e.s;i++)o.push({w:e.w,r:e.r})});return o}
 function mkSets(x,n){var p=prev(x),a=[];for(var i=0;i<Math.max(n||p.length,1);i++)a.push({w:p[i]?p[i].w:'',r:p[i]?p[i].r:'',ok:false});return a}
 function startW(t){cur={d:today(),t0:Date.now(),name:t?t.n:'Entraînement',rid:t?t.id:0,ex:t?t.ex.map(function(o){return o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:o.rest,sets:mkSets(o.x,o.n)}}):[]};saveCur();render()}
@@ -608,11 +611,11 @@ $('#exs').onclick=function(e){
  else if(p.dataset.ck!==undefined){var a=p.dataset.ck.split('-'),o3=cur.ex[+a[0]],s=o3.sets[+a[1]];if(!s.ok&&(!(num(s.r)>0)||isNaN(num(s.w)))){toast('Renseigne les kg et les reps pour valider la série');return}s.ok=!s.ok;if(s.ok&&o3.rest)rend=Date.now()+o3.rest*1000}
  saveCur();renderLive();
 };
-function shrink(im){var T=256,q=Math.min(im.width,im.height),sx=(im.width-q)/2,sy=(im.height-q)/2,c=document.createElement('canvas'),x=c.getContext('2d'),w=q;
+function shrink(im){var T=384,q=Math.min(im.width,im.height),sx=(im.width-q)/2,sy=(im.height-q)/2,c=document.createElement('canvas'),x=c.getContext('2d'),w=q;
  c.width=c.height=q;x.drawImage(im,sx,sy,q,q,0,0,q,q);
  while(w/2>=T){var n=Math.round(w/2),c2=document.createElement('canvas');c2.width=c2.height=n;var x2=c2.getContext('2d');x2.imageSmoothingEnabled=true;x2.imageSmoothingQuality='high';x2.drawImage(c,0,0,w,w,0,0,n,n);c=c2;w=n}
  if(w>T){var c3=document.createElement('canvas');c3.width=c3.height=T;var x3=c3.getContext('2d');x3.imageSmoothingEnabled=true;x3.imageSmoothingQuality='high';x3.drawImage(c,0,0,w,w,0,0,T,T);c=c3}
- return c.toDataURL('image/jpeg',0.82)}
+ return c.toDataURL('image/jpeg',0.8)}
 $('#pf').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){ph[pk2(pk)]=shrink(im);savePh();renderLive()};im.src=fr.result};fr.readAsDataURL(f);inp.value=''};
 $('#cal').onclick=function(e){var b=e.target.closest('[data-cd]');if(!b)return;var d=b.getAttribute('data-cd');csel=csel===d?'':d;dw='';renderCal()};
 $('#cpv').onclick=function(){cm--;if(cm<0){cm=11;cy--}csel='';renderCal()};
