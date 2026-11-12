@@ -259,7 +259,7 @@ html,html *{touch-action:pan-x pan-y}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 54</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 55</p>
  </div></div>
 </main>
 <script>
@@ -452,7 +452,7 @@ function renderLive(){
 var AC=null;
 function audUnlock(){try{if(navigator.audioSession)navigator.audioSession.type='ambient';if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state!=='running')AC.resume()}catch(e){}}
 ['touchstart','touchend','click'].forEach(function(ev){document.addEventListener(ev,audUnlock,{passive:true})});
-function beep(){try{audUnlock();if(!AC)return;var t=AC.currentTime+.02;[0,.28,.56].forEach(function(o,i){var os=AC.createOscillator(),g=AC.createGain();os.type='sine';os.frequency.value=i===2?1175:880;g.gain.setValueAtTime(0,t+o);g.gain.linearRampToValueAtTime(.5,t+o+.02);g.gain.exponentialRampToValueAtTime(.001,t+o+.22);os.connect(g);g.connect(AC.destination);os.start(t+o);os.stop(t+o+.25)})}catch(e){}}
+function beep(){try{audUnlock();if(!AC)return;var t=AC.currentTime+.02;[0,.34,.68].forEach(function(o,i){var f=i===2?1175:880,g=AC.createGain();g.gain.setValueAtTime(0,t+o);g.gain.linearRampToValueAtTime(1,t+o+.015);g.gain.setValueAtTime(1,t+o+.2);g.gain.exponentialRampToValueAtTime(.001,t+o+.3);g.connect(AC.destination);[[f,'square',.45],[f*2,'sine',.35],[f,'sine',.6]].forEach(function(p){var os=AC.createOscillator(),v=AC.createGain();os.type=p[1];os.frequency.value=p[0];v.gain.value=p[2];os.connect(v);v.connect(g);os.start(t+o);os.stop(t+o+.32)})})}catch(e){}}
 ['gesturestart','gesturechange','gestureend'].forEach(function(ev){document.addEventListener(ev,function(e){e.preventDefault()},{passive:false})});
 document.addEventListener('touchmove',function(e){if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
 (function(){var lt=0;document.addEventListener('touchend',function(e){var n=Date.now(),t=e.target;if(n-lt<320&&!(t.closest&&t.closest('button,input,select,textarea,.m,[role=button]')))e.preventDefault();lt=n},{passive:false})})();
