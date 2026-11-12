@@ -297,6 +297,9 @@ html{background:#0a0707}
 .mxl{display:block;width:100%;background:none;border:0;border-top:1px solid var(--bd);color:var(--mu);font:inherit;font-size:13px;padding:9px 0 2px;text-align:center}
 
 #hht{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:0;padding:0;color:var(--tx);font:inherit;text-align:left;cursor:pointer}#hht b{font-size:inherit}#hhs{font-size:13px;color:var(--g2);font-weight:600}
+
+.rtc{display:flex;align-items:center;gap:10px;padding:10px 8px 10px 14px;margin-bottom:8px}.rti{flex:1;min-width:0;text-align:left}.rti b{display:block;font-size:15px}.rti span{display:block;font-size:12px;color:var(--mu);line-height:1.3}
+#p1 .rtc .rtb{width:auto;max-width:none;margin:0;padding:8px 14px;font-size:13px;flex:none;display:inline-block;border-radius:999px;box-shadow:none}.rtc{position:relative}.rtc .del{flex:none;position:static!important;padding:8px 6px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -366,7 +369,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 69</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 70</p>
  </div></div>
 </main>
 <script>
@@ -544,7 +547,7 @@ async function savePh(){try{localStorage.setItem('muscu_ph',JSON.stringify(ph))}
 function prev(x){var es=data.entries.filter(function(e){return e.x===x}),l='',o=[];es.forEach(function(e){if(e.d>l)l=e.d});es.filter(function(e){return e.d===l}).forEach(function(e){for(var i=0;i<e.s;i++)o.push({w:e.w,r:e.r})});return o}
 function mkSets(x,n){var p=prev(x),a=[];for(var i=0;i<Math.max(n||p.length,1);i++)a.push({w:p[i]?p[i].w:'',r:p[i]?p[i].r:'',ok:false});return a}
 function startW(t){cur={d:today(),t0:Date.now(),name:t?t.n:'Entraînement',rid:t?t.id:0,ex:t?t.ex.map(function(o){return o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:o.rest,sets:mkSets(o.x,o.n)}}):[]};saveCur();render()}
-function renderRts(){var r=data.routines||[];$('#rts').innerHTML=r.length?r.map(function(t){return '<div class="card"><div class="it"><div><b>'+esc(t.n)+'</b><span>'+t.ex.map(function(o){return esc(o.x)}).join(', ')+'</span></div><button class="del" data-dr="'+t.id+'">✕</button></div><button class="add" data-sr="'+t.id+'" style="margin-top:4px">Démarrer</button></div>'}).join(''):'<p class="mu">Aucune routine. Coche l’option à la fin d’un entraînement pour en créer une.</p>'}
+function renderRts(){var r=data.routines||[];$('#rts').innerHTML=r.length?r.map(function(t){return '<div class="card rtc"><div class="rti"><b>'+esc(t.n)+'</b><span>'+t.ex.map(function(o){return esc(o.x)}).join(', ')+'</span></div><button class="add rtb" data-sr="'+t.id+'">Démarrer</button><button class="del" data-dr="'+t.id+'" aria-label="Supprimer la routine">✕</button></div>'}).join(''):'<p class="mu">Aucune routine. Coche l’option à la fin d’un entraînement pour en créer une.</p>'}
 function renderLive(){
  $('#home').classList.toggle('hide',!!cur);$('#live').classList.toggle('hide',!cur);
  if(!cur){rend=0;$('#rest').classList.add('hide');return}
