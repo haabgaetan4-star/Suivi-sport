@@ -309,6 +309,8 @@ html{background:#0a0707}
 
 .xfh{flex-direction:column;align-items:center;text-align:center;gap:10px}.xfh img{width:min(100%,320px);height:auto;aspect-ratio:1;border-radius:18px}.xfh .xfi{width:120px;height:120px}
 .xfh b{font-size:21px}
+
+.xfh img{border:0;background:none;border-radius:14px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -378,7 +380,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 73</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 74</p>
  </div></div>
 </main>
 <script>
@@ -611,12 +613,17 @@ $('#exs').onclick=function(e){
  else if(p.dataset.ck!==undefined){var a=p.dataset.ck.split('-'),o3=cur.ex[+a[0]],s=o3.sets[+a[1]];if(!s.ok&&(!(num(s.r)>0)||isNaN(num(s.w)))){toast('Renseigne les kg et les reps pour valider la série');return}s.ok=!s.ok;if(s.ok&&o3.rest)rend=Date.now()+o3.rest*1000}
  saveCur();renderLive();
 };
-function shrink(im){var T=384,q=Math.min(im.width,im.height),sx=(im.width-q)/2,sy=(im.height-q)/2,c=document.createElement('canvas'),x=c.getContext('2d'),w=q;
+var PDB=null;function phDB(){if(PDB)return PDB;PDB=new Promise(function(ok,ko){try{var r=indexedDB.open('muscu-photos',1);r.onupgradeneeded=function(){r.result.createObjectStore('ph')};r.onsuccess=function(){ok(r.result)};r.onerror=function(){ko(r.error)}}catch(e){ko(e)}});return PDB}
+function phPut(k,v){return phDB().then(function(db){return new Promise(function(ok,ko){var t=db.transaction('ph','readwrite');t.objectStore('ph').put(v,k);t.oncomplete=ok;t.onerror=function(){ko(t.error)}})}).catch(function(){try{toast('La photo en grand n’a pas pu être enregistrée')}catch(x){}})}
+function phGet(k){return phDB().then(function(db){return new Promise(function(ok){var q=db.transaction('ph').objectStore('ph').get(k);q.onsuccess=function(){ok(q.result||'')};q.onerror=function(){ok('')}})}).catch(function(){return ''})}
+function phMove(a,b){phGet(a).then(function(v){if(v)phPut(b,v).then(function(){phDB().then(function(db){db.transaction('ph','readwrite').objectStore('ph').delete(a)})})})}
+var npxB='';
+function shrink(im,T,Q){T=T||192;T=Math.min(T,Math.min(im.width,im.height));var q=Math.min(im.width,im.height),sx=(im.width-q)/2,sy=(im.height-q)/2,c=document.createElement('canvas'),x=c.getContext('2d'),w=q;
  c.width=c.height=q;x.drawImage(im,sx,sy,q,q,0,0,q,q);
  while(w/2>=T){var n=Math.round(w/2),c2=document.createElement('canvas');c2.width=c2.height=n;var x2=c2.getContext('2d');x2.imageSmoothingEnabled=true;x2.imageSmoothingQuality='high';x2.drawImage(c,0,0,w,w,0,0,n,n);c=c2;w=n}
  if(w>T){var c3=document.createElement('canvas');c3.width=c3.height=T;var x3=c3.getContext('2d');x3.imageSmoothingEnabled=true;x3.imageSmoothingQuality='high';x3.drawImage(c,0,0,w,w,0,0,T,T);c=c3}
- return c.toDataURL('image/jpeg',0.8)}
-$('#pf').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){ph[pk2(pk)]=shrink(im);savePh();renderLive()};im.src=fr.result};fr.readAsDataURL(f);inp.value=''};
+ return c.toDataURL('image/jpeg',Q||0.82)}
+$('#pf').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){ph[pk2(pk)]=shrink(im,192,.82);phPut(pk2(pk),shrink(im,1200,.88));savePh();renderLive()};im.src=fr.result};fr.readAsDataURL(f);inp.value=''};
 $('#cal').onclick=function(e){var b=e.target.closest('[data-cd]');if(!b)return;var d=b.getAttribute('data-cd');csel=csel===d?'':d;dw='';renderCal()};
 $('#cpv').onclick=function(){cm--;if(cm<0){cm=11;cy--}csel='';renderCal()};
 $('#cnx').onclick=function(){cm++;if(cm>11){cm=0;cy++}csel='';renderCal()};
@@ -649,7 +656,7 @@ function renderMex(){var n=libList().length;$('#mex').textContent='Gérer mes ex
 $('#mex').onclick=openMgr;
 function addEx(o){if(!cur)return;cur.ex.push(o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:RESTS.indexOf(o.rest)>=0?o.rest:120,sets:mkSets(o.x)});saveCur();renderLive()}
 function showRestRow(){$('#nrw').classList.toggle('hide',nsel.indexOf('cardio')>=0)}
-function openNew(o){ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?gsOf(o).slice():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
+function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?gsOf(o).slice():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
 (function(){var vv=window.visualViewport,p=$('#pick');if(!vv)return;function fit(){var kb=!p.classList.contains('hide')&&document.activeElement===$('#psr')&&vv.height<window.innerHeight-120;p.classList.toggle('kb',kb);if(kb){p.style.top=vv.offsetTop+'px';p.style.height=vv.height+'px'}else{p.style.top='';p.style.height=''}}
 vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);$('#psr').addEventListener('focus',function(){setTimeout(fit,50);setTimeout(fit,350)});$('#psr').addEventListener('blur',function(){setTimeout(fit,50)});$('#plist').addEventListener('touchstart',function(){},{passive:true})})();
 $('#psr').oninput=function(){pdel=-1;renderPick()};
@@ -672,7 +679,7 @@ function renderExF(){var o=xfo;if(!o)return;var k=o.x.toLowerCase(),card=o.g==='
  h+='<div class="day" style="margin-top:12px">Historique</div>'+show.map(function(q,i){var pv=rows[i+1],ar='';if(!card&&pv){var t=top(q),u=top(pv);ar=t>u?'<em class="up">▲</em>':t<u?'<em class="dn">▼</em>':'<em class="eq">=</em>'}
   return '<div class="mrow"><span class="dt">'+dl(q.d)+'</span><span class="sts">'+(card?'<span class="st"><b>'+fmtT(q.dur)+'</b></span>':q.sets.map(function(t){return '<span class="st'+(t[1]===rc&&rc>0?' rc':'')+'"><b>'+t[1]+'</b><i>×'+t[0]+'</i></span>'}).join(''))+'</span>'+ar+'</div>'}).join('')
   +(rows.length>5?'<button class="mxl" id="xfm">'+(xfall?'Réduire ‹':'Voir les '+rows.length+' séances ›')+'</button>':'');
- $('#xfb').innerHTML=h;var m=$('#xfm');if(m)m.onclick=function(){xfall=!xfall;var st=$('#exf .sheet').scrollTop;renderExF();$('#exf .sheet').scrollTop=st}}
+ $('#xfb').innerHTML=h;if(p){var key=pk2(o.x);phGet(key).then(function(v){var im=document.querySelector('#xfb .xfh img');if(v&&im&&xfo&&pk2(xfo.x)===key)im.src=v})}var m=$('#xfm');if(m)m.onclick=function(){xfall=!xfall;var st=$('#exf .sheet').scrollTop;renderExF();$('#exf .sheet').scrollTop=st}}
 $('#xfc').onclick=function(){$('#exf').classList.add('hide')};$('#exf').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#xfe').onclick=function(){$('#exf').classList.add('hide');if(xfo)openNew(xfo)};
 $('#plist').onclick=function(e){
@@ -688,7 +695,7 @@ $('#pnew').onclick=function(){openNew()};
 $('#ncl').onclick=function(){$('#nw').classList.add('hide')};
 $('#nn').oninput=function(){if(/\bv[eé]lo\b|\brameur\b|\belliptique\b|\btapis\b/i.test(this.value)&&nsel.indexOf('cardio')<0){nsel=['cardio'];renderChips();showRestRow()}};
 $('#nph').onclick=function(){$('#pf2').click()};
-$('#pf2').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){npx=shrink(im);$('#nph').innerHTML='<img src="'+npx+'" alt="">'};im.src=fr.result};fr.readAsDataURL(f);inp.value=''};
+$('#pf2').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){npx=shrink(im,192,.82);npxB=shrink(im,1200,.88);$('#nph').innerHTML='<img src="'+npx+'" alt="">'};im.src=fr.result};fr.readAsDataURL(f);inp.value=''};
 $('#nsv').onclick=function(){var x=$('#nn').value.trim();if(!x){toast('Donne un nom à l’exercice');return}
  var gs=nsel.length?nsel.slice():['autre'],g=gs[0],r=+$('#nr').value||120,k=x.toLowerCase(),cd=function(a){return a==='cardio'},was=!!ned;
  data.lib=data.lib||[];data.hid=data.hid||[];
@@ -699,12 +706,12 @@ $('#nsv').onclick=function(){var x=$('#nn').value.trim();if(!x){toast('Donne un 
   (data.routines||[]).forEach(function(t){t.ex.forEach(function(o){if(o.x.toLowerCase()===ned){o.x=x;o.g=g;o.gs=gs;o.rest=cd(g)?0:r}})});
   if(cur)cur.ex.forEach(function(o){if(o.x.toLowerCase()===ned){o.x=x;if(same){o.g=g;o.gs=gs}}});
   data.lib=data.lib.filter(function(o){return o.x.toLowerCase()!==ned});data.lib.push({x:x,g:g,gs:gs,rest:r});
-  if(k!==ned&&ph[pk2(nedN)]){ph[pk2(x)]=ph[pk2(nedN)];delete ph[pk2(nedN)];savePh()}
+  if(k!==ned&&ph[pk2(nedN)]){ph[pk2(x)]=ph[pk2(nedN)];delete ph[pk2(nedN)];savePh();phMove(pk2(nedN),pk2(x))}
  }else{
   var f=data.lib.filter(function(o){return o.x.toLowerCase()===k})[0];if(f){f.g=g;f.gs=gs;f.rest=r}else data.lib.push({x:x,g:g,gs:gs,rest:r});
  }
  data.hid=data.hid.filter(function(h){return h!==k});
- if(npx){ph[pk2(x)]=npx;savePh()}
+ if(npx){ph[pk2(x)]=npx;savePh();if(npxB)phPut(pk2(x),npxB)}npxB='';
  ned=null;save();saveCur();render();$('#nw').classList.add('hide');renderPick();toast(was?'Exercice modifié':'Exercice ajouté à ta liste')};
 
 
