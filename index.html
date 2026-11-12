@@ -191,8 +191,15 @@ button:active,.ph:active,#pnm:active{transform:scale(.93);filter:brightness(1.18
 html,html *{touch-action:pan-x pan-y}
 #land{display:none}
 @media (orientation:landscape) and (max-height:540px) and (pointer:coarse){#land{display:flex;position:fixed;inset:0;z-index:9999;background:#0a0707;color:#f7efea;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:16px;text-align:center;padding:20px}#land svg{width:54px;height:54px;color:var(--g2)}}
+
+html{background:#0a0707}
+#splash{position:fixed;inset:0;z-index:10000;background:#0a0707;display:flex;align-items:center;justify-content:center;transition:opacity .45s ease,visibility .45s}
+#splash img{width:150px;height:150px;border-radius:34px;box-shadow:0 0 60px rgba(240,96,44,.35);animation:spl 1.1s ease-in-out infinite alternate}
+#splash.out{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes spl{from{transform:scale(.96)}to{transform:scale(1.04)}}
 </style></head>
-<body><div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
+<body><div id="splash"><img src="icon-v4-512.png" alt=""></div>
+<div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
 <div id="glow"><i></i><i></i></div>
 <main>
 <h1><span id="tli" style="--m:url(tab-train-white.png);aspect-ratio:516/354"></span><span id="ttl">Entraînement</span><button id="gear" class="hide" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></h1>
@@ -259,7 +266,7 @@ html,html *{touch-action:pan-x pan-y}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 55</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 56</p>
  </div></div>
 </main>
 <script>
@@ -656,5 +663,6 @@ $('#bkn').onclick=function(){bkd=null;$('#bkc2').classList.add('hide')};
 $('#bko').onclick=function(){if(!bkd)return;data=bkd.data;if(!data.routines)data.routines=[];ph=Object.assign({},bkd.ph||{});bkd=null;$('#bkc2').classList.add('hide');save();savePh();render();toast('Données importées')};
 setInterval(tickFn,500);
 render();load();setTimeout(goCur,60);
+(function(){var t0=Date.now(),done=false;function out(){if(done)return;done=true;setTimeout(function(){var e=$('#splash');e.classList.add('out');setTimeout(function(){e.remove()},600)},Math.max(0,900-(Date.now()-t0)))}if(document.readyState==='complete')out();else window.addEventListener('load',out);setTimeout(out,3000)})();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){try{r.update()}catch(e){}}).catch(function(){})});var hadC=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',function(){if(!hadC){hadC=true;return}if(window.__rl||(typeof cur!=='undefined'&&cur))return;window.__rl=1;location.reload()})}
 </script></body></html>
