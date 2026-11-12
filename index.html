@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#8a0b14">
+<meta name="theme-color" content="#120d0d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Muscu">
@@ -143,10 +143,28 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
 #det,#gc{display:none!important}
 #mus{z-index:14}#mus .sheet{min-height:60vh}.mh{border-top:1px solid var(--bd);padding:10px 0}.mh b{font-size:14px}.mh .d{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mh .d span{color:var(--mu);font-size:12px}.mh p{margin:4px 0 0;font-size:13px;color:var(--mu)}.trd{font-size:13px;margin:8px 0 0;text-align:center}.trd b{color:var(--ac)}
 #gear{margin-left:auto;background:none;border:0;color:#b0101e;padding:6px;cursor:pointer;display:flex}#gear.hide{display:none}#set{z-index:14}
+
+/* DA "Braise" */
+:root{--ac:#c2401c;--g1:#ffb07a;--g2:#f0602c;--g3:#b92a17}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#110c0c;--card:#1b1312;--tx:#f7efea;--mu:#a89087;--ac:#e2532a;--bd:#38211a}}
+:root[data-theme="dark"]{--bg:#110c0c;--card:#1b1312;--tx:#f7efea;--mu:#a89087;--ac:#e2532a;--bd:#38211a}
+h1{color:var(--ac)}h1 #ttl{background:linear-gradient(95deg,var(--g1),var(--g2) 45%,var(--g3));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+#gear{color:var(--g2)}.tabs button.on i{color:var(--g2)}
+.add,.sa.on,.seg button.on{background-image:linear-gradient(135deg,var(--g2),var(--g3))}
+.add{box-shadow:0 6px 18px rgba(240,96,44,.22)}.add.gh2{background-image:none;box-shadow:none}
+#glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--bg)}
+main{z-index:1;background:transparent}
+@media (prefers-color-scheme:dark){#glow{background:radial-gradient(90% 55% at 105% -5%,rgba(110,38,18,.75),transparent 62%),radial-gradient(70% 40% at -10% 105%,rgba(90,28,14,.45),transparent 60%),var(--bg)}
+#glow i{position:absolute;border-radius:50%;display:block}
+#glow i:nth-child(1){width:190vw;height:190vw;left:-128vw;top:14vh;box-shadow:0 0 0 1px rgba(255,190,140,.85),0 0 14px 2px rgba(240,96,44,.55),0 0 60px 6px rgba(190,50,20,.28),inset 0 0 70px rgba(0,0,0,.55);background:radial-gradient(closest-side,rgba(17,12,12,.96) 82%,rgba(40,16,10,.9))}
+#glow i:nth-child(2){width:230vw;height:230vw;left:-176vw;top:-30vh;box-shadow:0 0 0 1px rgba(255,170,115,.5),0 0 18px 2px rgba(240,96,44,.3)}
+.card{background:linear-gradient(180deg,rgba(34,22,20,.92),rgba(24,16,15,.92));border-color:rgba(120,58,36,.45);box-shadow:inset 0 1px 0 rgba(255,160,110,.08)}
+.sheet{background:#17100f}}
 </style></head>
-<body><main>
-<h1><img id="tli" src="tab-train-red-v2.png" alt=""><span id="ttl">Entraînement</span><button id="gear" class="hide" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></h1>
-<div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-red-v2.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-red-v2.png" alt=""><i>Profil</i></button></div>
+<body><div id="glow"><i></i><i></i></div>
+<main>
+<h1><img id="tli" src="tab-train-ember.png" alt=""><span id="ttl">Entraînement</span><button id="gear" class="hide" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></h1>
+<div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><img class="r" src="tab-train-ember.png" alt=""><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><img class="r" src="tab-prof-ember.png" alt=""><i>Profil</i></button></div>
 
 <section id="p1">
  <div id="home">
@@ -209,7 +227,7 @@ main{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;right:0;ove
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 42</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 43</p>
  </div></div>
 </main>
 <script>
@@ -349,7 +367,7 @@ function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||
 $('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
 function render(){renderId();renderMex();fixG();renderList();renderRts();renderLive();renderBody();renderDet();renderChart()}
 function show(n){
- tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-red-v2.png':'tab-prof-red-v2.png';$('#gear').classList.toggle('hide',n!==2);$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
+ tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').src=n===1?'tab-train-ember.png':'tab-prof-ember.png';$('#gear').classList.toggle('hide',n!==2);$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
 $('#t1').onclick=function(){show(1)};
