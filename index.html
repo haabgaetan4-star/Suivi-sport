@@ -290,6 +290,11 @@ html{background:#0a0707}
 .mrow .st b{font-size:15px}.mrow .st i{font-style:normal;font-size:12px;color:var(--mu)}.mrow .st.rc{background:linear-gradient(135deg,#f0602c,#b92a17)}.mrow .st.rc i{color:rgba(255,255,255,.85)}
 .mrow em{font-style:normal;font-size:12px;flex:none;width:14px;text-align:center}
 #mus .mxb{background:rgba(255,255,255,.05);color:var(--tx)}
+
+.mhd{display:flex;align-items:baseline;gap:10px;margin:6px 0 2px;flex-wrap:wrap}.mhd b{font-family:Oswald,sans-serif;font-size:28px;font-weight:600;line-height:1.1}.mhd .tg{font-size:13px;font-weight:700}
+.mar{display:block;width:100%;height:auto;margin-top:2px}.max{display:flex;justify-content:space-between;font-size:11px;color:var(--mu);margin-bottom:8px}
+.mrow.ml .dt{width:74px;font-weight:500;font-size:12px;color:var(--mu);line-height:1.25}.mrow.ml .dt i{display:block;font-style:normal;color:var(--tx);font-weight:600;font-size:13px}
+.mxl{display:block;width:100%;background:none;border:0;border-top:1px solid var(--bd);color:var(--mu);font:inherit;font-size:13px;padding:9px 0 2px;text-align:center}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -359,7 +364,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 67</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 68</p>
  </div></div>
 </main>
 <script>
@@ -691,21 +696,23 @@ function renderMus(){
  var h=L.slice().reverse().map(function(o){return '<div class="mh"><div class="d"><b>'+fd(o.d)+' · '+esc(o.n)+'</b><span>'+o.sets+' série(s)</span></div>'+Object.keys(o.ex).map(function(x){var g={},ord=[];o.ex[x].forEach(function(t){var key=t[0]+'×'+t[1];if(!g[key]){g[key]=0;ord.push(key)}g[key]++});return '<p>'+esc(x)+' : '+ord.map(function(key){var t=key.split('×');return (g[key]>1?g[key]+' × ':'')+t[0]+' reps à '+t[1]+' kg'}).join(', ')+'</p>'}).join('')+'</div>'}).join('');
  var EX={};L.forEach(function(o){Object.keys(o.ex).forEach(function(x){(EX[x]=EX[x]||[]).push({d:o.d,sets:o.ex[x]})})});
  var exh=Object.keys(EX).sort(function(a,b){return EX[b].length-EX[a].length||(EX[b][EX[b].length-1].d>EX[a][EX[a].length-1].d?1:-1)}).map(function(x,xi){var a=EX[x],rc=0;a.forEach(function(q){q.sets.forEach(function(t){rc=Math.max(rc,t[1])})});
-  var open=!!mxo[x],rows=a.slice().reverse(),show=open?rows:rows.slice(0,5),top=function(q){var m=0;q.sets.forEach(function(t){m=Math.max(m,t[1])});return m};
+  var open=!!mxo[x],rows=a.slice().reverse(),top=function(q){var m=0;q.sets.forEach(function(t){m=Math.max(m,t[1])});return m};
   var MO=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],yr=String(new Date().getFullYear()),dl=function(d){return +d.slice(8,10)+' '+MO[+d.slice(5,7)-1]+(d.slice(0,4)!==yr?' '+d.slice(2,4):'')};
-  var last=rows[0],pv=rows[1],lt=top(last),df=pv?Math.round((lt-top(pv))*100)/100:null;
-  var chip=df===null?'':df>0?'<span class="tg up">▲ +'+df+' kg</span>':df<0?'<span class="tg dn">▼ '+df+' kg</span>':'<span class="tg eq">= stable</span>';
-  var bs=a.slice(-12),tv=bs.map(top),lo=Math.min.apply(null,tv),hi=Math.max.apply(null,tv);
-  var bars=bs.length>1?'<div class="mbars">'+bs.map(function(q,k){var v=tv[k],hh=hi===lo?70:30+70*(v-lo)/(hi-lo);return '<i style="height:'+hh.toFixed(0)+'%"'+(k===bs.length-1?' class="l"':'')+(v===rc?' data-r="1"':'')+'></i>'}).join('')+'</div><p class="mcap">Poids max par séance · '+(bs.length<a.length?bs.length+' dernières':'depuis le début')+' ('+lo+' → '+hi+' kg)</p>':'';
-  var li=show.map(function(q,k){var p=rows[k+1],t=top(q),ar=!p?'':t>top(p)?'<em class="up">▲</em>':t<top(p)?'<em class="dn">▼</em>':'<em class="eq">=</em>';
-   return '<div class="mrow"><span class="dt">'+dl(q.d)+'</span><span class="sts">'+q.sets.map(function(t){return '<span class="st'+(t[1]===rc&&rc>0?' rc':'')+'"><b>'+t[1]+'</b><i>×'+t[0]+'</i></span>'}).join('')+'</span>'+ar+'</div>'}).join('');
+  var last=rows[0],lt=top(last),df=a.length>1?Math.round((lt-top(a[0]))*100)/100:null;
+  var chip=df===null?'':df>0?'<span class="tg up">▲ +'+df+' kg depuis le début</span>':df<0?'<span class="tg dn">▼ '+df+' kg depuis le début</span>':'<span class="tg eq">= stable depuis le début</span>';
+  var tv=a.map(top),ch='';
+  if(tv.length>1){var W=330,H=96,lo=Math.min.apply(null,tv),hi=Math.max.apply(null,tv);if(hi===lo)hi=lo+1;var pts=tv.map(function(v,k){return[8+k*(W-16)/(tv.length-1),H-10-(v-lo)/(hi-lo)*(H-24)]}),dp='M'+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' L'),lp=pts[pts.length-1];
+   ch='<svg class="mar" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Progression du poids max"><defs><linearGradient id="mg'+xi+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0602c" stop-opacity=".45"/><stop offset="1" stop-color="#f0602c" stop-opacity="0"/></linearGradient></defs><path d="'+dp+' L'+lp[0].toFixed(1)+' '+H+' L8 '+H+' Z" fill="url(#mg'+xi+')"/><path d="'+dp+'" fill="none" stroke="#f0602c" stroke-width="'+(tv.length>40?1.6:2.2)+'" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+lp[0].toFixed(1)+'" cy="'+lp[1].toFixed(1)+'" r="4" fill="#fff" stroke="#f0602c" stroke-width="2"/></svg><div class="max"><span>'+dl(a[0].d)+'</span><span>record '+rc+' kg</span><span>'+dl(last.d)+'</span></div>'}
+  var pills=function(q){return q.sets.map(function(t){return '<span class="st'+(t[1]===rc&&rc>0?' rc':'')+'"><b>'+t[1]+'</b><i>×'+t[0]+'</i></span>'}).join('')};
+  var li=open?rows.slice(1).map(function(q,k){var p=rows[k+2],t=top(q),ar=!p?'':t>top(p)?'<em class="up">▲</em>':t<top(p)?'<em class="dn">▼</em>':'<em class="eq">=</em>';return '<div class="mrow"><span class="dt">'+dl(q.d)+'</span><span class="sts">'+pills(q)+'</span>'+ar+'</div>'}).join(''):'';
   return '<div class="mxc"><div class="d"><b>'+esc(x)+'</b><span>'+a.length+' séance'+(a.length>1?'s':'')+'</span></div>'
-   +'<div class="mkp"><div><span>Dernière · '+dl(last.d)+'</span><b>'+lt+' kg</b>'+chip+'</div><div><span>Record</span><b>'+rc+' kg</b></div></div>'
-   +bars+'<div class="mleg">Séries : <b>kg</b> × reps</div>'+li+(rows.length>5?'<button class="mxb" data-mx="'+xi+'">'+(open?'Réduire':'Voir les '+rows.length+' séances')+'</button>':'')+'</div>'}).join('');
+   +'<div class="mhd"><b>'+lt+' kg</b>'+chip+'</div>'+ch
+   +'<div class="mrow ml"><span class="dt">Dernière<i>'+dl(last.d)+'</i></span><span class="sts">'+pills(last)+'</span></div>'+li
+   +(rows.length>1?'<button class="mxl" data-mx="'+xi+'">'+(open?'Réduire ‹':'Voir toutes les séances ›')+'</button>':'')+'</div>'}).join('');
  var exNames=Object.keys(EX).sort(function(a,b){return EX[b].length-EX[a].length||(EX[b][EX[b].length-1].d>EX[a][EX[a].length-1].d?1:-1)});
  $('#mbody').innerHTML='<div class="stats"><div><b>'+L.length+'</b><span>Séances</span></div><div><b>'+sets+'</b><span>Séries</span></div><div><b>'+rec+' kg</b><span>Record</span></div></div>'
   +'<div class="day" style="margin-top:14px">Par exercice</div>'+exh+'<div class="day" style="margin-top:14px">Historique</div>'+h;
- document.querySelectorAll('#mbody .mxb').forEach(function(b){b.onclick=function(){var x=exNames[+b.getAttribute('data-mx')];mxo[x]=!mxo[x];var st=$('#mus .sheet').scrollTop;renderMus();$('#mus .sheet').scrollTop=st}});
+ document.querySelectorAll('#mbody .mxl').forEach(function(b){b.onclick=function(){var x=exNames[+b.getAttribute('data-mx')];mxo[x]=!mxo[x];var st=$('#mus .sheet').scrollTop;renderMus();$('#mus .sheet').scrollTop=st}});
 }
 var mT=[];function mLater(f,t){mT.push(setTimeout(f,t))}function mClear(){mT.forEach(clearTimeout);mT=[]}
 function openMus(g){mg=g;mxo={};renderMus();var m=$('#mus');m.classList.remove('hide','closing');m.classList.add('opening');$('#mbody').classList.add('anim');$('#mus .sheet').scrollTop=0;mLater(function(){m.classList.remove('opening');$('#mbody').classList.remove('anim')},1100)}
