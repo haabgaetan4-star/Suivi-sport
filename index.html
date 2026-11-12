@@ -204,6 +204,12 @@ html{background:#0a0707}
 @keyframes splsh{0%{background-position:130% 0}60%,100%{background-position:-30% 0}}
 
 .seg button.on{color:#fff!important;border-color:transparent}
+
+.bz{transition:transform .5s cubic-bezier(.3,.9,.3,1)}.bz.zm{position:relative;z-index:3;will-change:transform}.bodies>div:has(.zm){position:relative;z-index:3}.card:has(#bodies){overflow:hidden}
+.mxc{border:1px solid var(--bd);border-radius:12px;padding:10px 12px 8px;margin-top:8px;background:var(--card)}.mxc .d{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mxc .d b{font-size:15px}.mxc .d span{color:var(--mu);font-size:12px;flex:none}.mxc>p{margin:2px 0 4px;font-size:12px;color:var(--mu)}
+
+.card:has(#bodies)>*,.bodies>div,.bodies .lbl{transition:opacity .3s}
+.card:has(.zm)>*:not(.bodies),.bodies:has(.zm)>div:not(:has(.zm)),.bodies:has(.zm) .lbl{opacity:0;pointer-events:none}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -273,7 +279,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 59</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 60</p>
  </div></div>
 </main>
 <script>
@@ -582,11 +588,10 @@ function musData(g){
  return Object.keys(ss).map(function(k){return ss[k]}).sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0});
 }
 function fd(d){return d.split('-').reverse().join('/')}
-function musChart(L){
- var pts=L.map(function(o){return[o.d,mmet==='w'?o.mw:Math.round(o.vol)]});
+function musChart(pts,H0){
  if(!pts.length)return '';
  var vals=pts.map(function(p){return p[1]}),lo=Math.min.apply(null,vals),hi=Math.max.apply(null,vals);if(lo===hi){lo-=1;hi+=1}
- var W=320,H=180,Lf=40,R=12,T=14,B=28;
+ var W=320,H=H0||180,Lf=40,R=12,T=14,B=28;
  var X=function(i){return pts.length>1?Lf+i*(W-Lf-R)/(pts.length-1):(Lf+W-R)/2},Y=function(v){return H-B-(v-lo)/(hi-lo)*(H-T-B)};
  var r1=function(v){return Math.round(v*10)/10};
  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Progression">'
@@ -604,13 +609,17 @@ function renderMus(){
  var v=L.map(function(o){return mmet==='w'?o.mw:o.vol}),av=function(a){return a.reduce(function(x,y){return x+y},0)/a.length};
  var tr='';if(L.length>=2){var k=Math.min(3,Math.floor(L.length/2)),a=av(v.slice(0,k)),b=av(v.slice(-k)),p=a?Math.round((b-a)/a*100):0;tr=p>=3?'<b>En progression</b> ('+(p>0?'+':'')+p+' % sur les dernières séances)':p<=-3?'<b>En baisse</b> ('+p+' %)':'<b>Stable</b> ('+(p>0?'+':'')+p+' %)'}else tr='Une seule séance pour l’instant';
  var h=L.slice().reverse().map(function(o){return '<div class="mh"><div class="d"><b>'+fd(o.d)+' · '+esc(o.n)+'</b><span>'+o.sets+' série(s)</span></div>'+Object.keys(o.ex).map(function(x){var g={},ord=[];o.ex[x].forEach(function(t){var key=t[0]+'×'+t[1];if(!g[key]){g[key]=0;ord.push(key)}g[key]++});return '<p>'+esc(x)+' : '+ord.map(function(key){var t=key.split('×');return (g[key]>1?g[key]+' × ':'')+t[0]+' reps à '+t[1]+' kg'}).join(', ')+'</p>'}).join('')+'</div>'}).join('');
+ var EX={};L.forEach(function(o){Object.keys(o.ex).forEach(function(x){var a=EX[x]=EX[x]||[],mw=0,vol=0;o.ex[x].forEach(function(t){mw=Math.max(mw,t[1]);vol+=t[0]*t[1]});a.push({d:o.d,mw:mw,vol:vol,n:o.ex[x].length})})});
+ var trend=function(v){if(v.length<2)return 'Une seule séance pour l’instant';var k=Math.min(3,Math.floor(v.length/2)),a=av(v.slice(0,k)),b=av(v.slice(-k)),p=a?Math.round((b-a)/a*100):0;return p>=3?'<b>En progression</b> (+'+p+' %)':p<=-3?'<b>En baisse</b> ('+p+' %)':'<b>Stable</b> ('+(p>0?'+':'')+p+' %)'};
+ var exh=Object.keys(EX).sort(function(a,b){return EX[b].length-EX[a].length||(EX[b][EX[b].length-1].d>EX[a][EX[a].length-1].d?1:-1)}).map(function(x){var a=EX[x],rc=0;a.forEach(function(q){rc=Math.max(rc,q.mw)});var vals=a.map(function(q){return mmet==='w'?q.mw:Math.round(q.vol)});
+  return '<div class="mxc"><div class="d"><b>'+esc(x)+'</b><span>'+a.length+' séance'+(a.length>1?'s':'')+'</span></div><p>Record '+rc+' kg · dernière le '+fd(a[a.length-1].d)+'</p>'+musChart(a.map(function(q,i){return[q.d,vals[i]]}),130)+'<p class="trd" style="margin-top:2px">'+trend(vals)+'</p></div>'}).join('');
  $('#mbody').innerHTML='<div class="stats"><div><b>'+L.length+'</b><span>Séances</span></div><div><b>'+sets+'</b><span>Séries</span></div><div><b>'+rec+' kg</b><span>Record</span></div></div>'
   +'<div class="seg"><button id="mm1" class="'+(mmet==='w'?'on':'')+'">Poids max</button><button id="mm2" class="'+(mmet==='v'?'on':'')+'">Volume total</button></div>'
-  +'<div style="margin-top:8px">'+musChart(L)+'</div><p class="trd">'+tr+'</p><div class="day" style="margin-top:14px">Historique</div>'+h;
+  +'<div class="day" style="margin-top:14px">Par exercice</div>'+exh+'<div class="day" style="margin-top:14px">Historique</div>'+h;
  $('#mm1').onclick=function(){mmet='w';renderMus()};$('#mm2').onclick=function(){mmet='v';renderMus()};
 }
 function openMus(g){mg=g;renderMus();$('#mus').classList.remove('hide');$('#mus .sheet').scrollTop=0}
-function closeMus(){$('#mus').classList.add('hide');grp='';renderBody()}
+function closeMus(){$('#mus').classList.add('hide');grp='';var z=document.querySelector('.bz.zm');if(z){z.style.transform='';setTimeout(renderBody,460)}else renderBody()}
 $('#gear').onclick=function(){$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
 
@@ -653,7 +662,14 @@ function hevyImport(txt){
 }
 $('#bkh').onclick=function(){$('#hvf').value='';$('#hvf').click()};
 $('#hvf').onchange=function(){var f=this.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var o=hevyImport(String(fr.result));fixG();save();render();$('#hvm').textContent=o.nw+' entraînement(s) importé(s), '+o.ns+' série(s)'+(o.skip?' · '+o.skip+' déjà présent(s), ignoré(s)':'')+(o.unk.length?' · '+o.unk.length+' exercice(s) à classer dans « Mes exercices » : '+o.unk.slice(0,6).join(', ')+(o.unk.length>6?'…':''):'.')}catch(e){$('#hvm').textContent='Import impossible : '+(e.message||'fichier invalide')}};fr.readAsText(f)};
-$('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;grp=g;exo='';renderBody();openMus(g)};
+$('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;if(document.querySelector('.bz.zm'))return;
+ var sv=e.target.closest('svg'),all=[].slice.call(document.querySelectorAll('.bz')),si=all.indexOf(sv),r0=sv.getBoundingClientRect(),px=(e.clientX-r0.left)/r0.width*100,py=(e.clientY-r0.top)/r0.height*100;
+ grp=g;exo='';renderBody();
+ var red=false;try{red=matchMedia('(prefers-reduced-motion:reduce)').matches}catch(x){}
+ var z=document.querySelectorAll('.bz')[si];if(!z||red){openMus(g);return}
+ z.classList.add('zm');z.style.transformOrigin=px+'% '+py+'%';z.getBoundingClientRect();
+ var mr=$('main').getBoundingClientRect(),cx=mr.left+mr.width/2-e.clientX,cy=mr.top+mr.height*0.22-e.clientY;
+ z.style.transform='translate('+cx+'px,'+cy+'px) scale(2.6)';setTimeout(function(){openMus(g)},430)};
 $('#ga').onclick=function(){grp='autre';renderBody();openMus('autre')};
 $('#dl').onclick=function(e){var r=e.target.closest('.ex');if(!r)return;exo=r.getAttribute('data-x');render()};
 (function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;$('#pu').value='c';$('#pn').style.display='none';
