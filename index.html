@@ -171,6 +171,9 @@ main{z-index:1;background:transparent}
 
 #rest{left:50%;right:auto;transform:translateX(-50%);width:calc(100% - 20px);max-width:500px;box-sizing:border-box;bottom:calc(env(safe-area-inset-bottom,0px)*.3 + 76px);padding:5px 5px 5px 16px;border-radius:999px;background:rgba(12,12,15,.9);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:0 10px 30px rgba(0,0,0,.4);color:var(--g2);font-size:14px;white-space:nowrap}
 #rest div{gap:4px}#rest button{border-radius:999px;padding:7px 14px;font-size:13px;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff}#rest div{gap:6px}
+
+#p1 #exs .xh{flex-direction:row;text-align:left;gap:10px;align-items:center}#p1 #exs .xh .del{position:static;flex:none}#p1 #exs .xh>div:nth-child(2){flex:1;min-width:0}#p1 #exs .xh .ph{width:42px;height:42px;flex:none}#p1 #exs .xh .ph svg,#p1 #exs .xh .ph img{max-width:100%;max-height:100%}#p1 #exs .rt{margin:6px 0 8px;text-align:center}
+#pick.kb{bottom:auto;align-items:stretch}#pick.kb .sheet{max-height:none;height:100%;box-sizing:border-box;border-radius:0;padding-top:calc(10px + env(safe-area-inset-top,0px))}
 </style></head>
 <body><div id="glow"><i></i><i></i></div>
 <main>
@@ -238,7 +241,7 @@ main{z-index:1;background:transparent}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 48</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 49</p>
  </div></div>
 </main>
 <script>
@@ -498,6 +501,8 @@ $('#mex').onclick=openMgr;
 function addEx(o){if(!cur)return;cur.ex.push(o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:RESTS.indexOf(o.rest)>=0?o.rest:120,sets:mkSets(o.x)});saveCur();renderLive()}
 function showRestRow(){$('#nrw').classList.toggle('hide',nsel.indexOf('cardio')>=0)}
 function openNew(o){ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?gsOf(o).slice():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
+(function(){var vv=window.visualViewport,p=$('#pick');if(!vv)return;function fit(){var kb=!p.classList.contains('hide')&&document.activeElement===$('#psr')&&vv.height<window.innerHeight-120;p.classList.toggle('kb',kb);if(kb){p.style.top=vv.offsetTop+'px';p.style.height=vv.height+'px'}else{p.style.top='';p.style.height=''}}
+vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);$('#psr').addEventListener('focus',function(){setTimeout(fit,50);setTimeout(fit,350)});$('#psr').addEventListener('blur',function(){setTimeout(fit,50)});$('#plist').addEventListener('touchstart',function(){},{passive:true})})();
 $('#psr').oninput=function(){pdel=-1;renderPick()};
 $('#plist').onclick=function(e){
  var d=e.target.closest('[data-pd]'),ed=e.target.closest('[data-pe]'),r=e.target.closest('[data-pi]');
