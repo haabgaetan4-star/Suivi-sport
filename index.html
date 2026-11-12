@@ -272,6 +272,24 @@ html{background:#0a0707}
 
 .bz.zo{transition:transform .62s cubic-bezier(.85,0,.55,1)!important}
 #mfill.shrink{transition:transform .5s cubic-bezier(.8,0,.55,1)}
+
+/* tableau de bord muscle : fond sombre, en-tête braise */
+#mus{--tx:#f7efea;--mu:#a89087;--bd:rgba(120,60,38,.4);--card:rgba(26,18,17,.92);--ac:#e2532a;color:#f7efea;
+ background:radial-gradient(rgba(240,112,60,.10) 1px,transparent 1.4px) 0 0/18px 18px,linear-gradient(180deg,#d9502a 0,#b23a1b 70px,#5a1e0f 170px,#1c100d 300px,#0a0707 460px)!important}
+#mus .mxc{background:linear-gradient(180deg,rgba(34,22,20,.95),rgba(22,15,14,.95));border-color:rgba(120,60,38,.45);padding:12px 12px 10px;border-radius:14px;margin-top:10px}
+#mus .mxc .d b{font-size:16px}#mus .trd b{color:var(--ac)}
+#mus .day{color:rgba(255,236,226,.85)}
+.mkp{display:flex;gap:8px;margin:8px 0 10px}.mkp>div{flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:8px 10px;min-width:0}.mkp>div:last-child{flex:.7}
+.mkp span{display:block;font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mkp b{font-family:Oswald,sans-serif;font-size:24px;font-weight:600;line-height:1.15;display:inline-block}
+.mkp .tg{font-size:12px;font-weight:700;margin-left:8px;display:inline-block;color:var(--mu)}.tg.up,em.up{color:#5fd38d}.tg.dn,em.dn{color:#f2776b}.tg.eq,em.eq{color:var(--mu)}
+.mbars{display:flex;align-items:flex-end;gap:4px;height:46px;margin:2px 0 0}.mbars i{flex:1;border-radius:4px 4px 1px 1px;background:rgba(226,83,42,.38);min-height:4px}.mbars i.l{background:linear-gradient(180deg,#ffb07a,#e2532a)}
+.mcap{margin:4px 0 8px!important;font-size:11px!important;color:var(--mu)!important;text-align:center}
+.mleg{font-size:11px;color:var(--mu);margin:2px 0 2px;text-transform:uppercase;letter-spacing:.04em}.mleg b{color:var(--tx)}
+.mrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--bd)}.mrow .dt{flex:none;width:62px;font-size:13px;font-weight:600}
+.mrow .sts{flex:1;display:flex;flex-wrap:wrap;gap:5px;min-width:0}.mrow .st{display:inline-flex;align-items:baseline;gap:2px;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,.07);font-variant-numeric:tabular-nums}
+.mrow .st b{font-size:15px}.mrow .st i{font-style:normal;font-size:12px;color:var(--mu)}.mrow .st.rc{background:linear-gradient(135deg,#f0602c,#b92a17)}.mrow .st.rc i{color:rgba(255,255,255,.85)}
+.mrow em{font-style:normal;font-size:12px;flex:none;width:14px;text-align:center}
+#mus .mxb{background:rgba(255,255,255,.05);color:var(--tx)}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -341,7 +359,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 66</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 67</p>
  </div></div>
 </main>
 <script>
@@ -673,10 +691,17 @@ function renderMus(){
  var h=L.slice().reverse().map(function(o){return '<div class="mh"><div class="d"><b>'+fd(o.d)+' · '+esc(o.n)+'</b><span>'+o.sets+' série(s)</span></div>'+Object.keys(o.ex).map(function(x){var g={},ord=[];o.ex[x].forEach(function(t){var key=t[0]+'×'+t[1];if(!g[key]){g[key]=0;ord.push(key)}g[key]++});return '<p>'+esc(x)+' : '+ord.map(function(key){var t=key.split('×');return (g[key]>1?g[key]+' × ':'')+t[0]+' reps à '+t[1]+' kg'}).join(', ')+'</p>'}).join('')+'</div>'}).join('');
  var EX={};L.forEach(function(o){Object.keys(o.ex).forEach(function(x){(EX[x]=EX[x]||[]).push({d:o.d,sets:o.ex[x]})})});
  var exh=Object.keys(EX).sort(function(a,b){return EX[b].length-EX[a].length||(EX[b][EX[b].length-1].d>EX[a][EX[a].length-1].d?1:-1)}).map(function(x,xi){var a=EX[x],rc=0;a.forEach(function(q){q.sets.forEach(function(t){rc=Math.max(rc,t[1])})});
-  var open=!!mxo[x],rows=a.slice().reverse(),show=open?rows:rows.slice(0,5),nc=0;show.forEach(function(q){nc=Math.max(nc,q.sets.length)});nc=Math.min(nc,8);
-  var th='<tr><th>Date</th>';for(var c=0;c<nc;c++)th+='<th>Série '+(c+1)+'</th>';th+='</tr>';
-  var tb=show.map(function(q){var r='<tr><td class="dt">'+fd(q.d).slice(0,5)+'<i>'+q.d.slice(0,4)+'</i></td>';for(var c=0;c<nc;c++){var t=q.sets[c];r+=t?'<td'+(t[1]===rc&&rc>0?' class="rc"':'')+'><b>'+t[1]+'</b> kg<i>× '+t[0]+'</i></td>':'<td class="no">–</td>'}return r+'</tr>'}).join('');
-  return '<div class="mxc"><div class="d"><b>'+esc(x)+'</b><span>'+a.length+' séance'+(a.length>1?'s':'')+'</span></div><p>Record '+rc+' kg · dernière le '+fd(a[a.length-1].d)+'</p><div class="mxt"><table>'+th+tb+'</table></div>'+(rows.length>5?'<button class="mxb" data-mx="'+xi+'">'+(open?'Réduire':'Voir les '+rows.length+' séances')+'</button>':'')+'</div>'}).join('');
+  var open=!!mxo[x],rows=a.slice().reverse(),show=open?rows:rows.slice(0,5),top=function(q){var m=0;q.sets.forEach(function(t){m=Math.max(m,t[1])});return m};
+  var MO=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],yr=String(new Date().getFullYear()),dl=function(d){return +d.slice(8,10)+' '+MO[+d.slice(5,7)-1]+(d.slice(0,4)!==yr?' '+d.slice(2,4):'')};
+  var last=rows[0],pv=rows[1],lt=top(last),df=pv?Math.round((lt-top(pv))*100)/100:null;
+  var chip=df===null?'':df>0?'<span class="tg up">▲ +'+df+' kg</span>':df<0?'<span class="tg dn">▼ '+df+' kg</span>':'<span class="tg eq">= stable</span>';
+  var bs=a.slice(-12),tv=bs.map(top),lo=Math.min.apply(null,tv),hi=Math.max.apply(null,tv);
+  var bars=bs.length>1?'<div class="mbars">'+bs.map(function(q,k){var v=tv[k],hh=hi===lo?70:30+70*(v-lo)/(hi-lo);return '<i style="height:'+hh.toFixed(0)+'%"'+(k===bs.length-1?' class="l"':'')+(v===rc?' data-r="1"':'')+'></i>'}).join('')+'</div><p class="mcap">Poids max par séance · '+(bs.length<a.length?bs.length+' dernières':'depuis le début')+' ('+lo+' → '+hi+' kg)</p>':'';
+  var li=show.map(function(q,k){var p=rows[k+1],t=top(q),ar=!p?'':t>top(p)?'<em class="up">▲</em>':t<top(p)?'<em class="dn">▼</em>':'<em class="eq">=</em>';
+   return '<div class="mrow"><span class="dt">'+dl(q.d)+'</span><span class="sts">'+q.sets.map(function(t){return '<span class="st'+(t[1]===rc&&rc>0?' rc':'')+'"><b>'+t[1]+'</b><i>×'+t[0]+'</i></span>'}).join('')+'</span>'+ar+'</div>'}).join('');
+  return '<div class="mxc"><div class="d"><b>'+esc(x)+'</b><span>'+a.length+' séance'+(a.length>1?'s':'')+'</span></div>'
+   +'<div class="mkp"><div><span>Dernière · '+dl(last.d)+'</span><b>'+lt+' kg</b>'+chip+'</div><div><span>Record</span><b>'+rc+' kg</b></div></div>'
+   +bars+'<div class="mleg">Séries : <b>kg</b> × reps</div>'+li+(rows.length>5?'<button class="mxb" data-mx="'+xi+'">'+(open?'Réduire':'Voir les '+rows.length+' séances')+'</button>':'')+'</div>'}).join('');
  var exNames=Object.keys(EX).sort(function(a,b){return EX[b].length-EX[a].length||(EX[b][EX[b].length-1].d>EX[a][EX[a].length-1].d?1:-1)});
  $('#mbody').innerHTML='<div class="stats"><div><b>'+L.length+'</b><span>Séances</span></div><div><b>'+sets+'</b><span>Séries</span></div><div><b>'+rec+' kg</b><span>Record</span></div></div>'
   +'<div class="day" style="margin-top:14px">Par exercice</div>'+exh+'<div class="day" style="margin-top:14px">Historique</div>'+h;
