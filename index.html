@@ -174,6 +174,15 @@ main{z-index:1;background:transparent}
 
 #p1 #exs .xh{flex-direction:row;text-align:left;gap:10px;align-items:center}#p1 #exs .xh .del{position:static;flex:none}#p1 #exs .xh>div:nth-child(2){flex:1;min-width:0}#p1 #exs .xh .ph{width:42px;height:42px;flex:none}#p1 #exs .xh .ph svg,#p1 #exs .xh .ph img{max-width:100%;max-height:100%}#p1 #exs .rt{margin:6px 0 8px;text-align:center}
 #pick.kb{bottom:auto;align-items:stretch}#pick.kb .sheet{max-height:none;height:100%;box-sizing:border-box;border-radius:0;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+
+button,.ph,#pnm,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+@media (prefers-reduced-motion:no-preference){
+button,.ph,#pnm{transition:transform .32s cubic-bezier(.2,1.9,.4,1),filter .2s ease-out,opacity .2s}
+button:active,.ph:active,#pnm:active{transform:scale(.93);filter:brightness(1.18);transition:transform .07s ease-out,filter .07s}
+.add:active{transform:scale(.96)}
+.tabs button:active{transform:scale(.9)}
+.del:active,.pl:active,#gear:active{transform:scale(.8)}
+}
 </style></head>
 <body><div id="glow"><i></i><i></i></div>
 <main>
@@ -241,7 +250,7 @@ main{z-index:1;background:transparent}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 49</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 50</p>
  </div></div>
 </main>
 <script>
