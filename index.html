@@ -295,6 +295,8 @@ html{background:#0a0707}
 .mar{display:block;width:100%;height:auto;margin-top:2px}.max{display:flex;justify-content:space-between;font-size:11px;color:var(--mu);margin-bottom:8px}
 .mrow.ml .dt{width:74px;font-weight:500;font-size:12px;color:var(--mu);line-height:1.25}.mrow.ml .dt i{display:block;font-style:normal;color:var(--tx);font-weight:600;font-size:13px}
 .mxl{display:block;width:100%;background:none;border:0;border-top:1px solid var(--bd);color:var(--mu);font:inherit;font-size:13px;padding:9px 0 2px;text-align:center}
+
+#hht{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:0;padding:0;color:var(--tx);font:inherit;text-align:left;cursor:pointer}#hht b{font-size:inherit}#hhs{font-size:13px;color:var(--g2);font-weight:600}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -348,7 +350,7 @@ html{background:#0a0707}
   <div class="cal" id="cal"></div>
   <div id="cdet"></div>
  </div>
- <div class="card" id="histc"><b>Historique</b><div id="hl"></div></div>
+ <div class="card" id="histc"><button id="hht" aria-expanded="false"><b>Historique</b><span id="hhs"></span></button><div id="hl"></div></div>
  <div class="card hide" id="det"><b id="dt"></b><div id="dl"></div></div>
  <div class="card hide" id="gc">
   <select id="exo" class="hide"></select>
@@ -364,7 +366,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 68</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 69</p>
  </div></div>
 </main>
 <script>
@@ -408,7 +410,7 @@ function groupW(){
 }
 var cy=new Date().getFullYear(),cm=new Date().getMonth(),csel='';
 function renderList(){renderCal()}
-var hopen='';
+var hopen='',hall=false;
 function wDetail(k,g){var w=g.ws[k];
  return w.o.map(function(x){var out=[];w.x[x].forEach(function(q){var l=out[out.length-1];if(l&&l.s===q)l.c++;else out.push({s:q,c:1})});
   return '<div class="it"><div><b>'+esc(x)+'</b><span>'+out.map(function(q){var p=q.s.split('|');return p[0]==='c'?fmtT(p[1]):q.c+' × '+p[1]+' à '+p[0]+' kg'}).join(' · ')+'</span></div></div>'}).join('')
@@ -430,7 +432,8 @@ function renderCal(){
   else $('#cdet').innerHTML='<div class="mu" style="font-size:13px;text-transform:capitalize;margin:12px 0 4px">'+fmt(csel)+'</div>'+ks.map(function(k){var w=g.ws[k];
    return '<div style="border-top:1px solid var(--bd);padding-top:8px;margin-top:8px"><div class="it" style="border-top:0;padding:0 0 4px"><b>'+esc(w.n)+'</b><span>'+(w.du?fmtT(w.du):'')+'</span></div>'+wDetail(k,g)+'</div>'}).join('')}
  var hs=g.ks.slice().sort(function(a,b){return g.ws[a].d<g.ws[b].d?1:g.ws[a].d>g.ws[b].d?-1:(+b||0)-(+a||0)});
- $('#hl').innerHTML=hs.length?hs.map(function(k){var w=g.ws[k],o=hopen===k;
+ $('#hhs').textContent=hs.length>5?(hall?'Réduire ▲':'Tout voir ('+hs.length+') ▼'):'';$('#hht').setAttribute('aria-expanded',hall?'true':'false');
+ $('#hl').innerHTML=hs.length?(hall?hs:hs.slice(0,5)).map(function(k){var w=g.ws[k],o=hopen===k;
   return '<div style="border-top:1px solid var(--bd);margin-top:8px;padding-top:8px"><div class="it" data-ho="'+k+'" style="border-top:0;padding:0;cursor:pointer"><div><b>'+esc(w.n)+'</b><span>'+w.d.split('-').reverse().join('/')+(w.du?' · '+fmtT(w.du):'')+'</span></div><span>'+(o?'▲':'▼')+'</span></div>'+(o?'<div style="margin-top:6px">'+wDetail(k,g)+'</div>':'')+'</div>'}).join(''):'<p class="mu" style="margin:8px 0 0;font-size:14px">Aucun entraînement enregistré.</p>';
 }
 function editW(k){
@@ -765,6 +768,7 @@ function hevyImport(txt){
 }
 $('#bkh').onclick=function(){$('#hvf').value='';$('#hvf').click()};
 $('#hvf').onchange=function(){var f=this.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var o=hevyImport(String(fr.result));fixG();save();render();$('#hvm').textContent=o.nw+' entraînement(s) importé(s), '+o.ns+' série(s)'+(o.skip?' · '+o.skip+' déjà présent(s), ignoré(s)':'')+(o.unk.length?' · '+o.unk.length+' exercice(s) à classer dans « Mes exercices » : '+o.unk.slice(0,6).join(', ')+(o.unk.length>6?'…':''):'.')}catch(e){$('#hvm').textContent='Import impossible : '+(e.message||'fichier invalide')}};fr.readAsText(f)};
+$('#hht').onclick=function(){hall=!hall;renderCal();if(!hall){try{$('#histc').scrollIntoView({block:'nearest'})}catch(e){}}};
 $('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;if(document.querySelector('.bz.zm')||!$('#mus').classList.contains('hide'))return;
  var z=e.target.closest('svg'),r0=z.getBoundingClientRect(),px=(e.clientX-r0.left)/r0.width*100,py=(e.clientY-r0.top)/r0.height*100;
  grp=g;exo='';document.querySelectorAll('.bz .m').forEach(function(el){el.classList.toggle('sel',el.getAttribute('data-g')===g)});
