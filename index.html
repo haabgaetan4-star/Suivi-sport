@@ -269,6 +269,9 @@ html{background:#0a0707}
 #mbody.anim>*{animation-duration:.4s}
 #mbody.anim>*:nth-child(1){animation-delay:.04s}#mbody.anim>*:nth-child(2){animation-delay:.09s}#mbody.anim>*:nth-child(3){animation-delay:.14s}#mbody.anim>*:nth-child(4){animation-delay:.19s}#mbody.anim>*:nth-child(5){animation-delay:.24s}#mbody.anim>*:nth-child(n+6){animation-delay:.29s}
 }
+
+.bz.zo{transition:transform .62s cubic-bezier(.85,0,.55,1)!important}
+#mfill.shrink{transition:transform .5s cubic-bezier(.8,0,.55,1)}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -338,7 +341,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 65</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 66</p>
  </div></div>
 </main>
 <script>
@@ -684,9 +687,10 @@ function openMus(g){mg=g;mxo={};renderMus();var m=$('#mus');m.classList.remove('
 function closeMus(){var m=$('#mus'),f=$('#mfill'),z=document.querySelector('.bz.zm');if(m.classList.contains('closing'))return;mClear();m.classList.remove('opening');grp='';
  if(!z){m.classList.add('hide');f.className='';renderBody();return}
  m.classList.add('closing');f.className='full';
- mLater(function(){m.classList.add('hide');m.classList.remove('closing');f.getBoundingClientRect();f.className='shrink';z.style.transform=''},110);
- mLater(function(){z.classList.remove('zh');document.querySelectorAll('.bz .m.sel').forEach(function(el){el.classList.remove('sel')})},110+260);
- mLater(function(){f.className='';z.classList.remove('zm');z.style.transformOrigin=''},110+700)}
+ mLater(function(){m.classList.add('hide');m.classList.remove('closing');f.getBoundingClientRect();f.className='shrink'},110);
+ mLater(function(){z.classList.add('zo');z.getBoundingClientRect();z.style.transform=''},220);
+ mLater(function(){z.classList.remove('zh');document.querySelectorAll('.bz .m.sel').forEach(function(el){el.classList.remove('sel')})},220+380);
+ mLater(function(){f.className='';z.classList.remove('zm','zo');z.style.transformOrigin=''},220+660)}
 $('#gear').onclick=function(){$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
 
