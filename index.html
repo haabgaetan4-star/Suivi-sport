@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#120d0d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -187,8 +187,13 @@ button:active,.ph:active,#pnm:active{transform:scale(.93);filter:brightness(1.18
 .tabs{background:linear-gradient(180deg,rgba(70,58,54,.38),rgba(24,18,17,.46))!important;-webkit-backdrop-filter:blur(26px) saturate(190%) brightness(1.08);backdrop-filter:blur(26px) saturate(190%) brightness(1.08);box-shadow:0 12px 34px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.32),inset 0 -1px 0 rgba(255,255,255,.07),inset 1px 0 0 rgba(255,255,255,.07),inset -1px 0 0 rgba(255,255,255,.07)!important}
 .tabs .pill{background:rgba(0,0,0,.6);box-shadow:none}
 #rest{background:linear-gradient(180deg,rgba(70,58,54,.38),rgba(24,18,17,.5));-webkit-backdrop-filter:blur(26px) saturate(190%) brightness(1.08);backdrop-filter:blur(26px) saturate(190%) brightness(1.08);box-shadow:0 12px 34px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(255,255,255,.07)}
+
+html,html *{touch-action:pan-x pan-y}
+#land{display:none}
+@media (orientation:landscape) and (max-height:540px) and (pointer:coarse){#land{display:flex;position:fixed;inset:0;z-index:9999;background:#0a0707;color:#f7efea;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:16px;text-align:center;padding:20px}#land svg{width:54px;height:54px;color:var(--g2)}}
 </style></head>
-<body><div id="glow"><i></i><i></i></div>
+<body><div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
+<div id="glow"><i></i><i></i></div>
 <main>
 <h1><span id="tli" style="--m:url(tab-train-white.png);aspect-ratio:516/354"></span><span id="ttl">Entraînement</span><button id="gear" class="hide" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></h1>
 <div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><span class="r" style="--m:url(tab-train-white.png);aspect-ratio:516/354"></span><i>Entraînement</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><span class="r" style="--m:url(tab-prof-white.png);aspect-ratio:266/344"></span><i>Profil</i></button></div>
@@ -254,7 +259,7 @@ button:active,.ph:active,#pnm:active{transform:scale(.93);filter:brightness(1.18
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 52</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 53</p>
  </div></div>
 </main>
 <script>
@@ -445,6 +450,9 @@ var AC=null;
 function audUnlock(){try{if(navigator.audioSession)navigator.audioSession.type='ambient';if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state!=='running')AC.resume()}catch(e){}}
 ['touchstart','touchend','click'].forEach(function(ev){document.addEventListener(ev,audUnlock,{passive:true})});
 function beep(){try{audUnlock();if(!AC)return;var t=AC.currentTime+.02;[0,.28,.56].forEach(function(o,i){var os=AC.createOscillator(),g=AC.createGain();os.type='sine';os.frequency.value=i===2?1175:880;g.gain.setValueAtTime(0,t+o);g.gain.linearRampToValueAtTime(.5,t+o+.02);g.gain.exponentialRampToValueAtTime(.001,t+o+.22);os.connect(g);g.connect(AC.destination);os.start(t+o);os.stop(t+o+.25)})}catch(e){}}
+['gesturestart','gesturechange','gestureend'].forEach(function(ev){document.addEventListener(ev,function(e){e.preventDefault()},{passive:false})});
+document.addEventListener('touchmove',function(e){if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+(function(){var lt=0;document.addEventListener('touchend',function(e){var n=Date.now(),t=e.target;if(n-lt<320&&!(t.closest&&t.closest('button,input,select,textarea,.m,[role=button]')))e.preventDefault();lt=n},{passive:false})})();
 function tickFn(){if(!cur)return;$('#tm').textContent=fmtT((Date.now()-cur.t0)/1000);document.querySelectorAll('[data-ct]').forEach(function(el){var o=cur.ex[el.getAttribute('data-ct')];if(o)el.textContent=fmtT(ct(o))});var l=Math.ceil((rend-Date.now())/1000);if(rend&&l>0){$('#rest').classList.remove('hide');$('#rv').textContent=fmtT(l)}else{if(rend){rend=0;beep();try{navigator.vibrate&&navigator.vibrate(300)}catch(e){}}$('#rest').classList.add('hide')}}
 function finish(mode){
  if(mode==='n'){cur=null;saveCur();render();return}
