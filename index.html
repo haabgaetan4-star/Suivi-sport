@@ -238,6 +238,20 @@ html{background:#0a0707}
 #mus.opening .sh{animation:fup .5s .2s both}
 }
 @keyframes mfill{from{clip-path:circle(0 at var(--cx) var(--cy))}to{clip-path:circle(150% at var(--cx) var(--cy))}}
+
+.bz{will-change:transform;transition:transform .72s cubic-bezier(.45,0,.15,1)!important;backface-visibility:hidden}
+#mfill{position:fixed;width:100px;height:100px;margin:-50px 0 0 -50px;border-radius:50%;background:#d9502a;box-shadow:0 0 26px 12px #d9502a;transform:scale(0);opacity:0;pointer-events:none;z-index:13;will-change:transform,opacity}
+#mfill.grow{opacity:1;transform:scale(var(--s,12));transition:transform .55s cubic-bezier(.5,0,.25,1),opacity .12s}
+#mfill.full{opacity:1;transform:scale(var(--s,12));transition:none}
+#mfill.shrink{opacity:1;transform:scale(0);transition:transform .6s cubic-bezier(.6,0,.3,1)}
+#mus{background:repeating-linear-gradient(97deg,rgba(255,255,255,.035) 0 2px,transparent 2px 9px),repeating-linear-gradient(83deg,rgba(0,0,0,.06) 0 3px,transparent 3px 17px),radial-gradient(120% 70% at 50% 0%,#e25a30,#d9502a 40%,#a8361a 75%,#7d2410)!important}
+@media (prefers-reduced-motion:no-preference){
+#mus.opening{animation:mfade .35s ease both!important}
+#mus.closing{animation:mfade .17s ease reverse both!important}
+#mus.opening .sh{animation:fup .45s .05s both}
+#mbody.anim>*:nth-child(1){animation-delay:.08s}#mbody.anim>*:nth-child(2){animation-delay:.15s}#mbody.anim>*:nth-child(3){animation-delay:.22s}#mbody.anim>*:nth-child(4){animation-delay:.29s}#mbody.anim>*:nth-child(5){animation-delay:.36s}#mbody.anim>*:nth-child(n+6){animation-delay:.43s}
+}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -299,7 +313,7 @@ html{background:#0a0707}
   <div id="chart"></div>
  </div>
 </section>
- <div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
+ <div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
  <div id="set" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="scl" aria-label="Fermer">✕</button><b>Paramètres</b><span style="width:34px"></span></div>
 <div id="bkc"><p style="margin:4px 0 0;font-weight:600">Sauvegarde et import</p><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
   <div style="display:flex;gap:8px"><button class="sa" id="bkx" style="width:50%;font-size:13px">⬇ Exporter</button><button class="sa" id="bki" style="width:50%;font-size:13px">⬆ Importer</button></div>
@@ -307,7 +321,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 62</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 63</p>
  </div></div>
 </main>
 <script>
@@ -646,8 +660,13 @@ function renderMus(){
   +'<div class="day" style="margin-top:14px">Par exercice</div>'+exh+'<div class="day" style="margin-top:14px">Historique</div>'+h;
  $('#mm1').onclick=function(){mmet='w';renderMus()};$('#mm2').onclick=function(){mmet='v';renderMus()};
 }
-function openMus(g){mg=g;renderMus();var m=$('#mus');m.classList.remove('hide','closing');m.classList.add('opening');$('#mbody').classList.add('anim');$('#mus .sheet').scrollTop=0;clearTimeout(openMus.t);openMus.t=setTimeout(function(){m.classList.remove('opening');$('#mbody').classList.remove('anim')},1100)}
-function closeMus(){var m=$('#mus');if(m.classList.contains('closing'))return;clearTimeout(openMus.t);m.classList.remove('opening');m.classList.add('closing');grp='';var z=document.querySelector('.bz.zm');if(z)setTimeout(function(){z.style.transform=''},180);setTimeout(function(){m.classList.add('hide');m.classList.remove('closing');renderBody()},z?900:420)}
+var mT=[];function mLater(f,t){mT.push(setTimeout(f,t))}function mClear(){mT.forEach(clearTimeout);mT=[]}
+function openMus(g){mg=g;renderMus();var m=$('#mus');m.classList.remove('hide','closing');m.classList.add('opening');$('#mbody').classList.add('anim');$('#mus .sheet').scrollTop=0;mLater(function(){m.classList.remove('opening');$('#mbody').classList.remove('anim')},1100)}
+function closeMus(){var m=$('#mus'),f=$('#mfill'),z=document.querySelector('.bz.zm');if(m.classList.contains('closing'))return;mClear();m.classList.remove('opening');grp='';
+ if(!z){m.classList.add('hide');f.className='';renderBody();return}
+ m.classList.add('closing');f.className='full';
+ mLater(function(){m.classList.add('hide');m.classList.remove('closing');f.getBoundingClientRect();f.className='shrink';z.style.transform=''},170);
+ mLater(function(){f.className='';renderBody()},170+760)}
 $('#gear').onclick=function(){$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
 
@@ -690,14 +709,19 @@ function hevyImport(txt){
 }
 $('#bkh').onclick=function(){$('#hvf').value='';$('#hvf').click()};
 $('#hvf').onchange=function(){var f=this.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var o=hevyImport(String(fr.result));fixG();save();render();$('#hvm').textContent=o.nw+' entraînement(s) importé(s), '+o.ns+' série(s)'+(o.skip?' · '+o.skip+' déjà présent(s), ignoré(s)':'')+(o.unk.length?' · '+o.unk.length+' exercice(s) à classer dans « Mes exercices » : '+o.unk.slice(0,6).join(', ')+(o.unk.length>6?'…':''):'.')}catch(e){$('#hvm').textContent='Import impossible : '+(e.message||'fichier invalide')}};fr.readAsText(f)};
-$('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;if(document.querySelector('.bz.zm'))return;
- var sv=e.target.closest('svg'),all=[].slice.call(document.querySelectorAll('.bz')),si=all.indexOf(sv),r0=sv.getBoundingClientRect(),px=(e.clientX-r0.left)/r0.width*100,py=(e.clientY-r0.top)/r0.height*100;
- grp=g;exo='';renderBody();
+$('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttribute('data-g');if(!g)return;if(document.querySelector('.bz.zm')||!$('#mus').classList.contains('hide'))return;
+ var z=e.target.closest('svg'),r0=z.getBoundingClientRect(),px=(e.clientX-r0.left)/r0.width*100,py=(e.clientY-r0.top)/r0.height*100;
+ grp=g;exo='';document.querySelectorAll('.bz .m').forEach(function(el){el.classList.toggle('sel',el.getAttribute('data-g')===g)});
  var red=false;try{red=matchMedia('(prefers-reduced-motion:reduce)').matches}catch(x){}
- var z=document.querySelectorAll('.bz')[si];if(!z||red){openMus(g);return}
+ if(red){openMus(g);return}
+ mClear();var mr=$('main').getBoundingClientRect(),tx=mr.left+mr.width/2,ty=mr.top+mr.height*0.4,f=$('#mfill');
+ var far=Math.max(Math.hypot(tx,ty),Math.hypot(innerWidth-tx,ty),Math.hypot(tx,innerHeight-ty),Math.hypot(innerWidth-tx,innerHeight-ty));
+ f.className='';f.style.left=tx+'px';f.style.top=ty+'px';f.style.setProperty('--s',(far/50*1.15).toFixed(2));
  z.classList.add('zm');z.style.transformOrigin=px+'% '+py+'%';z.getBoundingClientRect();
- var mr=$('main').getBoundingClientRect(),cx=mr.left+mr.width/2-e.clientX,cy=mr.top+mr.height*0.22-e.clientY;
- var cyy=mr.top+mr.height*0.4-e.clientY,cxx=mr.left+mr.width/2-e.clientX;z.style.transform='translate('+cxx+'px,'+cyy+'px) scale(6)';var M=$('#mus');M.style.setProperty('--cx',(mr.left+mr.width/2)+'px');M.style.setProperty('--cy',(mr.top+mr.height*0.4)+'px');setTimeout(function(){openMus(g)},690)};
+ requestAnimationFrame(function(){z.style.transform='translate('+(tx-e.clientX)+'px,'+(ty-e.clientY)+'px) scale(4.2)'});
+ mLater(function(){f.className='grow'},300);
+ mLater(function(){openMus(g)},300+470);
+ mLater(function(){f.className=''},300+470+450)};
 $('#ga').onclick=function(){grp='autre';renderBody();openMus('autre')};
 $('#dl').onclick=function(e){var r=e.target.closest('.ex');if(!r)return;exo=r.getAttribute('data-x');render()};
 (function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;$('#pu').value='c';$('#pn').style.display='none';
