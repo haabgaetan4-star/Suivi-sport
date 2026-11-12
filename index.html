@@ -205,7 +205,7 @@ html{background:#0a0707}
 
 .seg button.on{color:#fff!important;border-color:transparent}
 
-.bz{transition:transform .75s cubic-bezier(.6,0,.15,1)}.bz.zm{position:relative;z-index:3;will-change:transform}.bodies>div:has(.zm){position:relative;z-index:3}.card:has(#bodies){overflow:hidden}
+.bz{transition:transform .85s cubic-bezier(.7,0,.2,1)}.bz.zm{position:relative;z-index:3;will-change:transform}.bodies>div:has(.zm){position:relative;z-index:3}.card:has(#bodies){overflow:hidden}
 .mxc{border:1px solid var(--bd);border-radius:12px;padding:10px 12px 8px;margin-top:8px;background:var(--card)}.mxc .d{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.mxc .d b{font-size:15px}.mxc .d span{color:var(--mu);font-size:12px;flex:none}.mxc>p{margin:2px 0 4px;font-size:12px;color:var(--mu)}
 
 .card:has(#bodies)>*,.bodies>div,.bodies .lbl{transition:opacity .3s}
@@ -222,6 +222,22 @@ html{background:#0a0707}
 @keyframes shout{from{transform:none}to{transform:translateY(105%)}}
 @keyframes fup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes mglow{from{filter:drop-shadow(0 0 0 rgba(240,96,44,0))}to{filter:drop-shadow(0 0 5px rgba(255,140,80,.9))}}
+
+/* tableau de bord "écrit sur le muscle" */
+.bz.zm .m.sel{fill:#d9502a!important;fill-opacity:1!important;stroke:none!important;animation:none!important}
+#mus{align-items:stretch;--cx:50%;--cy:40%;--tx:#fff;--mu:rgba(255,236,226,.78);--bd:rgba(255,255,255,.2);--card:rgba(20,6,3,.3);--bg:transparent;--ac:#ffe6d6;color:#fff;
+ background:repeating-linear-gradient(97deg,rgba(255,255,255,.035) 0 2px,transparent 2px 9px),repeating-linear-gradient(83deg,rgba(0,0,0,.06) 0 3px,transparent 3px 17px),radial-gradient(120% 70% at 50% 0%,#e25a30,#b63a1c 55%,#7d2410)!important;animation:none!important}
+#mus .sheet{background:transparent!important;max-height:none;height:100%;box-sizing:border-box;border-radius:0;padding-top:calc(14px + env(safe-area-inset-top,0px));animation:none!important}
+#mus .sh{top:calc(-14px - env(safe-area-inset-top,0px));background:transparent}
+#mus .stats b{color:#fff}#mus .seg button{background:rgba(20,6,3,.28);color:#fff;border-color:rgba(255,255,255,.2)}#mus .seg button.on{background:#fff;background-image:none;color:#b63a1c!important}
+#mus .mxc{background:rgba(20,6,3,.3);border-color:rgba(255,255,255,.16)}#mus .trd b{color:#fff}#mus .del{color:#fff}
+@media (prefers-reduced-motion:no-preference){
+#mus.opening{animation:mfill .7s cubic-bezier(.5,0,.2,1) both!important}
+#mus.closing{animation:mfill .42s cubic-bezier(.5,0,.5,1) reverse both!important}
+#mus.closing #mbody,#mus.closing .sh{opacity:0;transition:opacity .15s}
+#mus.opening .sh{animation:fup .5s .2s both}
+}
+@keyframes mfill{from{clip-path:circle(0 at var(--cx) var(--cy))}to{clip-path:circle(150% at var(--cx) var(--cy))}}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -291,7 +307,7 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 61</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 62</p>
  </div></div>
 </main>
 <script>
@@ -631,7 +647,7 @@ function renderMus(){
  $('#mm1').onclick=function(){mmet='w';renderMus()};$('#mm2').onclick=function(){mmet='v';renderMus()};
 }
 function openMus(g){mg=g;renderMus();var m=$('#mus');m.classList.remove('hide','closing');m.classList.add('opening');$('#mbody').classList.add('anim');$('#mus .sheet').scrollTop=0;clearTimeout(openMus.t);openMus.t=setTimeout(function(){m.classList.remove('opening');$('#mbody').classList.remove('anim')},1100)}
-function closeMus(){var m=$('#mus');if(m.classList.contains('closing'))return;clearTimeout(openMus.t);m.classList.remove('opening');m.classList.add('closing');grp='';var z=document.querySelector('.bz.zm');if(z)z.style.transform='';setTimeout(function(){m.classList.add('hide');m.classList.remove('closing');renderBody()},z?620:300)}
+function closeMus(){var m=$('#mus');if(m.classList.contains('closing'))return;clearTimeout(openMus.t);m.classList.remove('opening');m.classList.add('closing');grp='';var z=document.querySelector('.bz.zm');if(z)setTimeout(function(){z.style.transform=''},180);setTimeout(function(){m.classList.add('hide');m.classList.remove('closing');renderBody()},z?900:420)}
 $('#gear').onclick=function(){$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
 
@@ -681,7 +697,7 @@ $('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttrib
  var z=document.querySelectorAll('.bz')[si];if(!z||red){openMus(g);return}
  z.classList.add('zm');z.style.transformOrigin=px+'% '+py+'%';z.getBoundingClientRect();
  var mr=$('main').getBoundingClientRect(),cx=mr.left+mr.width/2-e.clientX,cy=mr.top+mr.height*0.22-e.clientY;
- z.style.transform='translate('+cx+'px,'+cy+'px) scale(3)';setTimeout(function(){openMus(g)},470)};
+ var cyy=mr.top+mr.height*0.4-e.clientY,cxx=mr.left+mr.width/2-e.clientX;z.style.transform='translate('+cxx+'px,'+cyy+'px) scale(6)';var M=$('#mus');M.style.setProperty('--cx',(mr.left+mr.width/2)+'px');M.style.setProperty('--cy',(mr.top+mr.height*0.4)+'px');setTimeout(function(){openMus(g)},690)};
 $('#ga').onclick=function(){grp='autre';renderBody();openMus('autre')};
 $('#dl').onclick=function(e){var r=e.target.closest('.ex');if(!r)return;exo=r.getAttribute('data-x');render()};
 (function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;$('#pu').value='c';$('#pn').style.display='none';
