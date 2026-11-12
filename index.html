@@ -259,7 +259,7 @@ html,html *{touch-action:pan-x pan-y}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 53</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 54</p>
  </div></div>
 </main>
 <script>
@@ -402,7 +402,10 @@ function show(n){
  tab=n;$('#ttl').textContent=n===1?'Entraînement':'Profil';$('#tli').style.setProperty('--m',n===1?'url(tab-train-white.png)':'url(tab-prof-white.png)');$('#tli').style.aspectRatio=n===1?'516/354':'266/344';$('#gear').classList.toggle('hide',n!==2);$('#p1').classList.toggle('hide',n!==1);$('#p2').classList.toggle('hide',n!==2);
  var was2=$('#t2').classList.contains('on');$('#t1').classList.toggle('on',n===1);$('#t2').classList.toggle('on',n===2);if((n===2)!==was2)tabAnim(n);
 }
-$('#t1').onclick=function(){show(1)};
+function goCur(){if(!cur||tab!==1)return;var m=$('main'),i=-1;cur.ex.some(function(o,k){var done=o.g==='cardio'?!!o.ok:(o.sets||[]).length>0&&o.sets.every(function(t){return t.ok});if(!done){i=k;return true}return false});
+ var el=i<0?$('#exs').lastElementChild:$('#exs').children[i];if(!el||i===0){m.scrollTop=0;return}
+ m.scrollTop+=el.getBoundingClientRect().top-m.getBoundingClientRect().top-10}
+$('#t1').onclick=function(){var w=tab;show(1);if(w!==1)requestAnimationFrame(goCur)};
 $('#t2').onclick=function(){show(2);render()};
 $('#m1').onclick=function(){metric='w';$('#m1').classList.add('on');$('#m2').classList.remove('on');renderChart()};
 $('#m2').onclick=function(){metric='v';$('#m2').classList.add('on');$('#m1').classList.remove('on');renderChart()};
@@ -652,6 +655,6 @@ $('#bkf').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=n
 $('#bkn').onclick=function(){bkd=null;$('#bkc2').classList.add('hide')};
 $('#bko').onclick=function(){if(!bkd)return;data=bkd.data;if(!data.routines)data.routines=[];ph=Object.assign({},bkd.ph||{});bkd=null;$('#bkc2').classList.add('hide');save();savePh();render();toast('Données importées')};
 setInterval(tickFn,500);
-render();load();
+render();load();setTimeout(goCur,60);
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){try{r.update()}catch(e){}}).catch(function(){})});var hadC=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',function(){if(!hadC){hadC=true;return}if(window.__rl||(typeof cur!=='undefined'&&cur))return;window.__rl=1;location.reload()})}
 </script></body></html>
