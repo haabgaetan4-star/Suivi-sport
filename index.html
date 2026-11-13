@@ -397,7 +397,7 @@ html{background:#0a0707}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 76</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 77</p>
  </div></div>
 </main>
 <script>
@@ -628,6 +628,8 @@ function openST(k){stK=k;var p=k.split('-'),t=cur.ex[+p[0]].sets[+p[1]].t||'';do
 $('#stm').onclick=function(e){if(e.target===this){this.classList.add('hide');return}var b=e.target.closest('[data-ty],[data-sx]');if(!b||!cur)return;var p=stK.split('-'),o=cur.ex[+p[0]];if(!o)return;
  if(b.getAttribute('data-sx')!==null){if(o.sets.length<=1){toast('Il faut garder au moins une série');return}o.sets.splice(+p[1],1)}else o.sets[+p[1]].t=b.getAttribute('data-ty');
  this.classList.add('hide');saveCur();renderLive()};
+$('#exs').addEventListener('focusin',function(e){var t=e.target;if(t.tagName!=='INPUT'||(t.getAttribute('data-f')===null&&t.getAttribute('data-cm')===null))return;var sel=function(){try{t.setSelectionRange(0,t.value.length)}catch(x){try{t.select()}catch(y){}}};sel();setTimeout(sel,0);setTimeout(sel,60)});
+$('#exs').addEventListener('mouseup',function(e){var t=e.target;if(t.tagName==='INPUT'&&t.getAttribute('data-f')!==null&&t._js!==true){t._js=true;e.preventDefault();setTimeout(function(){t._js=false},400)}});
 $('#exs').onclick=function(e){
  var p=e.target.closest('[data-p],[data-rx],[data-rt],[data-as],[data-ck],[data-ds],[data-tg],[data-cc],[data-st]');if(!p)return;
  if(p.dataset.st!==undefined){openST(p.dataset.st);return}
