@@ -320,6 +320,12 @@ html{background:#0a0707}
 #stm button span{font-size:12px;color:var(--mu);line-height:1.3}#stm button span b{display:block;font-size:15px;color:var(--tx)}
 #stm button.on{background:rgba(226,83,42,.12);border-radius:10px}#stm button.on span b::after{content:"  ✓";color:var(--g2)}
 #stm .sx span b{color:#f2776b}#stm .sx i{color:#f2776b}
+
+.tabs button i{display:none}.tabs img,.tabs span.r{height:40px}.tabs button{justify-content:center;gap:0}
+#stp label{display:flex;align-items:center;gap:12px;padding:10px 2px;border-top:1px solid var(--bd);cursor:pointer}#stp label span{flex:1;font-size:15px}
+#stp label i{order:-1;flex:none;width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700}
+#stp i.w{color:#f5b942;background:rgba(245,185,66,.16)}#stp i.d{color:#6cb6ff;background:rgba(108,182,255,.16)}#stp i.f{color:#f2776b;background:rgba(242,119,107,.16)}
+#stp input{order:2;width:22px;height:22px;accent-color:#e2532a;flex:none}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -389,7 +395,9 @@ html{background:#0a0707}
   <button class="sa" id="bkh" style="margin-top:8px;font-size:13px">⬆ Importer un CSV Hevy</button><input type="file" accept=".csv,text/csv,text/plain,.txt" id="hvf" class="hide"><p class="mu" id="hvm" style="font-size:13px;margin:8px 0 0"></p>
   <div id="bkc2" class="hide" style="margin-top:8px"><p class="mu" id="bkm" style="font-size:13px;margin:0"></p><div style="display:flex;gap:8px"><button class="sa" id="bko" style="width:50%;font-size:13px;color:var(--ac)">Remplacer mes données</button><button class="sa" id="bkn" style="width:50%;font-size:13px">Annuler</button></div></div>
  </div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 75</p>
+  <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
+  <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 76</p>
  </div></div>
 </main>
 <script>
@@ -613,7 +621,10 @@ $('#rts').onclick=function(e){var s=e.target.getAttribute('data-sr'),r=e.target.
 $('#exs').oninput=function(e){var t=e.target;if(t.getAttribute('data-cm')!==null){cur.ex[t.getAttribute('data-cm')].min=t.value;saveCur();return}var i=t.getAttribute('data-i');if(i===null)return;cur.ex[i].sets[t.getAttribute('data-j')][t.getAttribute('data-f')]=t.value;saveCur()};
 
 var stK='';
-function openST(k){stK=k;var p=k.split('-'),t=cur.ex[+p[0]].sets[+p[1]].t||'';document.querySelectorAll('#stm [data-ty]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-ty')===t)});$('#stm').classList.remove('hide')}
+function stOn(t){var o=data.sty||{};return o[t]!==false}
+function renderSty(){document.querySelectorAll('#stp [data-sty]').forEach(function(c){c.checked=stOn(c.getAttribute('data-sty'))})}
+$('#stp').onchange=function(e){var t=e.target.getAttribute('data-sty');if(!t)return;data.sty=data.sty||{};data.sty[t]=e.target.checked;save()};
+function openST(k){stK=k;var p=k.split('-'),t=cur.ex[+p[0]].sets[+p[1]].t||'';document.querySelectorAll('#stm [data-ty]').forEach(function(b){var y=b.getAttribute('data-ty');b.classList.toggle('on',y===t);b.style.display=(y===''||y===t||stOn(y))?'':'none'});$('#stm').classList.remove('hide')}
 $('#stm').onclick=function(e){if(e.target===this){this.classList.add('hide');return}var b=e.target.closest('[data-ty],[data-sx]');if(!b||!cur)return;var p=stK.split('-'),o=cur.ex[+p[0]];if(!o)return;
  if(b.getAttribute('data-sx')!==null){if(o.sets.length<=1){toast('Il faut garder au moins une série');return}o.sets.splice(+p[1],1)}else o.sets[+p[1]].t=b.getAttribute('data-ty');
  this.classList.add('hide');saveCur();renderLive()};
@@ -788,7 +799,7 @@ function closeMus(){var m=$('#mus'),f=$('#mfill'),z=document.querySelector('.bz.
  mLater(function(){z.classList.add('zo');z.getBoundingClientRect();z.style.transform=''},220);
  mLater(function(){z.classList.remove('zh');document.querySelectorAll('.bz .m.sel').forEach(function(el){el.classList.remove('sel')})},220+380);
  mLater(function(){f.className='';z.classList.remove('zm','zo');z.style.transformOrigin=''},220+660)}
-$('#gear').onclick=function(){$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
+$('#gear').onclick=function(){renderSty();$('#set').classList.remove('hide');$('#set .sheet').scrollTop=0};$('#scl').onclick=function(){$('#set').classList.add('hide')};$('#set').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#mcl').onclick=closeMus;$('#mus').onclick=function(e){if(e.target===this)closeMus()};
 
 function csvParse(t){var rows=[],r=[],c='',q=false;t=t.replace(/^﻿/,'');for(var i=0;i<t.length;i++){var ch=t[i];if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}else if(ch==='"')q=true;else if(ch===','){r.push(c);c=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;r.push(c);c='';rows.push(r);r=[]}else c+=ch}if(c!==''||r.length){r.push(c);rows.push(r)}return rows.filter(function(x){return x.length>1||(x[0]||'')!==''})}
