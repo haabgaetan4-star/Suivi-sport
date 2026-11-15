@@ -372,13 +372,16 @@ html{background:#0a0707}
 .sxr .bar span{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--g2),var(--g3))}
 .sxr b{text-align:right;font-variant-numeric:tabular-nums}
 .sxr.z{opacity:.45}
+.tabs:has(#t2.on) .pill,.tabs:has(#t2.on)::before{transform:none}
+.tabs:has(#t1.on) .pill,.tabs:has(#t1.on)::before{transform:translateX(100%)}
+.tabs:has(#t3.on) .pill,.tabs:has(#t3.on)::before{transform:translateX(200%)}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
 <div id="glow"><i></i><i></i></div>
 <main>
 <h1><span id="tli" style="--m:url(tab-train-white.png);aspect-ratio:516/354"></span><span id="ttl">Entraînement</span><button id="gear" class="hide" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></h1>
-<div class="tabs"><b class="pill"></b><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><span class="r" style="--m:url(tab-train-white.png);aspect-ratio:516/354"></span><i>Entraînement</i></button><button id="t3" aria-label="Compléments"><img class="w" src="tab-supp-white.png" alt=""><span class="r" style="--m:url(tab-supp-white.png);aspect-ratio:300/400"></span><i>Compléments</i></button><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><span class="r" style="--m:url(tab-prof-white.png);aspect-ratio:266/344"></span><i>Profil</i></button></div>
+<div class="tabs"><b class="pill"></b><button id="t2" aria-label="Profil"><img class="w" src="tab-prof-white.png" alt=""><span class="r" style="--m:url(tab-prof-white.png);aspect-ratio:266/344"></span><i>Profil</i></button><button id="t1" class="on" aria-label="Entraînement"><img class="w" src="tab-train-white.png" alt=""><span class="r" style="--m:url(tab-train-white.png);aspect-ratio:516/354"></span><i>Entraînement</i></button><button id="t3" aria-label="Compléments"><img class="w" src="tab-supp-white.png" alt=""><span class="r" style="--m:url(tab-supp-white.png);aspect-ratio:300/400"></span><i>Compléments</i></button></div>
 
 <section id="p1">
  <div id="home">
@@ -450,7 +453,7 @@ html{background:#0a0707}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 81</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 82</p>
  </div></div>
 </main>
 <script>
@@ -540,7 +543,7 @@ function renderBody(){renderStats();
 function renderId(){var nm='Gaëtan';try{nm=localStorage.getItem('muscu_name')||nm}catch(e){}$('#pnm').textContent=nm;var k={};data.entries.forEach(function(e){k[String(e.wk||('d'+e.d))]=1});$('#pnb').textContent=Object.keys(k).length}
 $('#pnm').onclick=function(){var v=prompt('Ton prénom ou nom :',$('#pnm').textContent);if(v&&v.trim()){try{localStorage.setItem('muscu_name',v.trim())}catch(e){}renderId()}};
 function render(){renderSup();renderId();renderMex();fixG();renderCal();renderRts();renderLive();renderBody()}
-var TB={1:['Entraînement','tab-train-white.png','516/354',0],3:['Compléments','tab-supp-white.png','300/400',1],2:['Profil','tab-prof-white.png','266/344',2]};
+var TB={1:['Entraînement','tab-train-white.png','516/354',1],3:['Compléments','tab-supp-white.png','300/400',2],2:['Profil','tab-prof-white.png','266/344',0]};
 function show(n){
  var pv=tab,T=TB[n];tab=n;$('#ttl').textContent=T[0];$('#tli').style.setProperty('--m','url('+T[1]+')');$('#tli').style.aspectRatio=T[2];$('#gear').classList.toggle('hide',n!==2);
  [1,2,3].forEach(function(k){$('#p'+k).classList.toggle('hide',n!==k);$('#t'+k).classList.toggle('on',n===k)});
