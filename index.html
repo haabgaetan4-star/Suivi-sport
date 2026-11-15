@@ -409,7 +409,9 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #mus .mlist .mxt em{align-self:flex-start;font-style:normal;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:999px}
 #mus .mlist .mxt em.rp{background:var(--g2);color:#fff}
 #mus .mlist .mxt em.rs{border:1px solid var(--g2);color:var(--g2)}
-#mus .mlist .mxt>span{font-size:13px;color:#a89087}
+#mus .mlist .mxt>span.mxs{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+#mus .mlist .mxs i{font-style:normal;font-size:13px;color:#e8d8d0;background:rgba(255,255,255,.08);border-radius:8px;padding:3px 8px}
+#mus .mlist .mxs b{color:#fff;font-weight:700;font-size:14px}
 #mus .mlist .chev{color:var(--mu);font-size:24px;line-height:1;flex:none}
 #nw,#sed{z-index:20}
 .pen{width:20px;height:20px;display:block;margin:0 auto!important;fill:none;stroke:var(--tx);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -495,7 +497,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 94</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 95</p>
  </div></div>
 </main>
 <script>
@@ -582,7 +584,7 @@ function renderStats(){var from=perFrom(),c={},tot=0,ws={};data.entries.forEach(
 $('#sxl').onclick=function(e){var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp,'list')};
 var msxL=[];
 function msxData(g,from){var m={},o=[];data.entries.forEach(function(e){if((from&&e.d<from)||e.t==='w'||e.g==='cardio'||gsOf(e).indexOf(g)<0)return;var k=String(e.x).toLowerCase(),q=m[k];if(!q){q=m[k]={x:e.x,g:e.g,gs:e.gs,pri:priOf(e)===g,n:0,w:0,ws:{},mx:0,l:''};o.push(q)}var n=e.s||1;q.n+=n;q.w+=n*(priOf(e)===g?1:.5);q.ws[String(e.wk||('d'+e.d))]=1;q.mx=Math.max(q.mx,e.w||0);if(e.d>=q.l){q.l=e.d;q.x=e.x;q.g=e.g;q.gs=e.gs;q.pri=priOf(e)===g}});return o.sort(function(a,b){return b.w-a.w||b.n-a.n||a.x.localeCompare(b.x,'fr')})}
-function msxRow(q,i){var ns=Object.keys(q.ws).length;return '<button class="mxr" data-xi="'+i+'"><span class="mxp">'+thumb(q.x,q.g)+'</span><span class="mxt"><b>'+esc(q.x)+'</b><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span>'+q.n+' série'+(q.n>1?'s':'')+' · '+ns+' séance'+(ns>1?'s':'')+(q.mx?' · max '+fq(q.mx)+' kg':'')+'</span></span><span class="chev">›</span></button>'}
+function msxRow(q,i){var ns=Object.keys(q.ws).length;return '<button class="mxr" data-xi="'+i+'"><span class="mxp">'+thumb(q.x,q.g)+'</span><span class="mxt"><b>'+esc(q.x)+'</b><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span class="mxs"><i><b>'+q.n+'</b> série'+(q.n>1?'s':'')+'</i><i><b>'+ns+'</b> séance'+(ns>1?'s':'')+'</i>'+(q.mx?'<i>max <b>'+fq(q.mx)+' kg</b></i>':'')+'</span></span><span class="chev">›</span></button>'}
 function renderBody(){renderStats();
  var from=perFrom(),t={},mx=0;$('#pbtn').textContent='Période : '+perLabel()+' ▾';
  data.entries.forEach(function(e){if(e.d>=from&&e.t!=='w'){gwOf(e).forEach(function(q){var g=q[0];t[g]=(t[g]||0)+e.s*q[1];mx=Math.max(mx,t[g])})}});
