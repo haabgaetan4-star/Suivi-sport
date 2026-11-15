@@ -417,6 +417,9 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 .pen{width:20px;height:20px;display:block;margin:0 auto!important;fill:none;stroke:var(--tx);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .del .pen{width:18px;height:18px}
 #xfe,#sde{display:flex;align-items:center;justify-content:center;padding:7px 12px}
+#mus{background:#000!important}
+#mfill{background:#000;box-shadow:0 0 26px 12px #000}
+#mus .mper{text-align:center;margin:-6px 0 10px;font-size:13px;font-weight:600;color:var(--g2)}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -497,7 +500,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 95</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 96</p>
  </div></div>
 </main>
 <script>
@@ -923,8 +926,8 @@ function renderMusList(){var g=mg,L=msxData(g,perFrom()),tot=0,ws={},h='',all=fa
  L.forEach(function(q){tot+=q.w;Object.keys(q.ws).forEach(function(k){ws[k]=1})});
  if(!L.length){L=msxData(g,'');all=true}
  msxL=L;var nw=Object.keys(ws).length;
- h='<div class="stats"><div><b>'+fq(tot)+'</b><span>Séries comptées</span></div><div><b>'+nw+'</b><span>Séances</span></div><div><b>'+(all?0:L.length)+'</b><span>Exercices</span></div></div>'
-  +'<div class="day" style="margin-top:14px">'+(all?'Aucune série sur la période · tous tes exercices':'Exercices · '+perLabel())+'</div>'
+ h='<p class="mper">'+(all?'Aucune série · ':'')+perLabel().charAt(0).toUpperCase()+perLabel().slice(1)+'</p><div class="stats"><div><b>'+fq(tot)+'</b><span>Séries comptées</span></div><div><b>'+nw+'</b><span>Séances</span></div><div><b>'+(all?0:L.length)+'</b><span>Exercices</span></div></div>'
+  +'<div class="day" style="margin-top:14px">'+(all?'Tous tes exercices pour ce muscle':'Exercices')+'</div>'
   +(L.length?'<div class="mlist">'+L.map(msxRow).join('')+'</div>':'<p class="mu">Aucun exercice enregistré pour ce muscle.</p>');
  $('#mbody').innerHTML=h;
  L.forEach(function(q,i){var k=pk2(q.x);if(ph[k])phGet(k).then(function(v){var im=document.querySelector('#mbody [data-xi="'+i+'"] .mxp img');if(v&&im)im.src=v})});
