@@ -375,6 +375,7 @@ html{background:#0a0707}
 .tabs:has(#t2.on) .pill,.tabs:has(#t2.on)::before{transform:none}
 .tabs:has(#t1.on) .pill,.tabs:has(#t1.on)::before{transform:translateX(100%)}
 .tabs:has(#t3.on) .pill,.tabs:has(#t3.on)::before{transform:translateX(200%)}
+.snm .sgo{display:block;font-size:12px;font-weight:600;color:var(--g2);margin-top:1px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -453,7 +454,7 @@ html{background:#0a0707}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 83</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 84</p>
  </div></div>
 </main>
 <script>
@@ -644,8 +645,8 @@ function renderSup(){supInit();var t=today(),wk=supWeek(),J=['L','M','M','J','V'
  var done=data.sup.filter(function(o){return data.supLog.filter(function(l){return l.s===o.id&&l.d===t}).length>=(o.go||1)}).length;
  $('#sday').innerHTML='<div class="sdy"><div><b>Aujourd’hui</b><span>'+(data.sup.length?done+' sur '+data.sup.length+' complément'+(data.sup.length>1?'s':'')+' pris':'Aucun complément')+'</span></div><div class="sdp"><i style="width:'+(data.sup.length?Math.round(done/data.sup.length*100):0)+'%"></i></div></div>';
  $('#sgrid').innerHTML=data.sup.map(function(o){var L=supLogs(o.id),td=L.filter(function(l){return l.d===t}),tq=0;td.forEach(function(l){tq+=l.q});var ok=td.length>=(o.go||1),ds={};L.forEach(function(l){ds[l.d]=1});
-  return '<div class="scd'+(ok?' ok':'')+'" data-so="'+o.id+'"><div class="sct"><div class="sim">'+supIc(o,34)+'</div><div class="snm"><b>'+esc(o.n)+'</b><span>'+fq(o.q)+' '+esc(o.u)+' / prise</span></div></div>'
-   +'<div class="stq"><b>'+(td.length?fq(tq)+' '+esc(o.u):'—')+'</b><span>'+(td.length?td.length+' prise'+(td.length>1?'s':'')+' aujourd’hui':(L.length?'Dernière '+dRel(L[0].d):'Jamais pris'))+'</span></div>'
+  return '<div class="scd'+(ok?' ok':'')+'" data-so="'+o.id+'"><div class="sct"><div class="sim">'+supIc(o,34)+'</div><div class="snm"><b>'+esc(o.n)+'</b><span>'+fq(o.q)+' '+esc(o.u)+' / prise</span><span class="sgo">'+(o.go||1)+' fois par jour</span></div></div>'
+   +'<div class="stq"><b>'+(td.length?fq(tq)+' '+esc(o.u):'—')+'</b><span>'+(td.length?td.length+' sur '+(o.go||1)+' prise'+((o.go||1)>1?'s':'')+' aujourd’hui':(L.length?'Dernière '+dRel(L[0].d):'Jamais pris'))+'</span></div>'
    +'<div class="swk">'+wk.map(function(d,i){return '<i class="'+(ds[d]?'on':'')+(d===t?' td':'')+'">'+J[i]+'</i>'}).join('')+'</div>'
    +'<button class="sbt" data-sl="'+o.id+'">'+(ok?'✓ Pris · + 1 prise':'+ Prendre '+fq(o.q)+' '+esc(o.u))+'</button></div>'}).join('')
   +'<button class="scd sad" id="snew"><b>+</b><span>Ajouter un complément</span></button>';
