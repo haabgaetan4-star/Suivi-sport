@@ -427,6 +427,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #mus.opening .sheet{animation:musin .42s cubic-bezier(.2,.8,.2,1) both!important}
 #mus.closing{animation:mfade .14s ease-in reverse both!important}
 #mfill{display:none!important}
+#mus .mxc .mar{max-height:70px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -507,7 +508,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 104</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 105</p>
  </div></div>
 </main>
 <script>
@@ -953,7 +954,7 @@ function renderMus(){if(musMode==='list'){renderMusList();return}
   var last=rows[0],lt=top(last),df=a.length>1?Math.round((lt-top(a[0]))*100)/100:null;
   var chip=df===null?'':df>0?'<span class="tg up">▲ +'+df+' kg depuis le début</span>':df<0?'<span class="tg dn">▼ '+df+' kg depuis le début</span>':'<span class="tg eq">= stable depuis le début</span>';
   var tv=a.map(top),ch='';
-  if(tv.length>1){var W=330,H=96,lo=Math.min.apply(null,tv),hi=Math.max.apply(null,tv);if(hi===lo)hi=lo+1;var pts=tv.map(function(v,k){return[8+k*(W-16)/(tv.length-1),H-10-(v-lo)/(hi-lo)*(H-24)]}),dp='M'+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' L'),lp=pts[pts.length-1];
+  if(tv.length>1){var W=330,H=56,lo=Math.min.apply(null,tv),hi=Math.max.apply(null,tv);if(hi===lo)hi=lo+1;var pts=tv.map(function(v,k){return[8+k*(W-16)/(tv.length-1),H-10-(v-lo)/(hi-lo)*(H-24)]}),dp='M'+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' L'),lp=pts[pts.length-1];
    ch='<svg class="mar" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Progression du poids max"><defs><linearGradient id="mg'+xi+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0602c" stop-opacity=".45"/><stop offset="1" stop-color="#f0602c" stop-opacity="0"/></linearGradient></defs><path d="'+dp+' L'+lp[0].toFixed(1)+' '+H+' L8 '+H+' Z" fill="url(#mg'+xi+')"/><path d="'+dp+'" fill="none" stroke="#f0602c" stroke-width="'+(tv.length>40?1.6:2.2)+'" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+lp[0].toFixed(1)+'" cy="'+lp[1].toFixed(1)+'" r="4" fill="#fff" stroke="#f0602c" stroke-width="2"/></svg><div class="max"><span>'+dl(a[0].d)+'</span><span>record '+rc+' kg</span><span>'+dl(last.d)+'</span></div>'}
   var pills=function(q){return q.sets.map(function(t){return '<span class="st'+(t[1]===rc&&rc>0?' rc':'')+'"><b>'+t[1]+'</b><i>×'+t[0]+'</i></span>'}).join('')};
   var li=open?rows.slice(1).map(function(q,k){var p=rows[k+2],t=top(q),ar=!p?'':t>top(p)?'<em class="up">▲</em>':t<top(p)?'<em class="dn">▼</em>':'<em class="eq">=</em>';return '<div class="mrow"><span class="dt">'+dl(q.d)+'</span><span class="sts">'+pills(q)+'</span>'+ar+'</div>'}).join(''):'';
@@ -974,7 +975,7 @@ function closeMus(){var m=$('#mus');if(m.classList.contains('closing'))return;mC
  mLater(function(){m.classList.add('hide');m.classList.remove('closing');
   var z=zSvg,old=zAnim;zSvg=null;zAnim=[];
   document.querySelectorAll('.bz .m.sel').forEach(function(el){el.classList.remove('sel')});
-  if(z&&z.animate&&z.isConnected){var back=[z.animate([{transform:'scale(1.55)',opacity:0},{transform:'scale(1)',opacity:1}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'})];
+  if(z&&z.animate&&z.isConnected){var back=[z.animate([{transform:'scale(2.6)',opacity:0},{transform:'scale(1)',opacity:1}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'})];
    [].forEach.call(document.querySelectorAll('#bodies svg'),function(v){if(v!==z)back.push(v.animate([{opacity:0},{opacity:1}],{duration:360,easing:'ease-out'}))});
    old.forEach(function(a){try{a.cancel()}catch(x){}});
    back[0].onfinish=function(){z.style.transformOrigin=''}}
@@ -1030,8 +1031,8 @@ $('#bodies').onclick=function(e){var g=e.target.getAttribute&&e.target.getAttrib
  if(red){openMus(g);return}
  mClear();zSvg=z;z.style.transformOrigin=px+'% '+py+'%';
  var other=[].filter.call(document.querySelectorAll('#bodies svg'),function(v){return v!==z});
- zAnim=[z.animate([{transform:'scale(1)',opacity:1},{transform:'scale(1.55)',opacity:0}],{duration:440,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'})].concat(other.map(function(v){return v.animate([{opacity:1},{opacity:0}],{duration:300,easing:'ease-out',fill:'forwards'})}));
- mLater(function(){openMus(g)},170)};
+ zAnim=[z.animate([{transform:'scale(1)',opacity:1},{transform:'scale(2.6)',opacity:0}],{duration:520,easing:'cubic-bezier(.45,0,.2,1)',fill:'forwards'})].concat(other.map(function(v){return v.animate([{opacity:1},{opacity:0}],{duration:300,easing:'ease-out',fill:'forwards'})}));
+ mLater(function(){openMus(g)},230)};
 (function(){var h='';for(var i=1;i<=60;i++)h+='<option value="'+i+'">'+i+'</option>';$('#pn').innerHTML=h;$('#pn').value=7;$('#pu').value='c';$('#pn').style.display='none';
 function ap(){per.n=+$('#pn').value;per.u=$('#pu').value;$('#pn').style.display=(per.u==='all'||per.u==='c')?'none':'';renderBody()}
 $('#pn').onchange=$('#pu').onchange=ap;
