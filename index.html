@@ -384,6 +384,13 @@ html{background:#0a0707}
 :root[data-theme="dark"]{--bg:#000}
 h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 .tabs span.r,#tli{background:var(--g2)}
+#nms .cl1{font-size:14px;font-weight:700;color:var(--tx);margin:14px 0 2px}
+#nms .cl1:first-child{margin-top:4px}
+#nms .cl1 span{font-weight:400;font-size:12px;color:var(--mu)}
+#nms .chip.sec.on{background:transparent;color:var(--ac);border-color:var(--ac)}
+.xfh span.xmp{color:var(--tx);font-size:15px;font-weight:600;margin-top:2px}
+.xfh span.xms{margin-top:2px}
+.xfh span em{font-style:normal;font-weight:500;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mu);margin-right:6px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -416,7 +423,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  <div id="nw" class="ov hide"><div class="box2"><b id="nt">Nouvel exercice</b>
   <div class="nph" id="nph">📷<br>Photo</div>
   <label for="nn">Nom</label><input id="nn" placeholder="Ex. Développé couché" autocomplete="off">
-  <label>Muscles travaillés <span class="mu">(plusieurs possibles)</span></label><div id="nms"></div>
+  <label>Muscles travaillés</label><div id="nms"></div>
   <div id="nrw"><label for="nr">Temps de repos</label><select id="nr"></select></div>
   <button class="add" id="nsv">Enregistrer l’exercice</button>
   <button class="add gh2" id="ncl">Annuler</button>
@@ -462,7 +469,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 87</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 88</p>
  </div></div>
 </main>
 <script>
@@ -728,10 +735,16 @@ $('#p2').addEventListener('click',function(e){var ed=e.target.closest('[data-ed]
 var nsel=[];
 function gsOf(o){return (o&&o.gs&&o.gs.length)?o.gs:[(o&&o.g)||'autre']}
 function gls(o){return gsOf(o).map(gl).join(', ')}
-function renderChips(){$('#nms').innerHTML=GRP.map(function(g){return '<div class="cl">'+g[0]+'</div>'+g[1].map(function(x){return '<button type="button" class="chip'+(nsel.indexOf(x[0])>=0?' on':'')+'" data-ms="'+x[0]+'">'+x[1]+'</button>'}).join('')}).join('')}
-$('#nms').onclick=function(e){var b=e.target.closest('[data-ms]');if(!b)return;var m=b.getAttribute('data-ms'),i=nsel.indexOf(m);
- if(i>=0)nsel.splice(i,1);else if(m==='cardio'||m==='autre')nsel=[m];else{nsel=nsel.filter(function(x){return x!=='cardio'&&x!=='autre'});nsel.push(m)}
+function renderChips(){var p=nsel[0]||'',ex=p==='cardio'||p==='autre',ch=function(x,a,on,c){return '<button type="button" class="chip'+(c||'')+(on?' on':'')+'" '+a+'="'+x[0]+'">'+x[1]+'</button>'};
+ var h='<div class="cl cl1">Muscle principal <span>(celui qui travaille le plus)</span></div>'+GRP.map(function(g){return '<div class="cl">'+g[0]+'</div>'+g[1].map(function(x){return ch(x,'data-mp',x[0]===p)}).join('')}).join('');
+ if(p&&!ex)h+='<div class="cl cl1">Muscles secondaires <span>(facultatif, plusieurs possibles)</span></div>'+GR.filter(function(x){return x[0]!==p&&x[0]!=='cardio'&&x[0]!=='autre'}).map(function(x){return ch(x,'data-ms',nsel.indexOf(x[0])>0,' sec')}).join('');
+ $('#nms').innerHTML=h}
+$('#nms').onclick=function(e){var b=e.target.closest('[data-mp],[data-ms]');if(!b)return;var m=b.getAttribute('data-mp');
+ if(m!==null){if(nsel[0]===m)nsel=[];else if(m==='cardio'||m==='autre')nsel=[m];else nsel=[m].concat(nsel.slice(1).filter(function(x){return x!==m&&x!=='cardio'&&x!=='autre'}))}
+ else{m=b.getAttribute('data-ms');var i=nsel.indexOf(m);if(i>0)nsel.splice(i,1);else if(i<0&&nsel.length)nsel.push(m)}
  renderChips();showRestRow()};
+function priOf(o){var a=gsOf(o);return o&&o.g&&a.indexOf(o.g)>=0?o.g:a[0]}
+function musLines(o){var p=priOf(o),s=gsOf(o).filter(function(x){return x!==p});if(p==='cardio'||p==='autre')return '<span>'+gl(p)+'</span>';return '<span class="xmp"><em>Principal</em>'+gl(p)+'</span>'+(s.length?'<span class="xms"><em>Secondaire'+(s.length>1?'s':'')+'</em>'+s.map(gl).join(', ')+'</span>':'')}
 $('#nr').innerHTML=RESTS.map(function(r){return '<option value="'+r+'">'+fmtR(r)+'</option>'}).join('');
 var plib=[],npx='',pdel=-1,ned=null,nedN='',nedG='',openW={},dw='';
 function libList(){var m={};(data.lib||[]).forEach(function(o){m[o.x.toLowerCase()]=o});data.entries.forEach(function(e){var k=e.x.toLowerCase();if(!m[k])m[k]={x:e.x,g:e.g||'autre',gs:e.gs,rest:120}});(data.routines||[]).forEach(function(t){t.ex.forEach(function(o){var k=o.x.toLowerCase();if(!m[k])m[k]={x:o.x,g:o.g||'autre',gs:o.gs,rest:o.rest||120}})});return Object.keys(m).map(function(k){return m[k]}).filter(function(o){return (data.hid||[]).indexOf(o.x.toLowerCase())<0}).sort(function(a,b){return a.x.localeCompare(b.x,'fr')})}
@@ -750,7 +763,7 @@ function renderMex(){var n=libList().length;$('#mex').textContent='Gérer mes ex
 $('#mex').onclick=openMgr;
 function addEx(o){if(!cur)return;cur.ex.push(o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:RESTS.indexOf(o.rest)>=0?o.rest:120,sets:mkSets(o.x)});saveCur();renderLive()}
 function showRestRow(){$('#nrw').classList.toggle('hide',nsel.indexOf('cardio')>=0)}
-function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?gsOf(o).slice():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
+function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?(function(){var p=priOf(o);return [p].concat(gsOf(o).filter(function(x){return x!==p}))})():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
 (function(){var vv=window.visualViewport,p=$('#pick');if(!vv)return;function fit(){var kb=!p.classList.contains('hide')&&document.activeElement===$('#psr')&&vv.height<window.innerHeight-120;p.classList.toggle('kb',kb);if(kb){p.style.top=vv.offsetTop+'px';p.style.height=vv.height+'px'}else{p.style.top='';p.style.height=''}}
 vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);$('#psr').addEventListener('focus',function(){setTimeout(fit,50);setTimeout(fit,350)});$('#psr').addEventListener('blur',function(){setTimeout(fit,50)});$('#plist').addEventListener('touchstart',function(){},{passive:true})})();
 $('#psr').oninput=function(){pdel=-1;renderPick()};
@@ -762,7 +775,7 @@ function renderExF(){var o=xfo;if(!o)return;var k=o.x.toLowerCase(),card=o.g==='
  var a=ks.map(function(w){return S[w]}).sort(function(p,q){return p.d<q.d?-1:p.d>q.d?1:0}),rows=a.slice().reverse();
  var MO=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],yr=String(new Date().getFullYear()),dl=function(d){return +d.slice(8,10)+' '+MO[+d.slice(5,7)-1]+(d.slice(0,4)!==yr?' '+d.slice(2,4):'')};
  var top=function(q){var m=0;q.sets.forEach(function(t){m=Math.max(m,t[1])});return m},rc=0,ns=0;a.forEach(function(q){rc=Math.max(rc,top(q));ns+=q.sets.length});
- var p=ph[pk2(o.x)],h='<div class="xfh">'+(p?'<img src="'+p+'" alt="">':'<div class="xfi">'+thumb(o.x,o.g)+'</div>')+'<div><b>'+esc(o.x)+'</b><span>'+gls(o)+'</span>'+(card?'':'<span>⏱ Repos : '+fmtR(RESTS.indexOf(o.rest)>=0?o.rest:120)+'</span>')+'</div></div>';
+ var p=ph[pk2(o.x)],h='<div class="xfh">'+(p?'<img src="'+p+'" alt="">':'<div class="xfi">'+thumb(o.x,o.g)+'</div>')+'<div><b>'+esc(o.x)+'</b>'+musLines(o)+(card?'':'<span>⏱ Repos : '+fmtR(RESTS.indexOf(o.rest)>=0?o.rest:120)+'</span>')+'</div></div>';
  if(!a.length){$('#xfb').innerHTML=h+'<p class="mu" style="text-align:center;margin:18px 0">Pas encore d’historique pour cet exercice.</p>';return}
  h+='<div class="stats"><div><b>'+a.length+'</b><span>Séances</span></div>'+(card?'':'<div><b>'+ns+'</b><span>Séries</span></div><div><b>'+rc+' kg</b><span>Record</span></div>')+'</div>';
  if(!card){var last=rows[0],lt=top(last),df=a.length>1?Math.round((lt-top(a[0]))*100)/100:null,tv=a.map(top);
