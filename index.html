@@ -411,6 +411,10 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #mus .mlist .mxt em.rs{border:1px solid var(--g2);color:var(--g2)}
 #mus .mlist .mxt>span{font-size:13px;color:#a89087}
 #mus .mlist .chev{color:var(--mu);font-size:24px;line-height:1;flex:none}
+#nw,#sed{z-index:20}
+.pen{width:20px;height:20px;display:block;margin:0 auto!important;fill:none;stroke:var(--tx);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.del .pen{width:18px;height:18px}
+#xfe,#sde{display:flex;align-items:center;justify-content:center;padding:7px 12px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -438,16 +442,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  <div id="rest" class="hide"><b id="rv" aria-label="Temps de repos restant">0:00</b><div><button id="rm">−30 s</button><button id="rp">+30 s</button><button id="rs">Passer</button></div></div>
  <input type="file" accept="image/*" id="pf" class="hide">
  <div id="toast" class="hide"></div>
- <input type="file" accept="image/*" id="pf2" class="hide">
+ 
  <div id="pick" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="pcl" aria-label="Fermer">✕</button><b>Choisir un exercice</b><button class="pl" id="pnew" aria-label="Créer un exercice">+</button></div><input id="psr" type="search" placeholder="Rechercher un exercice" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Rechercher un exercice"><div id="plist"></div></div></div>
- <div id="nw" class="ov hide"><div class="box2"><b id="nt">Nouvel exercice</b>
-  <div class="nph" id="nph">📷<br>Photo</div>
-  <label for="nn">Nom</label><input id="nn" placeholder="Ex. Développé couché" autocomplete="off">
-  <label>Muscles travaillés</label><div id="nms"></div>
-  <div id="nrw"><label for="nr">Temps de repos</label><select id="nr"></select></div>
-  <button class="add" id="nsv">Enregistrer l’exercice</button>
-  <button class="add gh2" id="ncl">Annuler</button>
- </div></div>
  <div id="dlg" class="hide"><div class="box"><b>Terminer l’entraînement ?</b><p class="mu" id="dm"></p><button class="add" data-fm="h">Enregistrer l’entraînement</button><button class="add" data-fm="r">Enregistrer + créer une routine</button><button class="add gh" data-fm="n">Terminer sans enregistrer</button><button class="add gh" data-fm="c">Reprendre</button></div></div>
 </section>
 
@@ -473,14 +469,23 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
  <div class="card pvh" id="histc"><button id="hht" aria-expanded="false"><b>Historique</b><span id="hhs"></span></button><div id="hl"></div></div>
 </section>
- <div id="sdt" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="sdc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Complément</b><button id="sde" class="pbt">✎ Modifier</button></div><div id="sdb"></div></div></div>
+ <div id="sdt" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="sdc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Complément</b><button id="sde" class="pbt" aria-label="Modifier"><svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button></div><div id="sdb"></div></div></div>
 <div id="sed" class="ov hide"><div class="box2"><b id="set2">Nouveau complément</b><button class="ph" id="sph" style="width:90px;height:90px;margin:10px auto 0;display:flex;align-items:center;justify-content:center;font-size:12px;border:1px dashed var(--bd)">📷<br>Photo</button><input type="file" accept="image/*" id="spf" class="hide">
  <label class="fl">Nom<input id="snm" autocomplete="off" placeholder="Ex. Whey"></label>
  <div style="display:flex;gap:8px"><label class="fl" style="flex:1">Quantité par prise<input id="sqt" inputmode="decimal" placeholder="30"></label><label class="fl" style="flex:1">Unité<select id="sun"><option>g</option><option>mg</option><option>ml</option><option>gélule(s)</option><option>dose(s)</option><option>comprimé(s)</option></select></label></div>
  <label class="fl">Objectif par jour (nombre de prises)<select id="sgo"><option value="1">1 prise</option><option value="2">2 prises</option><option value="3">3 prises</option><option value="4">4 prises</option></select></label>
  <button class="add" id="ssv">Enregistrer</button><button class="add gh2" id="scn">Annuler</button><button class="sa" id="sdl" style="color:#f2776b;margin-top:10px">Supprimer ce complément</button></div></div>
 <div id="ord" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="ordc" aria-label="Fermer">✕</button><b>Ordre des exercices</b><span style="width:34px"></span></div><div id="ordl"></div><button class="add" id="ordk" style="margin-top:12px">Terminé</button></div></div>
-<div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="exf" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="xfc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Fiche exercice</b><button id="xfe">✎ Modifier</button></div><div id="xfb"></div></div></div><div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
+<div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="nw" class="ov hide"><div class="box2"><b id="nt">Nouvel exercice</b>
+  <div class="nph" id="nph">📷<br>Photo</div>
+  <label for="nn">Nom</label><input id="nn" placeholder="Ex. Développé couché" autocomplete="off">
+  <label>Muscles travaillés</label><div id="nms"></div>
+  <div id="nrw"><label for="nr">Temps de repos</label><select id="nr"></select></div>
+  <button class="add" id="nsv">Enregistrer l’exercice</button>
+  <button class="add gh2" id="ncl">Annuler</button>
+ </div></div>
+<input type="file" accept="image/*" id="pf2" class="hide">
+<div id="exf" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="xfc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Fiche exercice</b><button id="xfe" aria-label="Modifier"><svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button></div><div id="xfb"></div></div></div><div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
  <div id="set" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="scl" aria-label="Fermer">✕</button><b>Paramètres</b><span style="width:34px"></span></div>
 <div id="bkc"><p style="margin:4px 0 0;font-weight:600">Sauvegarde et import</p><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
   <div style="display:flex;gap:8px"><button class="sa" id="bkx" style="width:50%;font-size:13px">⬇ Exporter</button><button class="sa" id="bki" style="width:50%;font-size:13px">⬆ Importer</button></div>
@@ -490,11 +495,12 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 93</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 94</p>
  </div></div>
 </main>
 <script>
 var data={entries:[]},ref=null,tab=1,grp='',per={n:7,u:'c'},cur=null,ph={},refP=null,rend=0,pk='';
+var PEN='<svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>';
 var $=function(s){return document.querySelector(s)};
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function today(){return new Date().toLocaleDateString('sv-SE')}
@@ -531,7 +537,7 @@ var hopen='',hall=false;
 function wDetail(k,g){var w=g.ws[k];
  return w.o.map(function(x){var out=[];w.x[x].forEach(function(q){var l=out[out.length-1];if(l&&l.s===q)l.c++;else out.push({s:q,c:1})});
   return '<div class="it"><div><b>'+esc(x)+'</b><span>'+out.map(function(q){var p=q.s.split('|');return p[0]==='c'?fmtT(p[1]):(p[2]==='w'?'Échauff. ':p[2]==='d'?'Dégr. ':p[2]==='f'?'Échec ':'')+q.c+' × '+p[1]+' à '+p[0]+' kg'}).join(' · ')+'</span></div></div>'}).join('')
-  +'<div style="display:flex;gap:8px"><button class="sa" data-ed="'+k+'" style="width:50%;font-size:13px">✎ Modifier</button><button class="sa" data-id="'+k+'" style="width:50%;font-size:13px;color:#e03131">'+(dw===k?'Appuie encore':'Supprimer')+'</button></div>';
+  +'<div style="display:flex;gap:8px"><button class="sa" data-ed="'+k+'" style="width:50%;font-size:13px" aria-label="Modifier">'+PEN+'</button><button class="sa" data-id="'+k+'" style="width:50%;font-size:13px;color:#e03131">'+(dw===k?'Appuie encore':'Supprimer')+'</button></div>';
 }
 function renderCal(){
  var g=groupW(),days={};
@@ -608,7 +614,7 @@ function fixA(o){if(o.gs)o.gs=o.gs.map(function(x){return LEG[x]||x}).filter(fun
 function fixG(){data.entries.forEach(function(e){if(LEG[e.g])e.g=LEG[e.g];fixA(e)});(data.lib||[]).forEach(fixA);(data.routines||[]).forEach(function(t){t.ex.forEach(fixA)});(data.routines||[]).forEach(function(t){t.ex.forEach(function(o){if(LEG[o.g])o.g=LEG[o.g]})});if(cur)cur.ex.forEach(function(o){if(LEG[o.g])o.g=LEG[o.g]});(data.lib||[]).forEach(function(o){if(LEG[o.g])o.g=LEG[o.g]})}
 function durOf(o){var m=num(o.min);return m>0?Math.round(m*60):Math.round(ct(o))}
 function ct(o){return (o.acc||0)+(o.st?(Date.now()-o.st)/1000:0)}
-function cardioCard(o,i){return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">Cardio</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">✎</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">✕</button></div><div class="cd'+(o.ok?' ok':'')+'"><span class="ct" data-ct="'+i+'">'+fmtT(ct(o))+'</span><input class="cm" data-cm="'+i+'" inputmode="numeric" placeholder="min" aria-label="Durée en minutes" value="'+esc(o.min||'')+'"><button class="sa" data-tg="'+i+'">'+(o.st?'⏸ Pause':'▶ Démarrer')+'</button><button class="ck" data-cc="'+i+'">✓</button></div></div>'}
+function cardioCard(o,i){return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">Cardio</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">✕</button></div><div class="cd'+(o.ok?' ok':'')+'"><span class="ct" data-ct="'+i+'">'+fmtT(ct(o))+'</span><input class="cm" data-cm="'+i+'" inputmode="numeric" placeholder="min" aria-label="Durée en minutes" value="'+esc(o.min||'')+'"><button class="sa" data-tg="'+i+'">'+(o.st?'⏸ Pause':'▶ Démarrer')+'</button><button class="ck" data-cc="'+i+'">✓</button></div></div>'}
 var tt=0;function toast(m){var t=$('#toast');t.textContent=m;t.classList.remove('hide');clearTimeout(tt);tt=setTimeout(function(){t.classList.add('hide')},1800)}
 function nOk(){var n=0,p=0;cur.ex.forEach(function(o){if(o.g==='cardio'){if(o.ok)n++;else if(durOf(o)>=1)p++}o.sets.forEach(function(s){if(s.ok)n++;else if(String(s.w).trim()!==''&&String(s.r).trim()!=='')p++})});return[n,p]}
 var RESTS=[120,150,180,210,240];
@@ -628,7 +634,7 @@ function renderLive(){
  if(!cur){rend=0;$('#rest').classList.add('hide');return}
  if(document.activeElement!==$('#wn'))$('#wn').value=cur.name;if(document.activeElement!==$('#wd'))$('#wd').value=cur.d||today();$('#wd').style.display=cur.edit?'':'none';$('#eb').textContent=cur.edit?'✎ Modification d’un entraînement enregistré':'';
  $('#ordb').style.display=cur.ex.length>1?'':'none';$('#exs').innerHTML=cur.ex.map(function(o,i){if(o.g==='cardio')return cardioCard(o,i);var pv=prev(o.x);if(RESTS.indexOf(o.rest)<0)o.rest=120;
-  return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">✎</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">✕</button></div>'
+  return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">✕</button></div>'
   +'<div class="rt">⏱ Temps de repos :<select data-rs="'+i+'">'+RESTS.map(function(r){return '<option value="'+r+'"'+(r===o.rest?' selected':'')+'>'+fmtR(r)+'</option>'}).join('')+'</select></div>'
   +'<div class="sr h"><span>SÉRIE</span><span>PRÉCÉDENT</span><span>KG</span><span>REPS</span><span></span></div>'
   +o.sets.map(function(s,j){var nb=0;for(var q=0;q<=j;q++)if(!o.sets[q].t||o.sets[q].t==='')nb++;var lab=s.t==='w'?'É':s.t==='d'?'D':s.t==='f'?'F':nb;return '<div class="sr'+(s.ok?' ok':'')+(s.t?' ty-'+s.t:'')+'"><button class="sn" data-st="'+i+'-'+j+'" aria-label="Type de série">'+lab+'</button><span class="mu">'+(pv[j]?pv[j].w+' kg × '+pv[j].r:'–')+'</span><input data-f="w" data-i="'+i+'" data-j="'+j+'" inputmode="decimal" value="'+esc(s.w)+'"><input data-f="r" data-i="'+i+'" data-j="'+j+'" inputmode="numeric" value="'+esc(s.r)+'"><button class="ck" data-ck="'+i+'-'+j+'">✓</button></div>'}).join('')
@@ -817,7 +823,7 @@ var plib=[],npx='',pdel=-1,ned=null,nedN='',nedG='',openW={},dw='';
 function libList(){var m={};(data.lib||[]).forEach(function(o){m[o.x.toLowerCase()]=o});data.entries.forEach(function(e){var k=e.x.toLowerCase();if(!m[k])m[k]={x:e.x,g:e.g||'autre',gs:e.gs,rest:120}});(data.routines||[]).forEach(function(t){t.ex.forEach(function(o){var k=o.x.toLowerCase();if(!m[k])m[k]={x:o.x,g:o.g||'autre',gs:o.gs,rest:o.rest||120}})});return Object.keys(m).map(function(k){return m[k]}).filter(function(o){return (data.hid||[]).indexOf(o.x.toLowerCase())<0}).sort(function(a,b){return a.x.localeCompare(b.x,'fr')})}
 function zone(g){return ['quads','addu','ischios','fessiers','mollets'].indexOf(g)>=0?'b':(g==='cardio'||g==='autre'||!g)?'o':'h'}
 function zi(z){if(z==='o')return '❤️';var a='var(--ac)',n='var(--mu)',u=z==='h'?a:n,d=z==='b'?a:n,o=z==='h'?1:.35,o2=z==='b'?1:.35;return '<svg width="16" height="22" viewBox="0 0 20 28" style="width:16px;height:22px;max-width:16px;display:inline-block;vertical-align:-5px" aria-hidden="true"><g fill="'+u+'" opacity="'+o+'"><circle cx="10" cy="4" r="3.2"/><rect x="5" y="8" width="10" height="9" rx="2.5"/><rect x="1.5" y="8.5" width="3" height="9" rx="1.5"/><rect x="15.5" y="8.5" width="3" height="9" rx="1.5"/></g><g fill="'+d+'" opacity="'+o2+'"><rect x="5.5" y="18" width="4" height="10" rx="2"/><rect x="10.5" y="18" width="4" height="10" rx="2"/></g></svg>'}
-function pRow(o,i){return '<div class="it ex" data-pi="'+i+'"><div class="xh" style="flex:1"><div class="ph" style="cursor:inherit">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span>'+gls(o)+'</span></div></div><button class="del" data-pe="'+i+'" aria-label="Modifier">✎</button><button class="del" data-pd="'+i+'" aria-label="Supprimer"'+(pdel===i?' style="color:#e03131;font-size:13px;font-weight:700"':'')+'>'+(pdel===i?'Supprimer ?':'✕')+'</button></div>'}
+function pRow(o,i){return '<div class="it ex" data-pi="'+i+'"><div class="xh" style="flex:1"><div class="ph" style="cursor:inherit">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span>'+gls(o)+'</span></div></div><button class="del" data-pe="'+i+'" aria-label="Modifier">'+PEN+'</button><button class="del" data-pd="'+i+'" aria-label="Supprimer"'+(pdel===i?' style="color:#e03131;font-size:13px;font-weight:700"':'')+'>'+(pdel===i?'Supprimer ?':'✕')+'</button></div>'}
 function renderPick(){plib=libList();if(!plib.length){$('#plist').innerHTML='<p class="mu">Aucun exercice pour l’instant. Appuie sur + pour en créer un.</p>';return}
  var T={h:'Haut du corps',b:'Bas du corps',o:'Cardio et autres'},h='';
  var q=nrm($('#psr').value);['h','b','o'].forEach(function(z){var r=plib.map(function(o,i){if(q&&nrm(o.x+' '+gsOf(o).map(function(g){var n=GR.filter(function(x){return x[0]===g})[0];return n?n[1]:g}).join(' ')).indexOf(q)<0)return '';return zone(o.g)===z?pRow(o,i):''}).join('');if(r)h+='<div class="day" style="display:flex;align-items:center;gap:6px;text-transform:none;font-weight:700">'+zi(z)+' '+T[z]+'</div>'+r});
