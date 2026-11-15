@@ -398,6 +398,17 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 .pnav button:active{transform:scale(.97)}
 .pnav button svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:var(--g2)}
 .pnav button.on{border-color:var(--g2);color:var(--g2)}
+#msx .mxr{display:flex;align-items:center;gap:12px;width:100%;padding:10px;margin:0 0 8px;border:1px solid var(--bd);border-radius:16px;background:var(--card);color:var(--tx);font:inherit;text-align:left;-webkit-tap-highlight-color:transparent}
+#msx .mxr:active{transform:scale(.98)}
+#msx .mxp{width:72px;height:72px;flex:none;border-radius:12px;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center}
+#msx .mxp img{width:100%;height:100%;object-fit:cover;display:block}
+#msx .mxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+#msx .mxt b{font-size:15px;line-height:1.25}
+#msx .mxt em{align-self:flex-start;font-style:normal;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:999px}
+#msx .mxt em.rp{background:var(--g2);color:#fff}
+#msx .mxt em.rs{border:1px solid var(--g2);color:var(--g2)}
+#msx .mxt>span{font-size:13px;color:var(--mu)}
+#msx .chev{color:var(--mu);font-size:24px;line-height:1;flex:none}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -467,7 +478,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  <label class="fl">Objectif par jour (nombre de prises)<select id="sgo"><option value="1">1 prise</option><option value="2">2 prises</option><option value="3">3 prises</option><option value="4">4 prises</option></select></label>
  <button class="add" id="ssv">Enregistrer</button><button class="add gh2" id="scn">Annuler</button><button class="sa" id="sdl" style="color:#f2776b;margin-top:10px">Supprimer ce complément</button></div></div>
 <div id="ord" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="ordc" aria-label="Fermer">✕</button><b>Ordre des exercices</b><span style="width:34px"></span></div><div id="ordl"></div><button class="add" id="ordk" style="margin-top:12px">Terminé</button></div></div>
-<div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="exf" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="xfc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Fiche exercice</b><button id="xfe">✎ Modifier</button></div><div id="xfb"></div></div></div><div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
+<div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="msx" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="msc" aria-label="Fermer">✕</button><b id="mst"></b><span style="width:34px"></span></div><p class="mu" id="msp" style="text-align:center;font-size:13px;margin:-4px 0 12px"></p><div id="msl"></div></div></div>
+<div id="exf" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="xfc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Fiche exercice</b><button id="xfe">✎ Modifier</button></div><div id="xfb"></div></div></div><div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
  <div id="set" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="scl" aria-label="Fermer">✕</button><b>Paramètres</b><span style="width:34px"></span></div>
 <div id="bkc"><p style="margin:4px 0 0;font-weight:600">Sauvegarde et import</p><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
   <div style="display:flex;gap:8px"><button class="sa" id="bkx" style="width:50%;font-size:13px">⬇ Exporter</button><button class="sa" id="bki" style="width:50%;font-size:13px">⬆ Importer</button></div>
@@ -477,7 +489,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 90</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 91</p>
  </div></div>
 </main>
 <script>
@@ -560,7 +572,17 @@ var pview='';
 function setPV(v){pview=pview===v?'':v;['stx','calc','histc'].forEach(function(k){$('#'+k).classList.toggle('pvh',k!==pview)});document.querySelectorAll('.pnav [data-pv]').forEach(function(b){var o=b.getAttribute('data-pv')===pview;b.classList.toggle('on',o);b.setAttribute('aria-expanded',o?'true':'false')});if(pview)setTimeout(function(){try{$('#'+pview).scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}},40)}
 document.querySelector('.pnav').onclick=function(e){var b=e.target.closest('[data-pv]');if(b)setPV(b.getAttribute('data-pv'))};
 function renderStats(){var from=perFrom(),c={},tot=0,ws={};data.entries.forEach(function(e){if(e.d<from||e.t==='w'||e.g==='cardio')return;var n=e.s||1;tot+=n;ws[String(e.wk||('d'+e.d))]=1;gwOf(e).forEach(function(q){c[q[0]]=(c[q[0]]||0)+n*q[1]})});var L=GR.filter(function(x){return x[0]!=='cardio'&&(x[0]!=='autre'||c.autre)}).map(function(x){return [x[0],x[1],c[x[0]]||0]}).sort(function(a,b){return b[2]-a[2]}),mx=L.length?L[0][2]:0,nw=Object.keys(ws).length;$('#sxp').textContent=perLabel();$('#sxt').textContent=tot?tot+' série'+(tot>1?'s':'')+' en '+nw+' séance'+(nw>1?'s':'')+' · muscle secondaire = ½ série · échauffements exclus':'Aucune série sur cette période.';$('#sxl').innerHTML=L.map(function(x){return '<button class="sxr'+(x[2]?'':' z')+'" data-sxg="'+x[0]+'"><span>'+x[1]+'</span><span class="bar"><span style="width:'+(mx?Math.round(x[2]/mx*100):0)+'%"></span></span><b>'+fq(x[2])+'</b></button>'}).join('')}
-$('#sxl').onclick=function(e){var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp)};
+$('#sxl').onclick=function(e){var b=e.target.closest('[data-sxg]');if(b)openMsx(b.getAttribute('data-sxg'))};
+var msxL=[];
+function msxData(g,from){var m={},o=[];data.entries.forEach(function(e){if((from&&e.d<from)||e.t==='w'||e.g==='cardio'||gsOf(e).indexOf(g)<0)return;var k=String(e.x).toLowerCase(),q=m[k];if(!q){q=m[k]={x:e.x,g:e.g,gs:e.gs,pri:priOf(e)===g,n:0,w:0,ws:{},mx:0,l:''};o.push(q)}var n=e.s||1;q.n+=n;q.w+=n*(priOf(e)===g?1:.5);q.ws[String(e.wk||('d'+e.d))]=1;q.mx=Math.max(q.mx,e.w||0);if(e.d>=q.l){q.l=e.d;q.x=e.x;q.g=e.g;q.gs=e.gs;q.pri=priOf(e)===g}});return o.sort(function(a,b){return b.w-a.w||b.n-a.n||a.x.localeCompare(b.x,'fr')})}
+function msxRow(q,i){var ns=Object.keys(q.ws).length;return '<button class="mxr" data-xi="'+i+'"><span class="mxp">'+thumb(q.x,q.g)+'</span><span class="mxt"><b>'+esc(q.x)+'</b><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span>'+q.n+' série'+(q.n>1?'s':'')+' · '+ns+' séance'+(ns>1?'s':'')+(q.mx?' · max '+fq(q.mx)+' kg':'')+'</span></span><span class="chev">›</span></button>'}
+function openMsx(g){var L=msxData(g,perFrom()),tot=0,h='';L.forEach(function(q){tot+=q.w});$('#mst').textContent=gl(g);
+ if(L.length){$('#msp').textContent=perLabel()+' · '+fq(tot)+' série'+(tot>1?'s':'')+' comptée'+(tot>1?'s':'');msxL=L;h=L.map(msxRow).join('')}
+ else{msxL=msxData(g,'');$('#msp').textContent=perLabel()+' · aucune série';h=msxL.length?'<div class="day" style="margin:4px 0 8px">Tous tes exercices pour ce muscle</div>'+msxL.map(msxRow).join(''):'<p class="mu" style="text-align:center">Aucun exercice enregistré pour ce muscle.</p>'}
+ $('#msl').innerHTML=h;$('#msx').classList.remove('hide');$('#msx .sheet').scrollTop=0;
+ var ims=$('#msl').querySelectorAll('.mxp img');msxL.forEach(function(q,i){var k=pk2(q.x);if(ph[k])phGet(k).then(function(v){var im=document.querySelector('#msl [data-xi="'+i+'"] .mxp img');if(v&&im)im.src=v})})}
+$('#msc').onclick=function(){$('#msx').classList.add('hide')};
+$('#msx').onclick=function(e){if(e.target===this){this.classList.add('hide');return}var b=e.target.closest('[data-xi]');if(!b)return;var q=msxL[+b.getAttribute('data-xi')];if(!q)return;var k=q.x.toLowerCase();openExF(libList().filter(function(l){return l.x.toLowerCase()===k})[0]||{x:q.x,g:q.g,gs:q.gs,rest:120})};
 function renderBody(){renderStats();
  var from=perFrom(),t={},mx=0;$('#pbtn').textContent='Période : '+perLabel()+' ▾';
  data.entries.forEach(function(e){if(e.d>=from&&e.t!=='w'){gwOf(e).forEach(function(q){var g=q[0];t[g]=(t[g]||0)+e.s*q[1];mx=Math.max(mx,t[g])})}});
