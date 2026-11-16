@@ -428,6 +428,34 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #mus.closing{animation:mfade .14s ease-in reverse both!important}
 #mfill{display:none!important}
 #mus .mxc .mar{max-height:70px}
+#mus .stats.s4{grid-template-columns:repeat(4,1fr);gap:4px}
+#mus .stats.s4 b{font-size:20px}
+#mus .stats.s4 span{font-size:11px}
+#pltbtn{position:fixed;right:12px;top:60%;z-index:30;display:flex;align-items:center;gap:6px;padding:9px 14px 9px 11px;border:0;border-radius:999px;background:var(--g2);color:#fff;font:inherit;font-size:14px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.45);-webkit-tap-highlight-color:transparent}
+#pltbtn.hide{display:none}
+#pltbtn svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin:0!important}
+#plt{z-index:22}
+#plt .pviz{display:flex;align-items:center;justify-content:center;gap:3px;min-height:96px;margin:0 0 6px;padding:8px;border-radius:14px;background:var(--card);border:1px solid var(--bd);overflow:hidden}
+#plt .pviz .pbar{width:28px;height:8px;border-radius:3px;background:#9aa0a6}
+#plt .pviz .pdk{width:11px;border-radius:3px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+#plt .ptot{display:flex;justify-content:space-between;align-items:baseline;margin:6px 2px 8px}
+#plt .ptot b{font-size:28px;font-family:Oswald,"Avenir Next Condensed",sans-serif;color:var(--g2)}
+#plt .prow{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--bd)}
+#plt .prow .pw{flex:1;display:flex;align-items:center;gap:10px;font-weight:600}
+#plt .prow .pw i{width:14px;height:26px;border-radius:3px;display:block}
+#plt .prow button{width:42px;height:38px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-size:22px;line-height:1}
+#plt .prow b{min-width:26px;text-align:center;font-size:18px}
+#plt .prow.on b{color:var(--g2)}
+#plt .padd{display:flex;gap:8px;margin:10px 0}
+#plt .padd input{flex:1;min-width:0}
+#plt .padd button{border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit;font-weight:600;padding:0 14px}
+#plt input{padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+#plt .pfield{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;margin:6px 0}
+#plt .pfield span{display:flex;align-items:center;gap:6px}
+#plt .pfield input{width:84px;text-align:right}
+#plt .pfield em{font-style:normal;color:var(--mu)}
+#plt .ptwo{display:flex;align-items:center;gap:10px;font-size:14px;margin:10px 0 14px}
+#plt .ptwo input{width:20px;height:20px;accent-color:var(--g2)}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -498,6 +526,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
   <button class="add gh2" id="ncl">Annuler</button>
  </div></div>
 <input type="file" accept="image/*" id="pf2" class="hide">
+<button id="pltbtn" class="hide" type="button" aria-label="Calculer avec les disques"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h3M19 12h3"/><rect x="5" y="4" width="4" height="16" rx="1.5"/><rect x="9.5" y="6.5" width="3" height="11" rx="1.2"/><path d="M12.5 12H19"/></svg><span>Disques</span></button>
+<div id="plt" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="pltc" aria-label="Fermer">✕</button><b>Disques</b><span style="width:34px"></span></div><p class="mu" id="pltt" style="text-align:center;margin:-4px 0 10px;font-size:13px"></p><div id="pltb2"></div></div></div>
 <div id="exf" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="xfc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Fiche exercice</b><button id="xfe" aria-label="Modifier"><svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button></div><div id="xfb"></div></div></div><div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
  <div id="set" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="scl" aria-label="Fermer">✕</button><b>Paramètres</b><span style="width:34px"></span></div>
 <div id="bkc"><p style="margin:4px 0 0;font-weight:600">Sauvegarde et import</p><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
@@ -508,7 +538,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 106</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 107</p>
  </div></div>
 </main>
 <script>
@@ -594,7 +624,7 @@ document.querySelector('.pnav').onclick=function(e){var b=e.target.closest('[dat
 function renderStats(){var from=perFrom(),c={},tot=0,ws={};data.entries.forEach(function(e){if(e.d<from||e.t==='w'||e.g==='cardio')return;var n=e.s||1;tot+=n;ws[String(e.wk||('d'+e.d))]=1;gwOf(e).forEach(function(q){c[q[0]]=(c[q[0]]||0)+n*q[1]})});var L=GR.filter(function(x){return x[0]!=='cardio'&&(x[0]!=='autre'||c.autre)}).map(function(x){return [x[0],x[1],c[x[0]]||0]}).sort(function(a,b){return b[2]-a[2]}),mx=L.length?L[0][2]:0,nw=Object.keys(ws).length;$('#sxp').textContent=perLabel();$('#sxt').textContent=tot?tot+' série'+(tot>1?'s':'')+' en '+nw+' séance'+(nw>1?'s':'')+' · muscle secondaire = ½ série · échauffements exclus':'Aucune série sur cette période.';$('#sxl').innerHTML=L.map(function(x){return '<button class="sxr'+(x[2]?'':' z')+'" data-sxg="'+x[0]+'"><span>'+x[1]+'</span><span class="bar"><span style="width:'+(mx?Math.round(x[2]/mx*100):0)+'%"></span></span><b>'+fq(x[2])+'</b></button>'}).join('')}
 $('#sxl').onclick=function(e){var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp,'list')};
 var msxL=[];
-function msxData(g,from){var m={},o=[];data.entries.forEach(function(e){if((from&&e.d<from)||e.t==='w'||e.g==='cardio'||gsOf(e).indexOf(g)<0)return;var k=String(e.x).toLowerCase(),q=m[k];if(!q){q=m[k]={x:e.x,g:e.g,gs:e.gs,pri:priOf(e)===g,n:0,w:0,ws:{},mx:0,l:''};o.push(q)}var n=e.s||1;q.n+=n;q.w+=n*(priOf(e)===g?1:.5);q.ws[String(e.wk||('d'+e.d))]=1;q.mx=Math.max(q.mx,e.w||0);if(e.d>=q.l){q.l=e.d;q.x=e.x;q.g=e.g;q.gs=e.gs;q.pri=priOf(e)===g}});return o.sort(function(a,b){return b.w-a.w||b.n-a.n||a.x.localeCompare(b.x,'fr')})}
+function msxData(g,from){var m={},o=[];data.entries.forEach(function(e){if((from&&e.d<from)||e.t==='w'||e.g==='cardio'||gsOf(e).indexOf(g)<0)return;var k=String(e.x).toLowerCase(),q=m[k];if(!q){q=m[k]={x:e.x,g:e.g,gs:e.gs,pri:priOf(e)===g,n:0,w:0,ws:{},mx:0,l:''};o.push(q)}var n=e.s||1;q.n+=n;q.w+=n*(priOf(e)===g?1:.5);q.rw=(q.rw||0)+n*(+e.r||0)*(priOf(e)===g?1:.5);q.ws[String(e.wk||('d'+e.d))]=1;q.mx=Math.max(q.mx,e.w||0);if(e.d>=q.l){q.l=e.d;q.x=e.x;q.g=e.g;q.gs=e.gs;q.pri=priOf(e)===g}});return o.sort(function(a,b){return b.w-a.w||b.n-a.n||a.x.localeCompare(b.x,'fr')})}
 function msxRow(q,i){var ns=Object.keys(q.ws).length;return '<button class="mxr" data-xi="'+i+'"><span class="mxp">'+thumb(q.x,q.g)+'</span><span class="mxt"><b>'+esc(q.x)+'</b><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span class="mxs"><i><b>'+q.n+'</b> série'+(q.n>1?'s':'')+'</i><i><b>'+ns+'</b> séance'+(ns>1?'s':'')+'</i>'+(q.mx?'<i>max <b>'+fq(q.mx)+' kg</b></i>':'')+'</span></span><span class="chev">›</span></button>'}
 function renderBody(){renderStats();
  var from=perFrom(),t={},mx=0;$('#pbtn').textContent='Période : '+perLabel()+' ▾';
@@ -683,6 +713,41 @@ $('#rm').onclick=function(){if(rend)rend-=30000};
 $('#rp').onclick=function(){if(rend)rend+=30000};
 $('#exs').onchange=function(e){var i=e.target.getAttribute('data-rs');if(i===null)return;cur.ex[i].rest=+e.target.value;saveCur()};
 $('#addx').onclick=openPick;
+/* ---- Calculateur de disques ---- */
+var PLD=[25,20,15,10,5,2.5,1.25],PLC={25:'#d63e3e',20:'#3a6fd8',15:'#e0b532',10:'#3fa35b',5:'#e8e8e8','2.5':'#c0392b','1.25':'#9aa0a6'},plt=null,pltT=null;
+function pltCol(w){return PLC[String(w)]||'#8a8a8a'}
+function pltTot(c){var t=0;Object.keys(c.p).forEach(function(w){t+=num(w)*c.p[w]});return Math.round(((c.two?2*t:t)+(num(c.b)||0))*100)/100}
+function openPlt(i,j){var o=cur&&cur.ex[i];if(!o)return;data.plates=data.plates||{};var c=data.plates[o.x.toLowerCase()];c=c?JSON.parse(JSON.stringify(c)):{b:0,two:false,p:{},ex:[]};plt={i:i,j:j,x:o.x,c:c};$('#pltt').textContent=o.x+' · série '+(j+1);renderPlt();$('#plt').classList.remove('hide');$('#plt .sheet').scrollTop=0}
+function pltViz(c){var a=[];Object.keys(c.p).map(Number).sort(function(x,y){return y-x}).forEach(function(w){for(var k=0;k<c.p[w];k++)a.push(w)});
+ if(!a.length)return '<div class="pviz"><span class="mu">Ajoute des disques avec +</span></div>';
+ return '<div class="pviz"><i class="pbar"></i>'+a.slice(0,16).map(function(w){return '<i class="pdk" style="height:'+Math.round(26+Math.min(w,25)*2.6)+'px;background:'+pltCol(w)+'"></i>'}).join('')+(a.length>16?'<span class="mu">+'+(a.length-16)+'</span>':'')+'<i class="pbar"></i></div>'}
+function pltUpd(){var c=plt.c,t=pltTot(c);$('#pltv').innerHTML=pltViz(c);$('#pltsum').textContent=fq(t)+' kg';$('#pltok').textContent='Valider '+fq(t)+' kg'}
+function renderPlt(){var c=plt.c,ws=PLD.concat((c.ex||[]).map(Number)).filter(function(w,i,a){return w>0&&a.indexOf(w)===i}).sort(function(x,y){return y-x});
+ $('#pltb2').innerHTML='<div id="pltv"></div>'
+  +'<div class="ptot"><span>Total</span><b id="pltsum"></b></div>'
+  +ws.map(function(w){var n=c.p[w]||0;return '<div class="prow'+(n?' on':'')+'"><span class="pw"><i style="background:'+pltCol(w)+'"></i>'+fq(w)+' kg</span><button type="button" data-pm="'+w+'" aria-label="Retirer un disque de '+fq(w)+' kg">−</button><b>'+n+'</b><button type="button" data-pp="'+w+'" aria-label="Ajouter un disque de '+fq(w)+' kg">+</button></div>'}).join('')
+  +'<div class="padd"><input id="pltw" inputmode="decimal" placeholder="Autre poids de disque (kg)"><button type="button" id="pltwa">Ajouter</button></div>'
+  +'<label class="pfield">Charge à vide (barre, machine)<span><input id="pltb" inputmode="decimal" value="'+fq(num(c.b)||0)+'"><em>kg</em></span></label>'
+  +'<label class="ptwo"><input type="checkbox" id="pltd"'+(c.two?' checked':'')+'><span>Disques de chaque côté (×2)</span></label>'
+  +'<button class="add" type="button" id="pltok"></button><button class="add gh2" type="button" id="pltr">Remettre à zéro</button>';
+ pltUpd()}
+$('#plt').onclick=function(e){if(e.target===this){this.classList.add('hide');return}if(!plt)return;var c=plt.c,b=e.target.closest('[data-pm],[data-pp]');
+ if(b){var w=b.getAttribute('data-pm')||b.getAttribute('data-pp'),d=b.getAttribute('data-pp')!==null?1:-1;c.p[w]=Math.max(0,(c.p[w]||0)+d);if(!c.p[w])delete c.p[w];var row=b.closest('.prow');row.querySelector('b').textContent=c.p[w]||0;row.classList.toggle('on',!!c.p[w]);pltUpd();return}
+ if(e.target.closest('#pltwa')){var v=num($('#pltw').value);if(!(v>0)){toast('Saisis le poids du disque');return}c.ex=c.ex||[];if(PLD.indexOf(v)<0&&c.ex.indexOf(v)<0)c.ex.push(v);c.p[v]=(c.p[v]||0)+1;renderPlt();return}
+ if(e.target.closest('#pltr')){c.p={};renderPlt();return}
+ if(e.target.closest('#pltok')){var t=pltTot(c),o=cur&&cur.ex[plt.i];if(!o||!o.sets[plt.j]){this.classList.add('hide');return}o.sets[plt.j].w=fq(t);data.plates=data.plates||{};data.plates[plt.x.toLowerCase()]=c;save();saveCur();renderLive();this.classList.add('hide');toast(fq(t)+' kg')}};
+$('#plt').addEventListener('input',function(e){if(!plt)return;if(e.target.id==='pltb'){plt.c.b=num(e.target.value)||0;pltUpd()}});
+$('#plt').addEventListener('change',function(e){if(plt&&e.target.id==='pltd'){plt.c.two=e.target.checked;pltUpd()}});
+$('#pltc').onclick=function(){$('#plt').classList.add('hide')};
+// bouton « Disques » au-dessus du clavier quand on touche un champ kg
+(function(){var bt=$('#pltbtn'),vv=window.visualViewport,ht=0;
+ function place(){if(bt.classList.contains('hide'))return;var h=vv?vv.height:innerHeight,top=(vv?vv.offsetTop:0)+h-bt.offsetHeight-10;if(!vv||h>innerHeight-80)top=innerHeight-bt.offsetHeight-150;bt.style.top=Math.round(top)+'px'}
+ $('#exs').addEventListener('focusin',function(e){var t=e.target;if(t.tagName!=='INPUT'||t.getAttribute('data-f')!=='w')return;clearTimeout(ht);pltT={i:+t.getAttribute('data-i'),j:+t.getAttribute('data-j')};bt.classList.remove('hide');place();setTimeout(place,250);setTimeout(place,600)});
+ $('#exs').addEventListener('focusout',function(){clearTimeout(ht);ht=setTimeout(function(){var a=document.activeElement;if(!(a&&a.getAttribute&&a.getAttribute('data-f')==='w'))bt.classList.add('hide')},180)});
+ if(vv){vv.addEventListener('resize',place);vv.addEventListener('scroll',place)}
+ function go(e){e.preventDefault();if(!pltT)return;var t=pltT;try{document.activeElement.blur()}catch(x){}bt.classList.add('hide');openPlt(t.i,t.j)}
+ bt.addEventListener('pointerdown',go);bt.addEventListener('click',function(e){e.preventDefault()})})();
+
 function renderOrd(){var n=cur?cur.ex.length:0;$('#ordl').innerHTML=n?cur.ex.map(function(o,i){return '<div class="orr"><div class="ph">'+thumb(o.x,o.g)+'</div><b>'+esc(o.x)+'</b><button data-ou="'+i+'" aria-label="Monter"'+(i?'':' disabled')+'>↑</button><button data-od="'+i+'" aria-label="Descendre"'+(i<n-1?'':' disabled')+'>↓</button></div>'}).join(''):'<p class="mu">Aucun exercice.</p>'}
 $('#ordb').onclick=function(){if(!cur)return;renderOrd();$('#ord').classList.remove('hide')};
 function closeOrd(){$('#ord').classList.add('hide');renderLive()}
@@ -930,11 +995,11 @@ function musChart(pts,H0){
   +(pts.length>1?'<text x="'+(W-R)+'" y="'+(H-8)+'" text-anchor="end" font-size="11" fill="var(--mu)">'+fd(pts[pts.length-1][0]).slice(0,5)+'</text>':'')+'</svg>';
 }
 var musMode='';
-function renderMusList(){var g=mg,L=msxData(g,perFrom()),tot=0,ws={},h='',all=false;$('#mtt').textContent=gl(g);
- L.forEach(function(q){tot+=q.w;Object.keys(q.ws).forEach(function(k){ws[k]=1})});
+function renderMusList(){var g=mg,L=msxData(g,perFrom()),tot=0,ws={},h='',all=false,rw=0;$('#mtt').textContent=gl(g);
+ L.forEach(function(q){tot+=q.w;rw+=q.rw||0;Object.keys(q.ws).forEach(function(k){ws[k]=1})});var nwk=per.u==='c'?1:Math.max(1,(new Date(today()+'T12:00')-new Date(perFrom()+'T12:00'))/864e5/7+1/7),rpw=Math.round(rw/nwk);
  if(!L.length){L=msxData(g,'');all=true}
  msxL=L;var nw=Object.keys(ws).length;
- h='<p class="mper">'+(all?'Aucune série · ':'')+perLabel().charAt(0).toUpperCase()+perLabel().slice(1)+'</p><div class="stats"><div><b>'+fq(tot)+'</b><span>Séries comptées</span></div><div><b>'+nw+'</b><span>Séances</span></div><div><b>'+(all?0:L.length)+'</b><span>Exercices</span></div></div>'
+ h='<p class="mper">'+(all?'Aucune série · ':'')+perLabel().charAt(0).toUpperCase()+perLabel().slice(1)+'</p><div class="stats s4"><div><b>'+fq(tot)+'</b><span>Séries comptées</span></div><div><b>'+nw+'</b><span>Séances</span></div><div><b>'+(all?0:L.length)+'</b><span>Exercices</span></div><div><b>'+(all?0:rpw)+'</b><span>Rép. / semaine</span></div></div>'
   +'<div class="day" style="margin-top:14px">'+(all?'Tous tes exercices pour ce muscle':'Exercices')+'</div>'
   +(L.length?'<div class="mlist">'+L.map(msxRow).join('')+'</div>':'<p class="mu">Aucun exercice enregistré pour ce muscle.</p>');
  $('#mbody').innerHTML=h;
