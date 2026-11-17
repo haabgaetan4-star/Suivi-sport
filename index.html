@@ -468,6 +468,10 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #plt .pviz{position:relative;display:block;padding:6px 4px;min-height:0}
 #plt .pviz svg{display:block;width:100%;height:auto;margin:0!important}
 #plt .pviz .pempty{position:absolute;left:0;right:0;top:8px;text-align:center;font-size:12px}
+.ntog{display:flex;align-items:flex-start;gap:12px;margin:14px 0 4px;text-align:left;cursor:pointer}
+.ntog input{width:22px;height:22px;flex:none;margin:2px 0 0;accent-color:var(--g2)}
+.ntog b{display:block;font-size:15px}
+.ntog em{display:block;font-style:normal;font-size:12px;color:var(--mu);margin-top:2px}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -534,6 +538,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
   <label for="nn">Nom</label><input id="nn" placeholder="Ex. Développé couché" autocomplete="off">
   <label>Muscles travaillés</label><div id="nms"></div>
   <div id="nrw"><label for="nr">Temps de repos</label><select id="nr"></select></div>
+  <label id="nplw" class="ntog"><input type="checkbox" id="npl" checked><span><b>Calcul avec les disques</b><em>Affiche le bouton « Disques » quand tu touches le champ kg</em></span></label>
   <div id="nbw"><label for="nb">Poids de la machine à vide <span class="mu">(ajouté aux disques)</span></label><input id="nb" inputmode="decimal" placeholder="0 kg" autocomplete="off"></div>
   <button class="add" id="nsv">Enregistrer l’exercice</button>
   <button class="add gh2" id="ncl">Annuler</button>
@@ -551,7 +556,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 111</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 112</p>
  </div></div>
 </main>
 <script>
@@ -782,7 +787,7 @@ $('#pltc').onclick=function(){$('#plt').classList.add('hide')};
 // bouton « Disques » au-dessus du clavier quand on touche un champ kg
 (function(){var bt=$('#pltbtn'),vv=window.visualViewport,ht=0;
  function place(){if(bt.classList.contains('hide'))return;var h=vv?vv.height:innerHeight,top=(vv?vv.offsetTop:0)+h-bt.offsetHeight-10;if(!vv||h>innerHeight-80)top=innerHeight-bt.offsetHeight-150;bt.style.top=Math.round(top)+'px'}
- $('#exs').addEventListener('focusin',function(e){var t=e.target;if(t.tagName!=='INPUT'||t.getAttribute('data-f')!=='w')return;clearTimeout(ht);pltT={i:+t.getAttribute('data-i'),j:+t.getAttribute('data-j')};bt.classList.remove('hide');place();setTimeout(place,250);setTimeout(place,600)});
+ $('#exs').addEventListener('focusin',function(e){var t=e.target;if(t.tagName!=='INPUT'||t.getAttribute('data-f')!=='w')return;var ox=cur&&cur.ex[+t.getAttribute('data-i')];if(!ox||noPl(ox.x)){bt.classList.add('hide');return}clearTimeout(ht);pltT={i:+t.getAttribute('data-i'),j:+t.getAttribute('data-j')};bt.classList.remove('hide');place();setTimeout(place,250);setTimeout(place,600)});
  $('#exs').addEventListener('focusout',function(){clearTimeout(ht);ht=setTimeout(function(){var a=document.activeElement;if(!(a&&a.getAttribute&&a.getAttribute('data-f')==='w'))bt.classList.add('hide')},180)});
  if(vv){vv.addEventListener('resize',place);vv.addEventListener('scroll',place)}
  function go(e){e.preventDefault();if(!pltT)return;var t=pltT;try{document.activeElement.blur()}catch(x){}bt.classList.add('hide');openPlt(t.i,t.j)}
@@ -953,8 +958,10 @@ function openMgr(){pmode='mgr';setPT();pdel=-1;$('#psr').value='';renderPick();$
 function renderMex(){var n=libList().length;$('#mex').textContent='Gérer mes exercices ('+n+')'}
 $('#mex').onclick=openMgr;
 function addEx(o){if(!cur)return;cur.ex.push(o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:RESTS.indexOf(o.rest)>=0?o.rest:120,sets:mkSets(o.x)});saveCur();renderLive()}
-function showRestRow(){var c=nsel.indexOf('cardio')>=0;$('#nrw').classList.toggle('hide',c);$('#nbw').classList.toggle('hide',c)}
-function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?(function(){var p=priOf(o);return [p].concat(gsOf(o).filter(function(x){return x!==p}))})():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';var pc=o&&data.plates&&data.plates[o.x.toLowerCase()];$('#nb').value=pc&&num(pc.b)?fq(num(pc.b)):'';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
+function showRestRow(){var c=nsel.indexOf('cardio')>=0;$('#nrw').classList.toggle('hide',c);$('#nplw').classList.toggle('hide',c);$('#nbw').classList.toggle('hide',c||!$('#npl').checked)}
+$('#npl').onchange=showRestRow;
+function noPl(x){var k=String(x).toLowerCase();return (data.lib||[]).some(function(o){return o.x.toLowerCase()===k&&o.noPl})}
+function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?(function(){var p=priOf(o);return [p].concat(gsOf(o).filter(function(x){return x!==p}))})():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#npl').checked=!(o&&noPl(o.x));var pc=o&&data.plates&&data.plates[o.x.toLowerCase()];$('#nb').value=pc&&num(pc.b)?fq(num(pc.b)):'';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
 (function(){var vv=window.visualViewport,p=$('#pick');if(!vv)return;function fit(){var kb=!p.classList.contains('hide')&&document.activeElement===$('#psr')&&vv.height<window.innerHeight-120;p.classList.toggle('kb',kb);if(kb){p.style.top=vv.offsetTop+'px';p.style.height=vv.height+'px'}else{p.style.top='';p.style.height=''}}
 vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);$('#psr').addEventListener('focus',function(){setTimeout(fit,50);setTimeout(fit,350)});$('#psr').addEventListener('blur',function(){setTimeout(fit,50)});$('#plist').addEventListener('touchstart',function(){},{passive:true})})();
 $('#psr').oninput=function(){pdel=-1;renderPick()};
@@ -1003,10 +1010,10 @@ $('#nsv').onclick=function(){var x=$('#nn').value.trim();if(!x){toast('Donne un 
   data.entries.forEach(function(e){if(e.x.toLowerCase()===ned){e.x=x;if(same){e.g=g;e.gs=gs}}});
   (data.routines||[]).forEach(function(t){t.ex.forEach(function(o){if(o.x.toLowerCase()===ned){o.x=x;o.g=g;o.gs=gs;o.rest=cd(g)?0:r}})});
   if(cur)cur.ex.forEach(function(o){if(o.x.toLowerCase()===ned){o.x=x;if(same){o.g=g;o.gs=gs;if(!cd(g))o.rest=r}}});
-  data.lib=data.lib.filter(function(o){return o.x.toLowerCase()!==ned});data.lib.push({x:x,g:g,gs:gs,rest:r});
+  data.lib=data.lib.filter(function(o){return o.x.toLowerCase()!==ned});data.lib.push({x:x,g:g,gs:gs,rest:r,noPl:!$('#npl').checked||undefined});
   if(k!==ned&&ph[pk2(nedN)]){ph[pk2(x)]=ph[pk2(nedN)];delete ph[pk2(nedN)];savePh();phMove(pk2(nedN),pk2(x))}
  }else{
-  var f=data.lib.filter(function(o){return o.x.toLowerCase()===k})[0];if(f){f.g=g;f.gs=gs;f.rest=r}else data.lib.push({x:x,g:g,gs:gs,rest:r});
+  var f=data.lib.filter(function(o){return o.x.toLowerCase()===k})[0];if(f){f.g=g;f.gs=gs;f.rest=r;if($('#npl').checked)delete f.noPl;else f.noPl=true}else data.lib.push({x:x,g:g,gs:gs,rest:r,noPl:!$('#npl').checked||undefined});
  }
  data.hid=data.hid.filter(function(h){return h!==k});
  if(npx){ph[pk2(x)]=npx;savePh();if(npxB)phPut(pk2(x),npxB)}npxB='';
