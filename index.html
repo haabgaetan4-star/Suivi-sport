@@ -456,6 +456,15 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #plt .pfield em{font-style:normal;color:var(--mu)}
 #plt .ptwo{display:flex;align-items:center;gap:10px;font-size:14px;margin:10px 0 14px}
 #plt .ptwo input{width:20px;height:20px;accent-color:var(--g2)}
+#plt .pviz{gap:0;min-height:110px}
+#plt .pviz .pside{display:flex;align-items:center;gap:2px}
+#plt .pviz .pbar{width:70px;height:7px;border-radius:2px;background:#9aa0a6;margin:0 3px}
+#plt .pviz .psl{width:16px;height:9px;border-radius:2px;background:#c4c8cc}
+#plt .pviz .pdk{width:9px}
+#plt .pviz .pmore{font-size:11px;color:var(--mu);padding:0 4px}
+#plt .pdet{text-align:right;font-size:12px;margin:-6px 2px 8px;min-height:1em}
+#plt .pmain{padding:10px 12px;border:1px solid var(--g2);border-radius:12px;font-weight:600;margin:4px 0 8px}
+#nbw input{width:100%}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -522,6 +531,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
   <label for="nn">Nom</label><input id="nn" placeholder="Ex. Développé couché" autocomplete="off">
   <label>Muscles travaillés</label><div id="nms"></div>
   <div id="nrw"><label for="nr">Temps de repos</label><select id="nr"></select></div>
+  <div id="nbw"><label for="nb">Poids de la machine à vide <span class="mu">(ajouté aux disques)</span></label><input id="nb" inputmode="decimal" placeholder="0 kg" autocomplete="off"></div>
   <button class="add" id="nsv">Enregistrer l’exercice</button>
   <button class="add gh2" id="ncl">Annuler</button>
  </div></div>
@@ -538,7 +548,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 108</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 109</p>
  </div></div>
 </main>
 <script>
@@ -735,15 +745,17 @@ function pltTot(c){var t=0;Object.keys(c.p).forEach(function(w){t+=num(w)*c.p[w]
 function openPlt(i,j){var o=cur&&cur.ex[i];if(!o)return;data.plates=data.plates||{};var c=data.plates[o.x.toLowerCase()];c=c?JSON.parse(JSON.stringify(c)):{b:0,two:false,p:{},ex:[]};plt={i:i,j:j,x:o.x,c:c};$('#pltt').textContent=o.x+' · série '+(j+1);renderPlt();$('#plt').classList.remove('hide');$('#plt .sheet').scrollTop=0}
 function pltViz(c){var a=[];Object.keys(c.p).map(Number).sort(function(x,y){return y-x}).forEach(function(w){for(var k=0;k<c.p[w];k++)a.push(w)});
  if(!a.length)return '<div class="pviz"><span class="mu">Ajoute des disques avec +</span></div>';
- return '<div class="pviz"><i class="pbar"></i>'+a.slice(0,16).map(function(w){return '<i class="pdk" style="height:'+Math.round(26+Math.min(w,25)*2.6)+'px;background:'+pltCol(w)+'"></i>'}).join('')+(a.length>16?'<span class="mu">+'+(a.length-16)+'</span>':'')+'<i class="pbar"></i></div>'}
-function pltUpd(){var c=plt.c,t=pltTot(c);$('#pltv').innerHTML=pltViz(c);$('#pltsum').textContent=fq(t)+' kg';$('#pltok').textContent='Valider '+fq(t)+' kg'}
+ var L,R;if(c.two){L=a;R=a}else{L=[];R=[];a.forEach(function(w,i){(i%2?L:R).push(w)})}
+ var dk=function(w){return '<i class="pdk" style="height:'+Math.round(24+Math.min(w,25)*2.6)+'px;background:'+pltCol(w)+'"></i>'},M=10;
+ var side=function(S,left){var t=S.slice(0,M).map(dk);if(left)t.reverse();var more=S.length>M?'<span class="pmore">+'+(S.length-M)+'</span>':'';return '<span class="pside">'+(left?more:'')+t.join('')+(left?'':more)+'</span>'};
+ return '<div class="pviz"><i class="psl"></i>'+side(L,true)+'<i class="pbar"></i>'+side(R,false)+'<i class="psl"></i></div>'}
+function pltUpd(){var c=plt.c,t=pltTot(c),dp=0;Object.keys(c.p).forEach(function(w){dp+=num(w)*c.p[w]});if(c.two)dp*=2;var bb=num(c.b)||0;$('#pltdet').textContent=bb?fq(dp)+' kg de disques + '+fq(bb)+' kg de machine à vide':'';$('#pltv').innerHTML=pltViz(c);$('#pltsum').textContent=fq(t)+' kg';$('#pltok').textContent='Valider '+fq(t)+' kg'}
 function renderPlt(){var c=plt.c,ws=PLD.concat((c.ex||[]).map(Number)).filter(function(w,i,a){return w>0&&a.indexOf(w)===i}).sort(function(x,y){return y-x});
  $('#pltb2').innerHTML='<div id="pltv"></div>'
-  +'<div class="ptot"><span>Total</span><b id="pltsum"></b></div>'
+  +'<div class="ptot"><span>Total</span><b id="pltsum"></b></div><p class="mu pdet" id="pltdet"></p>'+'<label class="pfield pmain">Poids de la machine à vide<span><input id="pltb" inputmode="decimal" value="'+(num(c.b)?fq(num(c.b)):'')+'" placeholder="0"><em>kg</em></span></label>'+'<label class="ptwo"><input type="checkbox" id="pltd"'+(c.two?' checked':'')+'><span>Disques de chaque côté (×2)</span></label>'
   +ws.map(function(w){var n=c.p[w]||0;return '<div class="prow'+(n?' on':'')+'"><span class="pw"><i style="background:'+pltCol(w)+'"></i>'+fq(w)+' kg</span><button type="button" data-pm="'+w+'" aria-label="Retirer un disque de '+fq(w)+' kg">−</button><b>'+n+'</b><button type="button" data-pp="'+w+'" aria-label="Ajouter un disque de '+fq(w)+' kg">+</button></div>'}).join('')
   +'<div class="padd"><input id="pltw" inputmode="decimal" placeholder="Autre poids de disque (kg)"><button type="button" id="pltwa">Ajouter</button></div>'
-  +'<label class="pfield">Charge à vide (barre, machine)<span><input id="pltb" inputmode="decimal" value="'+fq(num(c.b)||0)+'"><em>kg</em></span></label>'
-  +'<label class="ptwo"><input type="checkbox" id="pltd"'+(c.two?' checked':'')+'><span>Disques de chaque côté (×2)</span></label>'
+  
   +'<button class="add" type="button" id="pltok"></button><button class="add gh2" type="button" id="pltr">Remettre à zéro</button>';
  pltUpd()}
 $('#plt').onclick=function(e){if(e.target===this){this.classList.add('hide');return}if(!plt)return;var c=plt.c,b=e.target.closest('[data-pm],[data-pp]');
@@ -928,8 +940,8 @@ function openMgr(){pmode='mgr';setPT();pdel=-1;$('#psr').value='';renderPick();$
 function renderMex(){var n=libList().length;$('#mex').textContent='Gérer mes exercices ('+n+')'}
 $('#mex').onclick=openMgr;
 function addEx(o){if(!cur)return;cur.ex.push(o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:RESTS.indexOf(o.rest)>=0?o.rest:120,sets:mkSets(o.x)});saveCur();renderLive()}
-function showRestRow(){$('#nrw').classList.toggle('hide',nsel.indexOf('cardio')>=0)}
-function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?(function(){var p=priOf(o);return [p].concat(gsOf(o).filter(function(x){return x!==p}))})():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
+function showRestRow(){var c=nsel.indexOf('cardio')>=0;$('#nrw').classList.toggle('hide',c);$('#nbw').classList.toggle('hide',c)}
+function openNew(o){npxB='';ned=o?o.x.toLowerCase():null;nedN=o?o.x:'';nedG=o?o.g:'';npx='';$('#nt').textContent=o?'Modifier l’exercice':'Nouvel exercice';$('#nn').value=o?o.x:'';nsel=o?(function(){var p=priOf(o);return [p].concat(gsOf(o).filter(function(x){return x!==p}))})():[];renderChips();$('#nr').value=(o&&RESTS.indexOf(o.rest)>=0)?String(o.rest):'120';var pc=o&&data.plates&&data.plates[o.x.toLowerCase()];$('#nb').value=pc&&num(pc.b)?fq(num(pc.b)):'';$('#nph').innerHTML=(o&&ph[pk2(o.x)])?'<img src="'+ph[pk2(o.x)]+'" alt="">':'📷<br>Photo';showRestRow();$('#nw').classList.remove('hide')}
 (function(){var vv=window.visualViewport,p=$('#pick');if(!vv)return;function fit(){var kb=!p.classList.contains('hide')&&document.activeElement===$('#psr')&&vv.height<window.innerHeight-120;p.classList.toggle('kb',kb);if(kb){p.style.top=vv.offsetTop+'px';p.style.height=vv.height+'px'}else{p.style.top='';p.style.height=''}}
 vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);$('#psr').addEventListener('focus',function(){setTimeout(fit,50);setTimeout(fit,350)});$('#psr').addEventListener('blur',function(){setTimeout(fit,50)});$('#plist').addEventListener('touchstart',function(){},{passive:true})})();
 $('#psr').oninput=function(){pdel=-1;renderPick()};
@@ -985,6 +997,7 @@ $('#nsv').onclick=function(){var x=$('#nn').value.trim();if(!x){toast('Donne un 
  }
  data.hid=data.hid.filter(function(h){return h!==k});
  if(npx){ph[pk2(x)]=npx;savePh();if(npxB)phPut(pk2(x),npxB)}npxB='';
+ data.plates=data.plates||{};var okey=was&&ned?ned:k,pcf=data.plates[okey]||data.plates[k]||{b:0,two:false,p:{},ex:[]};if(okey!==k)delete data.plates[okey];var bw=num($('#nb').value);pcf.b=bw>0?bw:0;if(pcf.b||Object.keys(pcf.p||{}).length||pcf.two)data.plates[k]=pcf;else delete data.plates[k];
  ned=null;save();saveCur();render();$('#nw').classList.add('hide');renderPick();toast(was?'Exercice modifié':'Exercice ajouté à ta liste')};
 
 
