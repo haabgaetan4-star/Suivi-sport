@@ -548,7 +548,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 109</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 110</p>
  </div></div>
 </main>
 <script>
@@ -742,7 +742,7 @@ $('#addx').onclick=openPick;
 var PLD=[25,20,15,10,5,2.5,1.25],PLC={25:'#d63e3e',20:'#3a6fd8',15:'#e0b532',10:'#3fa35b',5:'#e8e8e8','2.5':'#c0392b','1.25':'#9aa0a6'},plt=null,pltT=null;
 function pltCol(w){return PLC[String(w)]||'#8a8a8a'}
 function pltTot(c){var t=0;Object.keys(c.p).forEach(function(w){t+=num(w)*c.p[w]});return Math.round(((c.two?2*t:t)+(num(c.b)||0))*100)/100}
-function openPlt(i,j){var o=cur&&cur.ex[i];if(!o)return;data.plates=data.plates||{};var c=data.plates[o.x.toLowerCase()];c=c?JSON.parse(JSON.stringify(c)):{b:0,two:false,p:{},ex:[]};plt={i:i,j:j,x:o.x,c:c};$('#pltt').textContent=o.x+' · série '+(j+1);renderPlt();$('#plt').classList.remove('hide');$('#plt .sheet').scrollTop=0}
+function openPlt(i,j){var o=cur&&cur.ex[i];if(!o)return;data.plates=data.plates||{};var c=data.plates[o.x.toLowerCase()];c=c?JSON.parse(JSON.stringify(c)):{b:0,two:false,p:{}};delete c.ex;Object.keys(c.p).forEach(function(w){if(PLD.indexOf(num(w))<0)delete c.p[w]});plt={i:i,j:j,x:o.x,c:c};$('#pltt').textContent=o.x+' · série '+(j+1);renderPlt();$('#plt').classList.remove('hide');$('#plt .sheet').scrollTop=0}
 function pltViz(c){var a=[];Object.keys(c.p).map(Number).sort(function(x,y){return y-x}).forEach(function(w){for(var k=0;k<c.p[w];k++)a.push(w)});
  if(!a.length)return '<div class="pviz"><span class="mu">Ajoute des disques avec +</span></div>';
  var L,R;if(c.two){L=a;R=a}else{L=[];R=[];a.forEach(function(w,i){(i%2?L:R).push(w)})}
@@ -750,17 +750,17 @@ function pltViz(c){var a=[];Object.keys(c.p).map(Number).sort(function(x,y){retu
  var side=function(S,left){var t=S.slice(0,M).map(dk);if(left)t.reverse();var more=S.length>M?'<span class="pmore">+'+(S.length-M)+'</span>':'';return '<span class="pside">'+(left?more:'')+t.join('')+(left?'':more)+'</span>'};
  return '<div class="pviz"><i class="psl"></i>'+side(L,true)+'<i class="pbar"></i>'+side(R,false)+'<i class="psl"></i></div>'}
 function pltUpd(){var c=plt.c,t=pltTot(c),dp=0;Object.keys(c.p).forEach(function(w){dp+=num(w)*c.p[w]});if(c.two)dp*=2;var bb=num(c.b)||0;$('#pltdet').textContent=bb?fq(dp)+' kg de disques + '+fq(bb)+' kg de machine à vide':'';$('#pltv').innerHTML=pltViz(c);$('#pltsum').textContent=fq(t)+' kg';$('#pltok').textContent='Valider '+fq(t)+' kg'}
-function renderPlt(){var c=plt.c,ws=PLD.concat((c.ex||[]).map(Number)).filter(function(w,i,a){return w>0&&a.indexOf(w)===i}).sort(function(x,y){return y-x});
+function renderPlt(){var c=plt.c,ws=PLD.slice().filter(function(w,i,a){return w>0&&a.indexOf(w)===i}).sort(function(x,y){return y-x});
  $('#pltb2').innerHTML='<div id="pltv"></div>'
-  +'<div class="ptot"><span>Total</span><b id="pltsum"></b></div><p class="mu pdet" id="pltdet"></p>'+'<label class="pfield pmain">Poids de la machine à vide<span><input id="pltb" inputmode="decimal" value="'+(num(c.b)?fq(num(c.b)):'')+'" placeholder="0"><em>kg</em></span></label>'+'<label class="ptwo"><input type="checkbox" id="pltd"'+(c.two?' checked':'')+'><span>Disques de chaque côté (×2)</span></label>'
+  +'<div class="ptot"><span>Total</span><b id="pltsum"></b></div><p class="mu pdet" id="pltdet"></p>'+'<label class="ptwo"><input type="checkbox" id="pltd"'+(c.two?' checked':'')+'><span>Disques de chaque côté (×2)</span></label>'
   +ws.map(function(w){var n=c.p[w]||0;return '<div class="prow'+(n?' on':'')+'"><span class="pw"><i style="background:'+pltCol(w)+'"></i>'+fq(w)+' kg</span><button type="button" data-pm="'+w+'" aria-label="Retirer un disque de '+fq(w)+' kg">−</button><b>'+n+'</b><button type="button" data-pp="'+w+'" aria-label="Ajouter un disque de '+fq(w)+' kg">+</button></div>'}).join('')
-  +'<div class="padd"><input id="pltw" inputmode="decimal" placeholder="Autre poids de disque (kg)"><button type="button" id="pltwa">Ajouter</button></div>'
+  +'<label class="pfield pmain">Poids de la machine à vide<span><input id="pltb" inputmode="decimal" value="'+(num(c.b)?fq(num(c.b)):'')+'" placeholder="0"><em>kg</em></span></label>'
   
   +'<button class="add" type="button" id="pltok"></button><button class="add gh2" type="button" id="pltr">Remettre à zéro</button>';
  pltUpd()}
 $('#plt').onclick=function(e){if(e.target===this){this.classList.add('hide');return}if(!plt)return;var c=plt.c,b=e.target.closest('[data-pm],[data-pp]');
  if(b){var w=b.getAttribute('data-pm')||b.getAttribute('data-pp'),d=b.getAttribute('data-pp')!==null?1:-1;c.p[w]=Math.max(0,(c.p[w]||0)+d);if(!c.p[w])delete c.p[w];var row=b.closest('.prow');row.querySelector('b').textContent=c.p[w]||0;row.classList.toggle('on',!!c.p[w]);pltUpd();return}
- if(e.target.closest('#pltwa')){var v=num($('#pltw').value);if(!(v>0)){toast('Saisis le poids du disque');return}c.ex=c.ex||[];if(PLD.indexOf(v)<0&&c.ex.indexOf(v)<0)c.ex.push(v);c.p[v]=(c.p[v]||0)+1;renderPlt();return}
+
  if(e.target.closest('#pltr')){c.p={};renderPlt();return}
  if(e.target.closest('#pltok')){var t=pltTot(c),o=cur&&cur.ex[plt.i];if(!o||!o.sets[plt.j]){this.classList.add('hide');return}o.sets[plt.j].w=fq(t);data.plates=data.plates||{};data.plates[plt.x.toLowerCase()]=c;save();saveCur();renderLive();this.classList.add('hide');toast(fq(t)+' kg')}};
 $('#plt').addEventListener('input',function(e){if(!plt)return;if(e.target.id==='pltb'){plt.c.b=num(e.target.value)||0;pltUpd()}});
