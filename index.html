@@ -489,6 +489,15 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #p1 #exs .xh .ph{width:68px;height:68px;border-radius:14px}
 #p1 #exs .xh .ph img{width:100%;height:100%;object-fit:cover}
 #p1 #exs .xh>div:nth-child(2){padding-top:2px}
+#p1 #exs .xh{align-items:flex-start}
+#p1 #exs .xh .ph{width:100px;height:100px;border-radius:16px}
+#p1 #exs .xh>div:nth-child(2){min-height:100px;display:flex;flex-direction:column;justify-content:center;padding-top:0}
+#p1 #exs .xh .rt{margin:8px 0 0;text-align:left;font-size:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#p1 #exs .xh .rt select{margin:0}
+#p1 #exs .card>.sr.h{margin-top:12px}
+#p1 #exs .xh{padding-right:0}
+#p1 #exs .xh>div:nth-child(2)>b{padding-right:74px;font-size:16px;line-height:1.25}
+#p1 #exs .xh .rt{flex-wrap:nowrap;white-space:nowrap}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -573,7 +582,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 116</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 117</p>
  </div></div>
 </main>
 <script>
@@ -728,8 +737,7 @@ function renderLive(){
  if(!cur){rend=0;$('#rest').classList.add('hide');return}
  if(document.activeElement!==$('#wn'))$('#wn').value=cur.name;if(document.activeElement!==$('#wd'))$('#wd').value=cur.d||today();$('#wd').style.display=cur.edit?'':'none';$('#eb').textContent=cur.edit?'✎ Modification d’un entraînement enregistré':'';
  $('#ordb').style.display=cur.ex.length>1?'':'none';$('#exs').innerHTML=cur.ex.map(function(o,i){if(o.g==='cardio')return cardioCard(o,i);var pv=prev(o.x);if(RESTS.indexOf(o.rest)<0)o.rest=120;
-  return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">'+XIC+'</button></div>'
-  +'<div class="rt">⏱ Temps de repos :<select data-rs="'+i+'">'+RESTS.map(function(r){return '<option value="'+r+'"'+(r===o.rest?' selected':'')+'>'+fmtR(r)+'</option>'}).join('')+'</select></div>'
+  return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span><div class="rt">⏱ Repos :<select data-rs="'+i+'">'+RESTS.map(function(r){return '<option value="'+r+'"'+(r===o.rest?' selected':'')+'>'+fmtR(r)+'</option>'}).join('')+'</select></div></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">'+XIC+'</button></div>'
   +'<div class="sr h"><span>SÉRIE</span><span>PRÉCÉDENT</span><span>KG</span><span>REPS</span><span></span></div>'
   +o.sets.map(function(s,j){var nb=0;for(var q=0;q<=j;q++)if(!o.sets[q].t||o.sets[q].t==='')nb++;var lab=s.t==='w'?'É':s.t==='d'?'D':s.t==='f'?'F':nb;return '<div class="sr'+(s.ok?' ok':'')+(s.t?' ty-'+s.t:'')+'"><button class="sn" data-st="'+i+'-'+j+'" aria-label="Type de série">'+lab+'</button><span class="mu">'+(pv[j]?pv[j].w+' kg × '+pv[j].r:'–')+'</span><input data-f="w" data-i="'+i+'" data-j="'+j+'" inputmode="decimal" value="'+esc(s.w)+'"><input data-f="r" data-i="'+i+'" data-j="'+j+'" inputmode="numeric" value="'+esc(s.r)+'"><button class="ck" data-ck="'+i+'-'+j+'">✓</button></div>'}).join('')
   +'<div style="display:flex;gap:8px"><button class="sa" data-as="'+i+'" style="width:50%;font-size:13px">+ Ajouter une série</button><button class="sa" data-ds="'+i+'" style="width:50%;font-size:13px;color:#e03131">− Supprimer une série</button></div></div>';
