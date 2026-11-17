@@ -479,6 +479,12 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #nw .nwh .del{position:static!important;width:38px;height:38px;font-size:20px;color:var(--tx)}
 .sa{border:1px solid var(--bd);padding-left:6px;padding-right:6px}
 #ordb{max-width:300px;margin-left:auto;margin-right:auto;display:block;padding:12px}
+#exs>.card{position:relative}
+#exs .xh{padding-right:78px}
+#p1 #exs .xh{position:static}
+#p1 #exs .xh button.del[data-xe],#p1 #exs .xh button.del[data-rx]{position:absolute!important;top:6px!important;width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center}
+#p1 #exs .xh button.del[data-xe]{right:44px!important}
+#p1 #exs .xh button.del[data-rx]{right:6px!important}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -563,11 +569,12 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 114</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 115</p>
  </div></div>
 </main>
 <script>
 var data={entries:[]},ref=null,tab=1,grp='',per={n:7,u:'c'},cur=null,ph={},refP=null,rend=0,pk='';
+var XIC='<svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 var PEN='<svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>';
 var $=function(s){return document.querySelector(s)};
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -697,7 +704,7 @@ function fixA(o){if(o.gs)o.gs=o.gs.map(function(x){return LEG[x]||x}).filter(fun
 function fixG(){data.entries.forEach(function(e){if(LEG[e.g])e.g=LEG[e.g];fixA(e)});(data.lib||[]).forEach(fixA);(data.routines||[]).forEach(function(t){t.ex.forEach(fixA)});(data.routines||[]).forEach(function(t){t.ex.forEach(function(o){if(LEG[o.g])o.g=LEG[o.g]})});if(cur)cur.ex.forEach(function(o){if(LEG[o.g])o.g=LEG[o.g]});(data.lib||[]).forEach(function(o){if(LEG[o.g])o.g=LEG[o.g]})}
 function durOf(o){var m=num(o.min);return m>0?Math.round(m*60):Math.round(ct(o))}
 function ct(o){return (o.acc||0)+(o.st?(Date.now()-o.st)/1000:0)}
-function cardioCard(o,i){return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">Cardio</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">✕</button></div><div class="cd'+(o.ok?' ok':'')+'"><span class="ct" data-ct="'+i+'">'+fmtT(ct(o))+'</span><input class="cm" data-cm="'+i+'" inputmode="numeric" placeholder="min" aria-label="Durée en minutes" value="'+esc(o.min||'')+'"><button class="sa" data-tg="'+i+'">'+(o.st?'⏸ Pause':'▶ Démarrer')+'</button><button class="ck" data-cc="'+i+'">✓</button></div></div>'}
+function cardioCard(o,i){return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">Cardio</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">'+XIC+'</button></div><div class="cd'+(o.ok?' ok':'')+'"><span class="ct" data-ct="'+i+'">'+fmtT(ct(o))+'</span><input class="cm" data-cm="'+i+'" inputmode="numeric" placeholder="min" aria-label="Durée en minutes" value="'+esc(o.min||'')+'"><button class="sa" data-tg="'+i+'">'+(o.st?'⏸ Pause':'▶ Démarrer')+'</button><button class="ck" data-cc="'+i+'">✓</button></div></div>'}
 var tt=0;function toast(m){var t=$('#toast');t.textContent=m;t.classList.remove('hide');clearTimeout(tt);tt=setTimeout(function(){t.classList.add('hide')},1800)}
 function nOk(){var n=0,p=0;cur.ex.forEach(function(o){if(o.g==='cardio'){if(o.ok)n++;else if(durOf(o)>=1)p++}o.sets.forEach(function(s){if(s.ok)n++;else if(String(s.w).trim()!==''&&String(s.r).trim()!=='')p++})});return[n,p]}
 var RESTS=[120,150,180,210,240];
@@ -717,7 +724,7 @@ function renderLive(){
  if(!cur){rend=0;$('#rest').classList.add('hide');return}
  if(document.activeElement!==$('#wn'))$('#wn').value=cur.name;if(document.activeElement!==$('#wd'))$('#wd').value=cur.d||today();$('#wd').style.display=cur.edit?'':'none';$('#eb').textContent=cur.edit?'✎ Modification d’un entraînement enregistré':'';
  $('#ordb').style.display=cur.ex.length>1?'':'none';$('#exs').innerHTML=cur.ex.map(function(o,i){if(o.g==='cardio')return cardioCard(o,i);var pv=prev(o.x);if(RESTS.indexOf(o.rest)<0)o.rest=120;
-  return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">✕</button></div>'
+  return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">'+XIC+'</button></div>'
   +'<div class="rt">⏱ Temps de repos :<select data-rs="'+i+'">'+RESTS.map(function(r){return '<option value="'+r+'"'+(r===o.rest?' selected':'')+'>'+fmtR(r)+'</option>'}).join('')+'</select></div>'
   +'<div class="sr h"><span>SÉRIE</span><span>PRÉCÉDENT</span><span>KG</span><span>REPS</span><span></span></div>'
   +o.sets.map(function(s,j){var nb=0;for(var q=0;q<=j;q++)if(!o.sets[q].t||o.sets[q].t==='')nb++;var lab=s.t==='w'?'É':s.t==='d'?'D':s.t==='f'?'F':nb;return '<div class="sr'+(s.ok?' ok':'')+(s.t?' ty-'+s.t:'')+'"><button class="sn" data-st="'+i+'-'+j+'" aria-label="Type de série">'+lab+'</button><span class="mu">'+(pv[j]?pv[j].w+' kg × '+pv[j].r:'–')+'</span><input data-f="w" data-i="'+i+'" data-j="'+j+'" inputmode="decimal" value="'+esc(s.w)+'"><input data-f="r" data-i="'+i+'" data-j="'+j+'" inputmode="numeric" value="'+esc(s.r)+'"><button class="ck" data-ck="'+i+'-'+j+'">✓</button></div>'}).join('')
