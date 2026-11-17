@@ -1,6 +1,6 @@
 {
-  "name": "Suivi muscu",
-  "short_name": "Muscu",
+  "name": "Focus",
+  "short_name": "Focus",
   "description": "Suivi de mes entraînements de musculation",
   "start_url": "./",
   "scope": "./",

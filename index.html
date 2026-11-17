@@ -4,13 +4,13 @@
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Muscu">
+<meta name="apple-mobile-web-app-title" content="Focus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="touch-v4.png">
 <link rel="icon" href="icon-v4-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
-<title>Suivi muscu</title>
+<title>Focus</title>
 <style>
 :root{--bg:#f3f3f4;--card:#fff;--tx:#141416;--mu:#6c6c72;--ac:#8a0b14;--bd:#e2e2e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e10;--card:#1a1a1d;--tx:#f4f4f5;--mu:#9a9aa2;--ac:#b0101e;--bd:#2c2c31;color-scheme:dark}}
@@ -582,7 +582,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 120</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 121</p>
  </div></div>
 </main>
 <script>
@@ -1188,7 +1188,7 @@ $('#pbtn').onclick=function(){var o=$('#ppan').style.display==='none';$('#ppan')
 try{ph=JSON.parse(localStorage.getItem('muscu_ph')||'{}')}catch(e){}
 try{cur=JSON.parse(localStorage.getItem('muscu_cur')||'null')}catch(e){}
 var bkd=null;
-$('#bkx').onclick=function(){try{var blob=new Blob([JSON.stringify({v:1,exportedAt:new Date().toISOString(),data:data,ph:ph})],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='suivi-muscu-'+today()+'.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);toast('Sauvegarde créée')}catch(e){toast('Export impossible')}};
+$('#bkx').onclick=function(){try{var blob=new Blob([JSON.stringify({v:1,exportedAt:new Date().toISOString(),data:data,ph:ph})],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='focus-'+today()+'.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);toast('Sauvegarde créée')}catch(e){toast('Export impossible')}};
 $('#bki').onclick=function(){$('#bkf').click()};
 $('#bkf').onchange=function(){var f=this.files[0],inp=this;if(!f)return;var fr=new FileReader();fr.onload=function(){try{var j=JSON.parse(fr.result);if(!j||!j.data||!Array.isArray(j.data.entries))throw 0;bkd=j;var n=0,k={};j.data.entries.forEach(function(e){k[String(e.wk||('d'+e.d))]=1});n=Object.keys(k).length;$('#bkm').textContent='Fichier valide : '+n+' entraînement(s). Cela remplacera les données actuelles de cet appareil.';$('#bkc2').classList.remove('hide')}catch(e){toast('Fichier non reconnu')}};fr.readAsText(f);inp.value=''};
 $('#bks').onclick=async function(){var l=$('#bksl');if(!l.classList.contains('hide')){l.classList.add('hide');return}
