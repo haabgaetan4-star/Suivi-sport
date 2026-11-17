@@ -472,6 +472,11 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 .ntog input{width:22px;height:22px;flex:none;margin:2px 0 0;accent-color:var(--g2)}
 .ntog b{display:block;font-size:15px}
 .ntog em{display:block;font-style:normal;font-size:12px;color:var(--mu);margin-top:2px}
+#nw{padding:0;align-items:stretch;justify-content:center;background:var(--bg)}
+#nw .box2{max-width:520px;max-height:none;height:100%;border:0;border-radius:0;background:var(--bg);padding:0 18px calc(24px + env(safe-area-inset-bottom,0px))}
+#nw .nwh{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 -18px 6px;padding:calc(10px + env(safe-area-inset-top,0px)) 10px 10px;background:var(--bg);border-bottom:1px solid var(--bd)}
+#nw .nwh b{flex:1;text-align:center;font-size:17px}
+#nw .nwh .del{position:static!important;width:38px;height:38px;font-size:20px;color:var(--tx)}
 </style></head>
 <body><div id="splash"><div class="lg"><img src="splash-v2.png" alt=""></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -533,7 +538,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  <label class="fl">Objectif par jour (nombre de prises)<select id="sgo"><option value="1">1 prise</option><option value="2">2 prises</option><option value="3">3 prises</option><option value="4">4 prises</option></select></label>
  <button class="add" id="ssv">Enregistrer</button><button class="add gh2" id="scn">Annuler</button><button class="sa" id="sdl" style="color:#f2776b;margin-top:10px">Supprimer ce complément</button></div></div>
 <div id="ord" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="ordc" aria-label="Fermer">✕</button><b>Ordre des exercices</b><span style="width:34px"></span></div><div id="ordl"></div><button class="add" id="ordk" style="margin-top:12px">Terminé</button></div></div>
-<div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="nw" class="ov hide"><div class="box2"><b id="nt">Nouvel exercice</b>
+<div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="nw" class="ov hide"><div class="box2"><div class="nwh"><span style="width:38px"></span><b id="nt">Nouvel exercice</b><button class="del" id="nx" type="button" aria-label="Fermer">✕</button></div>
   <div class="nph" id="nph">📷<br>Photo</div>
   <label for="nn">Nom</label><input id="nn" placeholder="Ex. Développé couché" autocomplete="off">
   <label>Muscles travaillés</label><div id="nms"></div>
@@ -556,7 +561,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 112</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 113</p>
  </div></div>
 </main>
 <script>
@@ -997,6 +1002,7 @@ $('#plist').onclick=function(e){
 $('#pick').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#pcl').onclick=function(){$('#pick').classList.add('hide')};
 $('#pnew').onclick=function(){openNew()};
+$('#nx').onclick=function(){$('#nw').classList.add('hide')};
 $('#ncl').onclick=function(){$('#nw').classList.add('hide')};
 $('#nn').oninput=function(){if(/\bv[eé]lo\b|\brameur\b|\belliptique\b|\btapis\b/i.test(this.value)&&nsel.indexOf('cardio')<0){nsel=['cardio'];renderChips();showRestRow()}};
 $('#nph').onclick=function(){$('#pf2').click()};
