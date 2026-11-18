@@ -597,6 +597,14 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #stx .sxr2>div:last-child{text-align:right;flex:none}
 #stx .sxr2>div:last-child b{font-family:Oswald,"Avenir Next Condensed",sans-serif;font-size:18px}
 #stx .sxnone{font-size:13px;margin:0}
+#stx .sxlow{display:flex;flex-direction:column}
+#stx .sxlr{display:grid;grid-template-columns:118px 1fr 52px;align-items:center;gap:10px;width:100%;padding:7px 0;border:0;background:none;color:var(--tx);font:inherit;font-size:14px;text-align:left}
+#stx .sxlr.hide{display:none}
+#stx .sxlr .b{display:block;height:6px;border-radius:3px;background:#2a1d1a;overflow:hidden}
+#stx .sxlr .b i{display:block;height:100%;background:var(--g2);border-radius:3px}
+#stx .sxlr .v{text-align:right;font-size:12px;color:var(--mu);white-space:nowrap}
+#stx .sxlr .v b{font-size:14px;color:var(--tx)}
+#stx .sxmore{margin-top:4px;border:0;background:none;color:var(--mu);font:inherit;font-size:13px;padding:6px 0;text-align:center}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -681,7 +689,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 129</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 130</p>
  </div></div>
 </main>
 <script>
@@ -797,8 +805,9 @@ function renderStats(){var from=perFrom(),t=today(),cmp=per.u!=='all',r1=functio
  var c={};data.entries.forEach(function(e){if(e.d<from||e.t==='w'||e.g==='cardio')return;gwOf(e).forEach(function(q){c[q[0]]=(c[q[0]]||0)+(e.s||1)*q[1]})});
  var nwk=per.u==='c'?1:Math.max(1,(new Date(t+'T12:00')-new Date(from+'T12:00'))/864e5/7+1/7);
  var low=GR.filter(function(x){return x[0]!=='cardio'&&x[0]!=='autre'}).map(function(x){return [x[0],x[1],r1((c[x[0]]||0)/nwk)]}).filter(function(x){return x[2]<14}).sort(function(a,b){return a[2]-b[2]});
- h+='<div class="sxs"><b>Muscles à travailler</b><span>'+(per.u==='c'?'moins de 14 séries cette semaine':'moins de 14 séries / semaine en moyenne')+'</span></div>'
-  +(low.length?'<div class="sxchips">'+low.map(function(x){return '<button data-sxg="'+x[0]+'">'+x[1]+' <b>'+fq(x[2])+'</b></button>'}).join('')+'</div>':'<p class="sxok">✓ Tous tes muscles sont dans la zone conseillée</p>');
+ h+='<div class="sxs"><b>Muscles à travailler</b><span>'+(per.u==='c'?'séries cette semaine':'séries / semaine en moyenne')+'</span></div>'
+  +(low.length?'<div class="sxlow">'+low.map(function(x,i){return '<button class="sxlr'+(i>=5&&!sxAll?' hide':'')+'" data-sxg="'+x[0]+'"><span class="n">'+x[1]+'</span><span class="b"><i style="width:'+Math.round(x[2]/14*100)+'%"></i></span><span class="v"><b>'+fq(x[2])+'</b>/14</span></button>'}).join('')
+   +(low.length>5?'<button class="sxmore" id="sxmore">'+(sxAll?'Réduire ▲':'Voir les '+(low.length-5)+' autres ▼')+'</button>':'')+'</div>':'<p class="sxok">✓ Tous tes muscles sont dans la zone conseillée</p>');
  // équilibre
  var sum=function(a){return a.reduce(function(s,g){return s+(c[g]||0)},0)};
  var bar=function(lab1,v1,lab2,v2){var tt=v1+v2,p=tt?Math.round(v1/tt*100):50,msg=!tt?'Pas encore de données':(p>60?'Plus de '+lab1.toLowerCase()+' que de '+lab2.toLowerCase():p<40?'Plus de '+lab2.toLowerCase()+' que de '+lab1.toLowerCase():'✓ Équilibré');
@@ -813,7 +822,8 @@ function renderStats(){var from=perFrom(),t=today(),cmp=per.u!=='all',r1=functio
  h+='<div class="sxs"><b>Records</b><span>'+(per.u==='c'?'nouveaux cette semaine':'nouveaux sur la période')+'</span></div>'
   +(recs.length?recs.map(function(o){return '<div class="sxr2"><div><b>'+esc(o.x)+'</b><span>'+fd(o.d).slice(0,5)+' · avant '+fq(o.p)+' kg</span></div><div><b>'+fq(o.w)+' kg</b><small class="up">▲ +'+fq(r1(o.w-o.p))+' kg</small></div></div>'}).join(''):'<p class="mu sxnone">Pas de nouveau record sur cette période.</p>');
  $('#sxl').innerHTML=h}
-$('#sxl').onclick=function(e){var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp,'list')};
+var sxAll=false;
+$('#sxl').onclick=function(e){if(e.target.closest('#sxmore')){sxAll=!sxAll;renderStats();return}var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp,'list')};
 var msxL=[];
 function msxData(g,from){var m={},o=[];data.entries.forEach(function(e){if((from&&e.d<from)||e.t==='w'||e.g==='cardio'||gsOf(e).indexOf(g)<0)return;var k=String(e.x).toLowerCase(),q=m[k];if(!q){q=m[k]={x:e.x,g:e.g,gs:e.gs,pri:priOf(e)===g,n:0,w:0,ws:{},mx:0,l:''};o.push(q)}var n=e.s||1;q.n+=n;q.w+=n*(priOf(e)===g?1:.5);q.rw=(q.rw||0)+n*(+e.r||0)*(priOf(e)===g?1:.5);q.ws[String(e.wk||('d'+e.d))]=1;q.mx=Math.max(q.mx,e.w||0);if(e.d>=q.l){q.l=e.d;q.x=e.x;q.g=e.g;q.gs=e.gs;q.pri=priOf(e)===g}});return o.sort(function(a,b){return b.w-a.w||b.n-a.n||a.x.localeCompare(b.x,'fr')})}
 function msxRow(q,i){var ns=Object.keys(q.ws).length;return '<button class="mxr" data-xi="'+i+'"><span class="mxp">'+thumb(q.x,q.g)+'</span><span class="mxt"><b>'+esc(q.x)+'</b><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span class="mxs"><i><b>'+q.n+'</b> série'+(q.n>1?'s':'')+'</i><i><b>'+ns+'</b> séance'+(ns>1?'s':'')+'</i>'+(q.mx?'<i>max <b>'+fq(q.mx)+' kg</b></i>':'')+'</span></span><span class="chev">›</span></button>'}
