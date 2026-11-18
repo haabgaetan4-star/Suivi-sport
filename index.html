@@ -505,8 +505,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 @keyframes stxin{0%{transform:translateY(-115%);opacity:0}30%{opacity:1}100%{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){#splash .stx img{animation:none}}
 #mus .mhero{display:flex;align-items:center;gap:14px;margin:0 0 14px}
-#mus .mfig{width:74px;height:auto;flex:none;margin:0!important}
-#mus .mfig .m{fill:transparent;stroke:#fff;stroke-width:3;stroke-opacity:.9}
+#mus .mfig{width:112px;height:112px;flex:none;overflow:hidden;margin:0!important;border-radius:18px;background:var(--card);border:1px solid var(--bd)}
+#mus .mfig .m{fill:transparent;stroke:#fff;stroke-width:2.2;stroke-opacity:.9}
 #mus .mfig .m.on{fill:var(--g2);fill-opacity:1}
 #mus .mhero h1{font-family:Oswald,"Avenir Next Condensed",sans-serif;font-size:28px;line-height:1.05;margin:0;text-transform:uppercase;letter-spacing:.02em;color:#fff}
 #mus .mhero p{margin:4px 0 0;color:var(--mu);font-size:13px}
@@ -654,7 +654,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 127</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 128</p>
  </div></div>
 </main>
 <script>
@@ -1203,6 +1203,10 @@ function renderMus(){var g=mg,es=mEntries(g),from=mFrom(),t=today(),nm=gl(g);$('
   return {s:'<svg class="spk" viewBox="0 0 64 22"><polyline points="'+pts+'" fill="none" stroke="#f0602c" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>',t:df>0?'<small class="up">▲ +'+fq(df)+' kg</small>':df<0?'<small class="dn">▼ '+fq(df)+' kg</small>':'<small class="eq">=</small>'}};
  h+='<div class="mcard"><div class="mh2"><b>Exercices</b><span>'+(all?'tout l’historique':perLabelM())+'</span></div>'+(L.length?'<div class="mlist2">'+L.map(function(q,i){var sp=spk(q.x);return '<button class="mxr2" data-xi="'+i+'"><span class="xp">'+thumb(q.x,q.g)+'</span><span class="xt"><b>'+esc(q.x)+'</b><span class="xm"><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span><b>'+q.n+'</b> série'+(q.n>1?'s':'')+(q.mx?' · max <b>'+fq(q.mx)+' kg</b>':'')+'</span></span></span><span class="xs">'+sp.s+sp.t+'</span></button>'}).join('')+'</div>':'<p class="mu">Aucun exercice enregistré pour ce muscle.</p>')+'</div>';
  $('#mbody').innerHTML=h;
+ // zoom de la mini-silhouette sur le muscle
+ try{var fg=$('#mbody .mfig'),on=fg.querySelectorAll('.m.on'),x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  [].forEach.call(on,function(el){var n=(el.getAttribute('d')||'').match(/-?\d+(?:\.\d+)?/g)||[];for(var i=0;i+1<n.length;i+=2){var x=+n[i],y=+n[i+1];if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}});
+  if(x1>x0){var cx=(x0+x1)/2,cy=(y0+y1)/2,sz=Math.max(x1-x0,y1-y0)*1.45+30;fg.setAttribute('viewBox',(cx-sz/2).toFixed(1)+' '+(cy-sz/2).toFixed(1)+' '+sz.toFixed(1)+' '+sz.toFixed(1))}}catch(x){}
  L.forEach(function(q,i){var k=pk2(q.x);if(ph[k])phGet(k).then(function(v){var im=document.querySelector('#mbody [data-xi="'+i+'"] .xp img');if(v&&im)im.src=v})});
 }
 function perLabelM(){return {c:'cette semaine',m:'30 derniers jours','3m':'3 derniers mois',all:'tout l’historique'}[mper]}
