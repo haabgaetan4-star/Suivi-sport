@@ -1,5 +1,5 @@
-const C = 'muscu-v121';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-v4-192.png', './icon-v4-512.png', './touch-v4.png', './splash-v2.png', './body-v5.png', './tab-train-white.png', './tab-prof-white.png', './tab-supp-white.png'];
+const C = 'muscu-v122';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-v5-192.png', './icon-v5-512.png', './touch-v5.png', './splash-v3.png', './body-v5.png', './tab-train-white.png', './tab-prof-white.png', './tab-supp-white.png'];
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(FILES.map(u => new Request(u, {cache: 'reload'}))))); });
 self.addEventListener('activate', e => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== C).map(x => caches.delete(x)))).then(() => self.clients.claim())));
 // Réseau d'abord (pour recevoir les mises à jour), cache en secours.
