@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-title" content="Focus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="touch-v5.png">
-<link rel="icon" href="icon-v5-192.png">
+<link rel="apple-touch-icon" href="touch-v6.png">
+<link rel="icon" href="icon-v6-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <title>Focus</title>
 <style>
@@ -194,9 +194,9 @@ html,html *{touch-action:pan-x pan-y}
 html{background:#0a0707}
 #splash{position:fixed;inset:0;z-index:10000;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .5s ease,visibility .5s}
 #splash::before{content:"";position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;background:linear-gradient(transparent,transparent);animation:splg 1.8s ease-in-out infinite alternate}
-#splash .lg{position:relative;width:230px;aspect-ratio:498/526;animation:spin .7s cubic-bezier(.2,.9,.3,1.2) both;transition:transform .5s ease,filter .5s ease}
+#splash .lg{position:relative;width:230px;aspect-ratio:498/396;animation:spin .7s cubic-bezier(.2,.9,.3,1.2) both;transition:transform .5s ease,filter .5s ease}
 #splash img{width:100%;height:100%;display:block}
-#splash .lg::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,transparent) 130% 0/260% 100% no-repeat;-webkit-mask:url(splash-v3.png) center/contain no-repeat;mask:url(splash-v3.png) center/contain no-repeat;mix-blend-mode:screen;animation:splsh 1.5s .55s ease-in-out infinite}
+#splash .lg::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,transparent) 130% 0/260% 100% no-repeat;-webkit-mask:url(splash-fig.png) center/contain no-repeat;mask:url(splash-fig.png) center/contain no-repeat;mix-blend-mode:screen;animation:splsh 1.5s .55s ease-in-out infinite}
 #splash.out{opacity:0;visibility:hidden;pointer-events:none}#splash.out .lg{transform:scale(1.14);filter:blur(5px)}
 @keyframes spin{from{opacity:0;transform:scale(.82) translateY(10px);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes splg{from{transform:scale(.85);opacity:.55}to{transform:scale(1.12);opacity:1}}
@@ -498,8 +498,14 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #p1 #exs .xh{padding-right:0}
 #p1 #exs .xh>div:nth-child(2)>b{padding-right:74px;font-size:16px;line-height:1.25}
 #p1 #exs .xh .rt{flex-wrap:nowrap;white-space:nowrap}
+#splash .lg{margin-top:-60px}
+#splash .lg .sfg{position:relative;z-index:2}
+#splash .stx{position:absolute;left:50%;top:93%;width:67%;transform:translateX(-50%);overflow:hidden;z-index:1;padding-top:6px}
+#splash .stx img{height:auto;animation:stxin .75s .5s cubic-bezier(.2,.85,.25,1) both}
+@keyframes stxin{0%{transform:translateY(-115%);opacity:0}30%{opacity:1}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){#splash .stx img{animation:none}}
 </style></head>
-<body><div id="splash"><div class="lg"><img src="splash-v3.png" alt=""></div></div>
+<body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
 <div id="glow"><i></i><i></i></div>
 <main>
@@ -582,7 +588,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 122</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 123</p>
  </div></div>
 </main>
 <script>
