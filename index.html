@@ -567,6 +567,9 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #mus .mxr2 .spk{width:64px;height:22px;margin:0!important}
 #mus .mxr2 small{font-size:11px;font-weight:700}
 #mus .mxr2 .up{color:#5fd38d}#mus .mxr2 .dn{color:#f2776b}#mus .mxr2 .eq{color:var(--mu)}
+#mus .mrec .mrv{margin-top:3px;font-size:12px}
+#mus .mrp{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none}
+#mus .mrp small{font-size:12px;color:var(--mu);white-space:nowrap}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -651,7 +654,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 126</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 127</p>
  </div></div>
 </main>
 <script>
@@ -831,7 +834,7 @@ function finish(mode){
  var ats=[];if(!cur.edit)cur.ex.forEach(function(o){if(o.ok&&o.at)ats.push(o.at);(o.sets||[]).forEach(function(t){if(t.ok&&t.at)ats.push(t.at)})});var d=ats.length?new Date(Math.min.apply(null,ats)).toLocaleDateString('sv-SE'):(cur.d||today()),n=0,nm=$('#wn').value.trim()||'Entraînement',du=cur.edit?cur.du:Math.round((Date.now()-cur.t0)/1000),wk=cur.edit?cur.wk:cur.t0;if(!cur.edit&&ats.length&&du>6*3600)du=Math.round((Math.max.apply(null,ats)-Math.min.apply(null,ats))/1000)+180;
  if(cur.edit){var ek=cur.edit;data.entries=data.entries.filter(function(e){return String(e.wk||('d'+e.d))!==ek})}
  cur.ex.forEach(function(o){if(o.g==='cardio'&&o.ok)data.entries.push({id:Date.now()+n++,d:d,x:o.x,s:1,r:0,w:0,g:'cardio',gs:o.gs,dur:durOf(o),wk:wk,wn:nm,du:du})});
- cur.ex.forEach(function(o){o.sets.forEach(function(s){if(s.ok){var en={id:Date.now()+n++,d:d,x:o.x,s:1,r:parseInt(s.r),w:num(s.w),g:o.g,gs:o.gs,wk:wk,wn:nm,du:du};if(s.t)en.t=s.t;data.entries.push(en)}})});
+ cur.ex.forEach(function(o){o.sets.forEach(function(s){if(s.ok){var en={id:Date.now()+n++,d:d,x:o.x,s:1,r:parseInt(s.r),w:num(s.w),g:o.g,gs:o.gs,wk:wk,wn:nm,du:du};if(s.t)en.t=s.t;if(s.at)en.at=s.at;data.entries.push(en)}})});
  if(mode==='r'&&cur.ex.length){var t={id:cur.rid||Date.now(),n:$('#wn').value.trim()||'Entraînement',ex:cur.ex.map(function(o){return{x:o.x,g:o.g,gs:o.gs,rest:o.rest||0,n:o.sets.length}})};data.routines=(data.routines||[]).filter(function(r){return r.id!==t.id});data.routines.push(t)}
  cur=null;saveCur();save();render();
 }
@@ -1177,9 +1180,16 @@ function renderMus(){var g=mg,es=mEntries(g),from=mFrom(),t=today(),nm=gl(g);$('
   +vals.map(function(v,i){return '<div class="wb"><i style="height:'+Math.max(v?4:2,Math.round(v/top*86))+'px" class="'+(i===11?'cur':v<ZMIN?'lo':'')+'"></i><span>'+(i%3===0||i===11?'S'+isoW(W12[i]):'')+'</span></div>'}).join('')+'</div>'
   +'<p class="mfoot">Moyenne '+fq(r1(avg))+' séries / semaine · '+(under?under+' semaine'+(under>1?'s':'')+' sous '+ZMIN:'toujours dans la zone')+'</p></div>';
  // dernière séance
- var last=null;es.forEach(function(e){if(!last||e.d>last.d)last=e});
- if(last){var dd=Math.round((new Date(t+'T12:00')-new Date(last.d+'T12:00'))/864e5),rec=dd>=2;
-  h+='<div class="mcard mrec"><div><span>Dernière séance</span><b>'+(dd===0?'aujourd’hui':dd===1?'hier':'il y a '+dd+' jours')+' · '+esc(last.wn||'Séance')+'</b></div><span class="mpill '+(rec?'ok':'wait')+'">'+(rec?'Récupéré':'En récupération')+'</span></div>'}
+ // dernière séance + récupération (en heures, selon le volume ; secondaire = ½)
+ var sess={};es.forEach(function(e){var k=String(e.wk||('d'+e.d)),o=sess[k]=sess[k]||{d:e.d,n:e.wn||'Séance',v:0,end:0,st:0};o.v+=wOf(e,g);
+  var wk=+e.wk,st=(wk>1e12)?wk:new Date(e.d+'T12:00').getTime(),en=e.at||((wk>1e12)?wk+(+e.du||0)*1000:st);o.st=o.st||st;o.end=Math.max(o.end,en);if(e.at||wk>1e12)o.real=1});
+ var last=null;Object.keys(sess).forEach(function(k){var o=sess[k];if(!last||o.end>last.end)last=o});
+ if(last){var now=Date.now(),need=last.v<6?24:last.v<=14?48:72,left=last.end+need*36e5-now,ago=now-last.end,rec=left<=0;
+  var hh=function(ms){var h=Math.round(ms/36e5);return h<1?'moins d’1 h':h<24?h+' h':Math.floor(h/24)+' j'+(h%24?' '+h%24+' h':'')};
+  var dd=Math.round((new Date(today()+'T12:00')-new Date(new Date(last.end).toLocaleDateString('sv-SE')+'T12:00'))/864e5);
+  var when=(dd===0?'aujourd’hui':dd===1?'hier':'il y a '+dd+' jours')+(last.real?' à '+new Date(last.end).getHours()+' h':'');
+  h+='<div class="mcard mrec"><div><span>Dernière séance</span><b>'+when+' · '+esc(last.n)+'</b><span class="mrv">'+fq(Math.round(last.v*10)/10)+' série'+(last.v>1?'s':'')+' comptée'+(last.v>1?'s':'')+' → '+need+' h de récupération</span></div>'
+   +'<div class="mrp"><span class="mpill '+(rec?'ok':'wait')+'">'+(rec?'Récupéré':'En récupération')+'</span><small>'+(rec?'depuis '+hh(-left):'prêt dans '+hh(left))+'</small></div></div>'}
  // records (toutes périodes)
  var R={};es.forEach(function(e){var k=String(e.x).toLowerCase(),o=R[k]=R[k]||{x:e.x,w:0,d:'',rm:0,n:0};o.n+=e.s||1;var w=+e.w||0;if(w>o.w||(w===o.w&&e.d<o.d)){o.w=w;o.d=e.d}o.rm=Math.max(o.rm,e1rm(w,+e.r||0))});
  var RL=Object.keys(R).map(function(k){return R[k]}).filter(function(o){return o.w>0}).sort(function(a,b){return b.n-a.n}).slice(0,4),wk7=new Date();wk7.setDate(wk7.getDate()-6);wk7=wk7.toLocaleDateString('sv-SE');
