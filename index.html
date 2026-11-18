@@ -607,6 +607,35 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #stx .sxmore{margin-top:4px;border:0;background:none;color:var(--mu);font:inherit;font-size:13px;padding:6px 0;text-align:center}
 #stx .sxsort{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:5px 11px;font:inherit;font-size:12px;font-weight:600;white-space:nowrap}
 #stx .sxcap{margin:-2px 0 6px;font-size:12px;color:var(--mu)}
+#rte{z-index:19;padding:0;align-items:stretch;justify-content:center;background:var(--bg)}
+#rte .box2{max-width:520px;max-height:none;height:100%;border:0;border-radius:0;background:var(--bg);padding:0 18px calc(24px + env(safe-area-inset-bottom,0px))}
+#rte .nwh{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 -18px 6px;padding:calc(10px + env(safe-area-inset-top,0px)) 10px 10px;background:var(--bg);border-bottom:1px solid var(--bd)}
+#rte .nwh b{flex:1;text-align:center;font-size:17px}
+#rte .nwh .del{position:static!important;width:38px;height:38px;font-size:20px;color:var(--tx)}
+#rte input#rten{width:100%}
+#rte .rteh{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 6px}
+#rte .rteh b{font-size:15px}#rte .rteh span{font-size:12px;color:var(--mu)}
+#rte .rtr{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--bd)}
+#rte .rtr:first-child{border-top:0}
+#rte .rtr .ph{width:52px;height:52px;flex:none;border-radius:12px}
+#rte .rtr .ph img{width:100%;height:100%;object-fit:cover}
+#rte .rtm{flex:1;min-width:0}
+#rte .rtm>b{display:block;font-size:14px;line-height:1.25}
+#rte .rtm>span{display:block;font-size:12px;color:var(--mu)}
+#rte .rtc2{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin-top:6px;font-size:12px}
+#rte .stp{display:inline-flex;align-items:center;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+#rte .stp button{width:30px;height:30px;border:0;background:var(--card);color:var(--tx);font-size:17px}
+#rte .stp b{min-width:26px;text-align:center;font-size:14px}
+#rte .rtc2 select{padding:6px 8px;border-radius:10px;font-size:13px;width:auto}
+#rte .rta{display:flex;flex-direction:column;gap:4px;flex:none}
+#rte .rta button{width:32px;height:30px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx);font-size:15px;display:flex;align-items:center;justify-content:center;padding:0}
+#rte .rta button:disabled{opacity:.3}
+#rte .rta .pen{width:16px;height:16px}
+#rte #rtea{margin-top:10px}
+#pick.rtmode{z-index:26}
+.rti{cursor:pointer}
+.rti .rted{display:inline-flex!important;align-items:center;gap:4px;margin-top:4px;font-size:12px!important;color:var(--g2)!important;font-weight:600}
+.rti .rted .pen{width:13px;height:13px;stroke:var(--g2);margin:0!important;display:inline-block}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -681,6 +710,14 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 <input type="file" accept="image/*" id="pf2" class="hide">
 <button id="pltbtn" class="hide" type="button" aria-label="Calculer avec les disques"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h3M19 12h3"/><rect x="5" y="4" width="4" height="16" rx="1.5"/><rect x="9.5" y="6.5" width="3" height="11" rx="1.2"/><path d="M12.5 12H19"/></svg><span>Disques</span></button>
 <div id="plt" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="pltc" aria-label="Fermer">✕</button><b>Disques</b><span style="width:34px"></span></div><p class="mu" id="pltt" style="text-align:center;margin:-4px 0 10px;font-size:13px"></p><div id="pltb2"></div></div></div>
+<div id="rte" class="ov hide"><div class="box2"><div class="nwh"><span style="width:38px"></span><b>Modifier la routine</b><button class="del" id="rtex" type="button" aria-label="Fermer">✕</button></div>
+ <label for="rten">Nom de la routine</label><input id="rten" autocomplete="off" placeholder="Ex. Push">
+ <div class="rteh"><b>Exercices</b><span id="rtec"></span></div><div id="rtel"></div>
+ <button class="sa" id="rtea" type="button">+ Ajouter un exercice</button>
+ <button class="add" id="rtes" type="button">Enregistrer la routine</button>
+ <button class="add gh2" id="rteg" type="button">▶ Démarrer cette routine</button>
+ <button class="sa" id="rted" type="button" style="color:#f2776b;margin-top:14px">Supprimer la routine</button>
+</div></div>
 <div id="exf" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="xfc" aria-label="Fermer">✕</button><b style="position:absolute;left:50%;transform:translateX(-50%)">Fiche exercice</b><button id="xfe" aria-label="Modifier"><svg class="pen" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button></div><div id="xfb"></div></div></div><div id="mfill"></div><div id="mus" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="mcl" aria-label="Fermer">✕</button><b id="mtt"></b><span style="width:34px"></span></div><div id="mbody"></div></div></div>
  <div id="set" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="scl" aria-label="Fermer">✕</button><b>Paramètres</b><span style="width:34px"></span></div>
 <div id="bkc"><p style="margin:4px 0 0;font-weight:600">Sauvegarde et import</p><p class="mu" style="font-size:13px;margin:4px 0 0">Sauvegarde tes entraînements dans un fichier, ou restaure-les sur un autre appareil.</p>
@@ -691,7 +728,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 131</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 132</p>
  </div></div>
 </main>
 <script>
@@ -880,7 +917,7 @@ async function savePh(){try{localStorage.setItem('muscu_ph',JSON.stringify(ph))}
 function prev(x){var lx=String(x).toLowerCase(),es=data.entries.filter(function(e){return String(e.x).toLowerCase()===lx}),l='',o=[];es.forEach(function(e){if(e.d>l)l=e.d});es.filter(function(e){return e.d===l}).forEach(function(e){for(var i=0;i<e.s;i++)o.push({w:e.w,r:e.r,t:e.t||''})});return o}
 function mkSets(x,n){var p=prev(x),a=[];for(var i=0;i<Math.max(n||p.length,1);i++)a.push({w:p[i]?p[i].w:'',r:p[i]?p[i].r:'',t:p[i]?p[i].t||'':'',ok:false});return a}
 function startW(t){cur={d:today(),t0:Date.now(),name:t?t.n:'Entraînement',rid:t?t.id:0,ex:t?t.ex.map(function(o){return o.g==='cardio'?{x:o.x,g:o.g,gs:o.gs,acc:0,st:0,ok:false,sets:[]}:{x:o.x,g:o.g,gs:o.gs,rest:o.rest,sets:mkSets(o.x,o.n)}}):[]};saveCur();render()}
-function renderRts(){var r=data.routines||[];$('#rts').innerHTML=r.length?r.map(function(t){return '<div class="card rtc"><div class="rti"><b>'+esc(t.n)+'</b><span>'+t.ex.map(function(o){return esc(o.x)}).join(', ')+'</span></div><button class="add rtb" data-sr="'+t.id+'">Démarrer</button><button class="del" data-dr="'+t.id+'" aria-label="Supprimer la routine">✕</button></div>'}).join(''):'<p class="mu">Aucune routine. Coche l’option à la fin d’un entraînement pour en créer une.</p>'}
+function renderRts(){var r=data.routines||[];$('#rts').innerHTML=r.length?r.map(function(t){return '<div class="card rtc"><div class="rti" data-rte="'+t.id+'" role="button" tabindex="0"><b>'+esc(t.n)+'</b><span>'+t.ex.map(function(o){return esc(o.x)}).join(', ')+'</span><span class="rted">'+PEN+' Modifier</span></div><button class="add rtb" data-sr="'+t.id+'">Démarrer</button><button class="del" data-dr="'+t.id+'" aria-label="Supprimer la routine">✕</button></div>'}).join(''):'<p class="mu">Aucune routine. Coche l’option à la fin d’un entraînement pour en créer une.</p>'}
 function renderLive(){
  $('#home').classList.toggle('hide',!!cur);$('#live').classList.toggle('hide',!cur);
  if(!cur){rend=0;$('#rest').classList.add('hide');return}
@@ -973,7 +1010,7 @@ $('#ordb').onclick=function(){if(!cur)return;renderOrd();$('#ord').classList.rem
 function closeOrd(){$('#ord').classList.add('hide');renderLive()}
 $('#ordc').onclick=closeOrd;$('#ordk').onclick=closeOrd;
 $('#ord').onclick=function(e){if(e.target===this){closeOrd();return}var b=e.target.closest('[data-ou],[data-od]');if(!b||!cur)return;var i=+(b.getAttribute('data-ou')||b.getAttribute('data-od')),j=b.getAttribute('data-ou')!==null?i-1:i+1;if(j<0||j>=cur.ex.length)return;var t=cur.ex[i];cur.ex[i]=cur.ex[j];cur.ex[j]=t;saveCur();renderOrd()};
-$('#rts').onclick=function(e){var s=e.target.getAttribute('data-sr'),r=e.target.getAttribute('data-dr');if(s){startW((data.routines||[]).filter(function(t){return String(t.id)===s})[0])}else if(r){data.routines=data.routines.filter(function(t){return String(t.id)!==r});save();renderRts()}};
+$('#rts').onclick=function(e){var q=e.target.closest('[data-rte]');if(q){openRte(q.getAttribute('data-rte'));return}var s=e.target.getAttribute('data-sr'),r=e.target.getAttribute('data-dr');if(s){startW((data.routines||[]).filter(function(t){return String(t.id)===s})[0])}else if(r){data.routines=data.routines.filter(function(t){return String(t.id)!==r});save();renderRts()}};
 $('#exs').oninput=function(e){var t=e.target;if(t.getAttribute('data-cm')!==null){cur.ex[t.getAttribute('data-cm')].min=t.value;saveCur();return}var i=t.getAttribute('data-i');if(i===null)return;cur.ex[i].sets[t.getAttribute('data-j')][t.getAttribute('data-f')]=t.value;saveCur()};
 
 
@@ -1127,7 +1164,7 @@ function renderPick(){plib=libList();if(!plib.length){$('#plist').innerHTML='<p 
  var q=nrm($('#psr').value);['h','b','o'].forEach(function(z){var r=plib.map(function(o,i){if(q&&nrm(o.x+' '+gsOf(o).map(function(g){var n=GR.filter(function(x){return x[0]===g})[0];return n?n[1]:g}).join(' ')).indexOf(q)<0)return '';return zone(o.g)===z?pRow(o,i):''}).join('');if(r)h+='<div class="day" style="display:flex;align-items:center;gap:6px;text-transform:none;font-weight:700">'+zi(z)+' '+T[z]+'</div>'+r});
  $('#plist').innerHTML=h||'<p class="mu">Aucun exercice trouvé.</p>'}
 function nrm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
-var pmode='add';function setPT(){$('#pick .sh b').textContent=pmode==='mgr'?'Mes exercices':'Choisir un exercice'}
+var pmode='add';function setPT(){$('#pick .sh b').textContent=pmode==='mgr'?'Mes exercices':pmode==='rt'?'Ajouter à la routine':'Choisir un exercice'}
 function openPick(){if(!cur)return;pmode='add';setPT();pdel=-1;$('#psr').value='';renderPick();$('#pick').classList.remove('hide')}
 function openMgr(){pmode='mgr';setPT();pdel=-1;$('#psr').value='';renderPick();$('#pick').classList.remove('hide')}
 function renderMex(){var n=libList().length;$('#mex').textContent='Gérer mes exercices ('+n+')'}
@@ -1168,9 +1205,36 @@ $('#plist').onclick=function(e){
  if(ed){pdel=-1;openNew(plib[+ed.getAttribute('data-pe')]);return}
  if(!r)return;
  if(pmode==='mgr'){pdel=-1;openExF(plib[+r.getAttribute('data-pi')]);return}
+ if(pmode==='rt'){pdel=-1;var po=plib[+r.getAttribute('data-pi')];if(rte){rte.ex.push(po.g==='cardio'?{x:po.x,g:po.g,gs:po.gs,rest:0,n:1}:{x:po.x,g:po.g,gs:po.gs,rest:RESTS.indexOf(po.rest)>=0?po.rest:120,n:3});renderRte()}$('#pick').classList.add('hide');$('#pick').classList.remove('rtmode');return}
  pdel=-1;addEx(plib[+r.getAttribute('data-pi')]);$('#pick').classList.add('hide')};
-$('#pick').onclick=function(e){if(e.target===this)this.classList.add('hide')};
-$('#pcl').onclick=function(){$('#pick').classList.add('hide')};
+$('#pick').onclick=function(e){if(e.target===this){this.classList.add('hide');this.classList.remove('rtmode')}};
+/* ---- Édition d'une routine ---- */
+var rte=null;
+function openRte(id){var t=(data.routines||[]).filter(function(r){return String(r.id)===String(id)})[0];if(!t)return;rte=JSON.parse(JSON.stringify(t));$('#rten').value=rte.n||'';$('#rted').textContent='Supprimer la routine';renderRte();$('#rte').classList.remove('hide');$('#rte .box2').scrollTop=0}
+function renderRte(){var L=rte.ex;$('#rtec').textContent=L.length+' exercice'+(L.length>1?'s':'');
+ $('#rtel').innerHTML=L.length?L.map(function(o,i){var card=o.g==='cardio';return '<div class="rtr"><div class="ph">'+thumb(o.x,o.g)+'</div><div class="rtm"><b>'+esc(o.x)+'</b><span>'+gls(o)+'</span>'
+  +(card?'':'<div class="rtc2"><span class="stp"><button type="button" data-rm="'+i+'" aria-label="Une série de moins">−</button><b>'+(o.n||1)+'</b><button type="button" data-rp="'+i+'" aria-label="Une série de plus">+</button></span><span class="mu">série'+((o.n||1)>1?'s':'')+'</span>'
+  +'<select data-rr="'+i+'" aria-label="Temps de repos">'+RESTS.map(function(r){return '<option value="'+r+'"'+(r===(RESTS.indexOf(o.rest)>=0?o.rest:120)?' selected':'')+'>⏱ '+fmtR(r)+'</option>'}).join('')+'</select></div>')
+  +'</div><div class="rta"><button type="button" data-ru="'+i+'" aria-label="Monter"'+(i?'':' disabled')+'>↑</button><button type="button" data-rd="'+i+'" aria-label="Descendre"'+(i<L.length-1?'':' disabled')+'>↓</button><button type="button" data-rx2="'+i+'" aria-label="Retirer">'+XIC+'</button></div></div>'}).join(''):'<p class="mu">Aucun exercice. Ajoute-en avec le bouton ci-dessous.</p>'}
+$('#rtel').onclick=function(e){var b=e.target.closest('button');if(!b||!rte)return;var L=rte.ex,a=function(k){return b.getAttribute(k)},i;
+ if((i=a('data-rm'))!==null)L[+i].n=Math.max(1,(L[+i].n||1)-1);
+ else if((i=a('data-rp'))!==null)L[+i].n=Math.min(20,(L[+i].n||1)+1);
+ else if((i=a('data-ru'))!==null&&+i>0){var t=L[+i];L[+i]=L[+i-1];L[+i-1]=t}
+ else if((i=a('data-rd'))!==null&&+i<L.length-1){var t2=L[+i];L[+i]=L[+i+1];L[+i+1]=t2}
+ else if((i=a('data-rx2'))!==null)L.splice(+i,1);
+ else return;renderRte()};
+$('#rtel').onchange=function(e){var i=e.target.getAttribute('data-rr');if(i!==null&&rte)rte.ex[+i].rest=+e.target.value};
+$('#rtea').onclick=function(){pmode='rt';setPT();pdel=-1;$('#psr').value='';renderPick();$('#pick').classList.add('rtmode');$('#pick').classList.remove('hide')};
+function closeRte(){$('#rte').classList.add('hide');rte=null}
+$('#rtex').onclick=closeRte;
+$('#rtes').onclick=function(){if(!rte)return;var n=$('#rten').value.trim();if(!n){toast('Donne un nom à la routine');return}if(!rte.ex.length){toast('Ajoute au moins un exercice');return}
+ rte.n=n;data.routines=(data.routines||[]).map(function(r){return String(r.id)===String(rte.id)?rte:r});save();renderRts();closeRte();toast('Routine enregistrée')};
+$('#rteg').onclick=function(){if(!rte)return;if(cur){toast('Termine d’abord l’entraînement en cours');return}var n=$('#rten').value.trim();if(n)rte.n=n;
+ data.routines=(data.routines||[]).map(function(r){return String(r.id)===String(rte.id)?rte:r});save();var t=rte;closeRte();show(1);startW(t)};
+$('#rted').onclick=function(){if(!rte)return;if(this.textContent!=='Confirmer la suppression'){this.textContent='Confirmer la suppression';return}
+ data.routines=(data.routines||[]).filter(function(r){return String(r.id)!==String(rte.id)});save();renderRts();closeRte();toast('Routine supprimée')};
+
+$('#pcl').onclick=function(){$('#pick').classList.add('hide');$('#pick').classList.remove('rtmode')};
 $('#pnew').onclick=function(){openNew()};
 $('#nx').onclick=function(){$('#nw').classList.add('hide')};
 $('#ncl').onclick=function(){$('#nw').classList.add('hide')};
