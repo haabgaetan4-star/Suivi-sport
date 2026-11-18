@@ -605,6 +605,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #stx .sxlr .v{text-align:right;font-size:12px;color:var(--mu);white-space:nowrap}
 #stx .sxlr .v b{font-size:14px;color:var(--tx)}
 #stx .sxmore{margin-top:4px;border:0;background:none;color:var(--mu);font:inherit;font-size:13px;padding:6px 0;text-align:center}
+#stx .sxsort{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:5px 11px;font:inherit;font-size:12px;font-weight:600;white-space:nowrap}
+#stx .sxcap{margin:-2px 0 6px;font-size:12px;color:var(--mu)}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -689,7 +691,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 130</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 131</p>
  </div></div>
 </main>
 <script>
@@ -804,8 +806,8 @@ function renderStats(){var from=perFrom(),t=today(),cmp=per.u!=='all',r1=functio
  // muscles à travailler (moyenne par semaine sous 14)
  var c={};data.entries.forEach(function(e){if(e.d<from||e.t==='w'||e.g==='cardio')return;gwOf(e).forEach(function(q){c[q[0]]=(c[q[0]]||0)+(e.s||1)*q[1]})});
  var nwk=per.u==='c'?1:Math.max(1,(new Date(t+'T12:00')-new Date(from+'T12:00'))/864e5/7+1/7);
- var low=GR.filter(function(x){return x[0]!=='cardio'&&x[0]!=='autre'}).map(function(x){return [x[0],x[1],r1((c[x[0]]||0)/nwk)]}).filter(function(x){return x[2]<14}).sort(function(a,b){return a[2]-b[2]});
- h+='<div class="sxs"><b>Muscles à travailler</b><span>'+(per.u==='c'?'séries cette semaine':'séries / semaine en moyenne')+'</span></div>'
+ var low=GR.filter(function(x){return x[0]!=='cardio'&&x[0]!=='autre'}).map(function(x){return [x[0],x[1],r1((c[x[0]]||0)/nwk)]}).filter(function(x){return x[2]<14}).sort(function(a,b){return sxDesc?b[2]-a[2]:a[2]-b[2]});
+ h+='<div class="sxs"><b>Muscles à travailler</b><button class="sxsort" id="sxsort" aria-label="Changer le tri">'+(sxDesc?'Plus → moins ▼':'Moins → plus ▲')+'</button></div><p class="sxcap">'+(per.u==='c'?'Séries cette semaine':'Séries par semaine en moyenne')+', objectif 14</p>'
   +(low.length?'<div class="sxlow">'+low.map(function(x,i){return '<button class="sxlr'+(i>=5&&!sxAll?' hide':'')+'" data-sxg="'+x[0]+'"><span class="n">'+x[1]+'</span><span class="b"><i style="width:'+Math.round(x[2]/14*100)+'%"></i></span><span class="v"><b>'+fq(x[2])+'</b>/14</span></button>'}).join('')
    +(low.length>5?'<button class="sxmore" id="sxmore">'+(sxAll?'Réduire ▲':'Voir les '+(low.length-5)+' autres ▼')+'</button>':'')+'</div>':'<p class="sxok">✓ Tous tes muscles sont dans la zone conseillée</p>');
  // équilibre
@@ -822,8 +824,8 @@ function renderStats(){var from=perFrom(),t=today(),cmp=per.u!=='all',r1=functio
  h+='<div class="sxs"><b>Records</b><span>'+(per.u==='c'?'nouveaux cette semaine':'nouveaux sur la période')+'</span></div>'
   +(recs.length?recs.map(function(o){return '<div class="sxr2"><div><b>'+esc(o.x)+'</b><span>'+fd(o.d).slice(0,5)+' · avant '+fq(o.p)+' kg</span></div><div><b>'+fq(o.w)+' kg</b><small class="up">▲ +'+fq(r1(o.w-o.p))+' kg</small></div></div>'}).join(''):'<p class="mu sxnone">Pas de nouveau record sur cette période.</p>');
  $('#sxl').innerHTML=h}
-var sxAll=false;
-$('#sxl').onclick=function(e){if(e.target.closest('#sxmore')){sxAll=!sxAll;renderStats();return}var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp,'list')};
+var sxAll=false,sxDesc=false;
+$('#sxl').onclick=function(e){if(e.target.closest('#sxsort')){sxDesc=!sxDesc;renderStats();return}if(e.target.closest('#sxmore')){sxAll=!sxAll;renderStats();return}var b=e.target.closest('[data-sxg]');if(!b)return;grp=b.getAttribute('data-sxg');openMus(grp,'list')};
 var msxL=[];
 function msxData(g,from){var m={},o=[];data.entries.forEach(function(e){if((from&&e.d<from)||e.t==='w'||e.g==='cardio'||gsOf(e).indexOf(g)<0)return;var k=String(e.x).toLowerCase(),q=m[k];if(!q){q=m[k]={x:e.x,g:e.g,gs:e.gs,pri:priOf(e)===g,n:0,w:0,ws:{},mx:0,l:''};o.push(q)}var n=e.s||1;q.n+=n;q.w+=n*(priOf(e)===g?1:.5);q.rw=(q.rw||0)+n*(+e.r||0)*(priOf(e)===g?1:.5);q.ws[String(e.wk||('d'+e.d))]=1;q.mx=Math.max(q.mx,e.w||0);if(e.d>=q.l){q.l=e.d;q.x=e.x;q.g=e.g;q.gs=e.gs;q.pri=priOf(e)===g}});return o.sort(function(a,b){return b.w-a.w||b.n-a.n||a.x.localeCompare(b.x,'fr')})}
 function msxRow(q,i){var ns=Object.keys(q.ws).length;return '<button class="mxr" data-xi="'+i+'"><span class="mxp">'+thumb(q.x,q.g)+'</span><span class="mxt"><b>'+esc(q.x)+'</b><em class="'+(q.pri?'rp">Principal':'rs">Secondaire')+'</em><span class="mxs"><i><b>'+q.n+'</b> série'+(q.n>1?'s':'')+'</i><i><b>'+ns+'</b> séance'+(ns>1?'s':'')+'</i>'+(q.mx?'<i>max <b>'+fq(q.mx)+' kg</b></i>':'')+'</span></span><span class="chev">›</span></button>'}
