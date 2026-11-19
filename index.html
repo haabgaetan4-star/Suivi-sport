@@ -654,6 +654,14 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 @keyframes slnin{to{transform:scaleX(1)}}
 #splash.out .lg{transform:translateY(-16px) scale(1.03)!important;filter:none!important;opacity:0}
 @media (prefers-reduced-motion:reduce){#splash .lg .sfg,#splash .stx img,#splash .stx .sln{animation:none!important;transform:none;opacity:1}}
+#plt .pbars{display:flex;align-items:center;gap:10px;padding:12px 0 4px;border-top:1px solid var(--bd)}
+#plt .pbars>span{font-size:14px;color:var(--mu);flex:none}
+#plt .pbars>div{display:flex;flex-wrap:wrap;gap:6px}
+#plt .pbars button{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:7px 11px;font:inherit;font-size:13px;font-weight:600}
+#plt .pbars button em{font-style:normal;font-weight:400;color:var(--mu);font-size:12px}
+#plt .pbars button.on{background:var(--g2);border-color:var(--g2);color:#fff}
+#plt .pbars button.on em{color:#fff}
+#plt .pbars+.pmain{border-top:0}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"><i class="sln"></i></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -748,7 +756,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 136</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 137</p>
  </div></div>
 </main>
 <script>
@@ -990,21 +998,24 @@ function pltViz(c){var a=[];Object.keys(c.p).map(Number).sort(function(x,y){retu
   o+='<rect x="'+px+'" y="'+(cy-h/2)+'" width="'+t+'" height="'+h+'" rx="2.5" fill="'+pltCol(w)+'" stroke="#000" stroke-opacity=".45" stroke-width="1"/>'
    +'<rect x="'+(px+1.6)+'" y="'+(cy-h/2+5)+'" width="1.4" height="'+(h-10)+'" rx=".7" fill="#fff" fill-opacity=".28"/>';return dir<0?px-1:px+t+1};
  // barre : manchons, butées, partie centrale moletée
- o+='<rect x="8" y="'+(cy-5)+'" width="'+(W-16)+'" height="10" rx="3" fill="#8d9298"/>'
+ if(c.bar==='ez'){o+='<rect x="8" y="'+(cy-5)+'" width="'+(W/2-52)+'" height="10" rx="3" fill="#8d9298"/><rect x="'+(W/2+44)+'" y="'+(cy-5)+'" width="'+(W/2-52)+'" height="10" rx="3" fill="#8d9298"/>'
+  +'<path d="M'+(W/2-44)+' '+cy+' L'+(W/2-30)+' '+(cy-9)+' L'+(W/2-14)+' '+(cy+7)+' L'+(W/2)+' '+(cy-2)+' L'+(W/2+14)+' '+(cy+7)+' L'+(W/2+30)+' '+(cy-9)+' L'+(W/2+44)+' '+cy+'" fill="none" stroke="#b7bcc1" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>'}
+ else{o+='<rect x="8" y="'+(cy-5)+'" width="'+(W-16)+'" height="10" rx="3" fill="#8d9298"/>'
   +'<rect x="'+(W/2-44)+'" y="'+(cy-3)+'" width="88" height="6" rx="2" fill="#b7bcc1"/>';
- for(var k=W/2-40;k<W/2+40;k+=4)o+='<rect x="'+k+'" y="'+(cy-3)+'" width="1.2" height="6" fill="#8d9298"/>';
+ for(var k=W/2-40;k<W/2+40;k+=4)o+='<rect x="'+k+'" y="'+(cy-3)+'" width="1.2" height="6" fill="#8d9298"/>'}
  o+='<rect x="'+(W/2-52)+'" y="'+(cy-15)+'" width="8" height="30" rx="2" fill="#c9cdd1"/><rect x="'+(W/2+44)+'" y="'+(cy-15)+'" width="8" height="30" rx="2" fill="#c9cdd1"/>';
  var xl=W/2-53,xr=W/2+53;L.slice(0,M).forEach(function(w){xl=pl(xl,w,-1)});R.slice(0,M).forEach(function(w){xr=pl(xr,w,1)});
  if(a.length){o+='<rect x="'+(xl-6)+'" y="'+(cy-9)+'" width="6" height="18" rx="1.5" fill="#5f646a"/><rect x="'+(xr)+'" y="'+(cy-9)+'" width="6" height="18" rx="1.5" fill="#5f646a"/>'}
  if(L.length>M)o+='<text x="12" y="'+(cy+44)+'" font-size="11" fill="#9a9aa2">+'+(L.length-M)+'</text>';
  if(R.length>M)o+='<text x="'+(W-12)+'" y="'+(cy+44)+'" font-size="11" fill="#9a9aa2" text-anchor="end">+'+(R.length-M)+'</text>';
  return '<div class="pviz">'+(a.length?'':'<span class="pempty mu">Ajoute des disques avec +</span>')+'<svg viewBox="0 0 '+W+' 116" role="img" aria-label="Barre chargée">'+o+'</svg></div>'}
-function pltUpd(){var c=plt.c,t=pltTot(c),dp=0;Object.keys(c.p).forEach(function(w){dp+=num(w)*c.p[w]});if(c.two)dp*=2;var bb=num(c.b)||0;$('#pltdet').textContent=bb?fq(dp)+' kg de disques + '+fq(bb)+' kg de machine à vide':'';$('#pltv').innerHTML=pltViz(c);$('#pltsum').textContent=fq(t)+' kg';$('#pltok').textContent='Valider '+fq(t)+' kg'}
+function pltUpd(){var c=plt.c,t=pltTot(c),dp=0;Object.keys(c.p).forEach(function(w){dp+=num(w)*c.p[w]});if(c.two)dp*=2;var bb=num(c.b)||0;$('#pltdet').textContent=bb?fq(dp)+' kg de disques + '+fq(bb)+' kg '+({olympique:'de barre olympique',femme:'de barre femme',ez:'de barre EZ'}[c.bar]||'de machine à vide'):'';$('#pltv').innerHTML=pltViz(c);$('#pltsum').textContent=fq(t)+' kg';$('#pltok').textContent='Valider '+fq(t)+' kg'}
 function renderPlt(){var c=plt.c,ws=PLD.slice().filter(function(w,i,a){return w>0&&a.indexOf(w)===i}).sort(function(x,y){return y-x});
  $('#pltb2').innerHTML='<div id="pltv"></div>'
   +'<div class="ptot"><span>Total</span><b id="pltsum"></b></div><p class="mu pdet" id="pltdet"></p>'
   +ws.map(function(w){var n=c.p[w]||0;return '<div class="prow'+(n?' on':'')+'"><span class="pw"><i style="background:'+pltCol(w)+'"></i>'+fq(w)+' kg</span><button type="button" data-pm="'+w+'" aria-label="Retirer un disque de '+fq(w)+' kg">−</button><b>'+n+'</b><button type="button" data-pp="'+w+'" aria-label="Ajouter un disque de '+fq(w)+' kg">+</button></div>'}).join('')
-  +'<label class="pfield pmain">Poids de la machine à vide<span><input id="pltb" inputmode="decimal" value="'+(num(c.b)?fq(num(c.b)):'')+'" placeholder="0"><em>kg</em></span></label>'
+  +'<div class="pbars"><span>Barre</span><div>'+[['machine','Machine',null],['olympique','Olympique',20],['femme','Femme',15],['ez','EZ',10]].map(function(x){return '<button type="button" data-bar="'+x[0]+'" class="'+((c.bar||'machine')===x[0]?'on':'')+'">'+x[1]+(x[2]?' <em>'+x[2]+' kg</em>':'')+'</button>'}).join('')+'</div></div>'
+  +'<label class="pfield pmain">'+((c.bar&&c.bar!=='machine')?'Poids de la barre':'Poids de la machine à vide')+'<span><input id="pltb" inputmode="decimal" value="'+(num(c.b)?fq(num(c.b)):'')+'" placeholder="0"><em>kg</em></span></label>'
   
   +'<button class="add" type="button" id="pltok"></button><button class="add gh2" type="button" id="pltr">Remettre à zéro</button>';
  pltUpd()}
@@ -1013,6 +1024,8 @@ $('#plt').onclick=function(e){if(e.target===this){this.classList.add('hide');ret
 
  if(e.target.closest('#pltr')){c.p={};renderPlt();return}
  if(e.target.closest('#pltok')){var t=pltTot(c),o=cur&&cur.ex[plt.i];if(!o||!o.sets[plt.j]){this.classList.add('hide');return}o.sets[plt.j].w=fq(t);data.plates=data.plates||{};data.plates[plt.x.toLowerCase()]=c;save();saveCur();renderLive();this.classList.add('hide');toast(fq(t)+' kg')}};
+var PBW={olympique:20,femme:15,ez:10};
+$('#plt').addEventListener('click',function(e){var b=e.target.closest('[data-bar]');if(!b||!plt)return;var k=b.getAttribute('data-bar'),c=plt.c;if((c.bar||'machine')==='machine'&&k!=='machine')c.mb=num(c.b)||0;c.bar=k;c.b=k==='machine'?(c.mb||0):PBW[k];renderPlt()});
 $('#plt').addEventListener('input',function(e){if(!plt)return;if(e.target.id==='pltb'){plt.c.b=num(e.target.value)||0;pltUpd()}});
 $('#plt').addEventListener('change',function(e){if(plt&&e.target.id==='pltd'){plt.c.two=e.target.checked;pltUpd()}});
 $('#pltc').onclick=function(){$('#plt').classList.add('hide')};
