@@ -640,6 +640,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 .rtc{gap:2px!important;padding-right:4px!important}
 .rtc .rti{margin-right:8px}
 #p1 .rtc .rtb{margin-right:4px!important}
+#sordb{display:block;width:100%;margin-top:12px;padding:12px}
+#sord .orr .ph{width:38px;height:38px;display:flex;align-items:center;justify-content:center}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -675,6 +677,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 <section id="p3" class="hide">
  <div class="card" id="sday"></div>
  <div id="sgrid"></div>
+ <button class="sa" id="sordb" type="button">⇅ Changer l’ordre des compléments</button>
 </section>
 
 <section id="p2" class="hide">
@@ -700,6 +703,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  <div style="display:flex;gap:8px"><label class="fl" style="flex:1">Quantité par prise<input id="sqt" inputmode="decimal" placeholder="30"></label><label class="fl" style="flex:1">Unité<select id="sun"><option>g</option><option>mg</option><option>ml</option><option>gélule(s)</option><option>dose(s)</option><option>comprimé(s)</option></select></label></div>
  <label class="fl">Objectif par jour (nombre de prises)<select id="sgo"><option value="1">1 prise</option><option value="2">2 prises</option><option value="3">3 prises</option><option value="4">4 prises</option></select></label>
  <button class="add" id="ssv">Enregistrer</button><button class="add gh2" id="scn">Annuler</button><button class="sa" id="sdl" style="color:#f2776b;margin-top:10px">Supprimer ce complément</button></div></div>
+<div id="sord" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="sordc" aria-label="Fermer">✕</button><b>Ordre des compléments</b><span style="width:34px"></span></div><div id="sordl"></div><button class="add" id="sordk" style="margin-top:12px">Terminé</button></div></div>
 <div id="ord" class="ov hide"><div class="sheet"><div class="sh"><button class="del" id="ordc" aria-label="Fermer">✕</button><b>Ordre des exercices</b><span style="width:34px"></span></div><div id="ordl"></div><button class="add" id="ordk" style="margin-top:12px">Terminé</button></div></div>
 <div id="stm" class="ov hide"><div class="sheet"><div class="sh" style="justify-content:center"><b>Type de série</b></div><button data-ty=""><i>1</i><span><b>Normale</b>Compte dans tes statistiques</span></button><button data-ty="w"><i class="w">É</i><span><b>Échauffement</b>Ne compte pas dans les statistiques ni les records</span></button><button data-ty="d"><i class="d">D</i><span><b>Dégressive</b>Série enchaînée avec moins de poids</span></button><button data-ty="f"><i class="f">F</i><span><b>Jusqu’à l’échec</b>Série poussée au maximum</span></button><button data-sx="1" class="sx"><i>✕</i><span><b>Supprimer cette série</b></span></button></div></div><div id="nw" class="ov hide"><div class="box2"><div class="nwh"><span style="width:38px"></span><b id="nt">Nouvel exercice</b><button class="del" id="nx" type="button" aria-label="Fermer">✕</button></div>
   <div class="nph" id="nph">📷<br>Photo</div>
@@ -732,7 +736,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 134</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 135</p>
  </div></div>
 </main>
 <script>
@@ -1028,7 +1032,12 @@ function supWeek(){var d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));va
 function supLogs(id){return data.supLog.filter(function(l){return l.s===id}).sort(function(a,b){return (b.d+b.t)<(a.d+a.t)?-1:1})}
 function dRel(d){var t=today(),y=new Date();y.setDate(y.getDate()-1);y=y.toLocaleDateString('sv-SE');return d===t?'aujourd’hui':d===y?'hier':'le '+d.slice(8,10)+'/'+d.slice(5,7)}
 function supStreak(id){var ds={};data.supLog.forEach(function(l){if(l.s===id)ds[l.d]=1});var d=new Date(),n=0;if(!ds[today()])d.setDate(d.getDate()-1);while(ds[d.toLocaleDateString('sv-SE')]){n++;d.setDate(d.getDate()-1)}return n}
-function renderSup(){supInit();var t=today(),wk=supWeek(),J=['L','M','M','J','V','S','D'];
+function renderSOrd(){var L=data.sup,n=L.length;$('#sordl').innerHTML=L.map(function(o,i){return '<div class="orr"><div class="ph">'+supIc(o,30)+'</div><b>'+esc(o.n)+'</b><button data-su="'+i+'" aria-label="Monter"'+(i?'':' disabled')+'>↑</button><button data-sd="'+i+'" aria-label="Descendre"'+(i<n-1?'':' disabled')+'>↓</button></div>'}).join('')}
+$('#sordb').onclick=function(){renderSOrd();$('#sord').classList.remove('hide')};
+function closeSOrd(){$('#sord').classList.add('hide');save();renderSup()}
+$('#sordc').onclick=closeSOrd;$('#sordk').onclick=closeSOrd;
+$('#sord').onclick=function(e){if(e.target===this){closeSOrd();return}var b=e.target.closest('[data-su],[data-sd]');if(!b)return;var up=b.getAttribute('data-su')!==null,i=+(up?b.getAttribute('data-su'):b.getAttribute('data-sd')),j=up?i-1:i+1,L=data.sup;if(j<0||j>=L.length)return;var t=L[i];L[i]=L[j];L[j]=t;renderSOrd()};
+function renderSup(){supInit();$('#sordb').style.display=data.sup.length>1?'':'none';var t=today(),wk=supWeek(),J=['L','M','M','J','V','S','D'];
  var done=data.sup.filter(function(o){return data.supLog.filter(function(l){return l.s===o.id&&l.d===t}).length>=(o.go||1)}).length;
  $('#sday').innerHTML='<div class="sdy"><div><b>Aujourd’hui</b><span>'+(data.sup.length?done+' sur '+data.sup.length+' complément'+(data.sup.length>1?'s':'')+' pris':'Aucun complément')+'</span></div><div class="sdp"><i style="width:'+(data.sup.length?Math.round(done/data.sup.length*100):0)+'%"></i></div></div>';
  $('#sgrid').innerHTML=data.sup.map(function(o){var L=supLogs(o.id),td=L.filter(function(l){return l.d===t}),tq=0;td.forEach(function(l){tq+=l.q});var ok=td.length>=(o.go||1),ds={};L.forEach(function(l){ds[l.d]=1});
