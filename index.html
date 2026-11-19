@@ -670,6 +670,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #exs .srdel{position:absolute;right:0;top:2px;bottom:2px;width:70px;border:0;border-radius:8px;background:#d64545;color:#fff;display:flex;align-items:center;justify-content:center;visibility:hidden}
 #exs .srw.sw .srdel,#exs .srw.open .srdel{visibility:visible}
 #exs .srdel .pen{stroke:#fff;width:22px;height:22px}
+#plist .pcnt{display:block;font-style:normal;font-size:12px;color:var(--mu);margin-top:1px}
+#plist .pcnt.never{color:#e0b532;font-weight:600}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"><i class="sln"></i></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -764,7 +766,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 140</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 141</p>
  </div></div>
 </main>
 <script>
@@ -1225,10 +1227,11 @@ var plib=[],npx='',pdel=-1,ned=null,nedN='',nedG='',openW={},dw='';
 function libList(){var m={};(data.lib||[]).forEach(function(o){m[o.x.toLowerCase()]=o});data.entries.forEach(function(e){var k=e.x.toLowerCase();if(!m[k])m[k]={x:e.x,g:e.g||'autre',gs:e.gs,rest:120}});(data.routines||[]).forEach(function(t){t.ex.forEach(function(o){var k=o.x.toLowerCase();if(!m[k])m[k]={x:o.x,g:o.g||'autre',gs:o.gs,rest:o.rest||120}})});return Object.keys(m).map(function(k){return m[k]}).filter(function(o){return (data.hid||[]).indexOf(o.x.toLowerCase())<0}).sort(function(a,b){return a.x.localeCompare(b.x,'fr')})}
 function zone(g){return ['quads','addu','ischios','fessiers','mollets'].indexOf(g)>=0?'b':(g==='cardio'||g==='autre'||!g)?'o':'h'}
 function zi(z){if(z==='o')return '❤️';var a='var(--ac)',n='var(--mu)',u=z==='h'?a:n,d=z==='b'?a:n,o=z==='h'?1:.35,o2=z==='b'?1:.35;return '<svg width="16" height="22" viewBox="0 0 20 28" style="width:16px;height:22px;max-width:16px;display:inline-block;vertical-align:-5px" aria-hidden="true"><g fill="'+u+'" opacity="'+o+'"><circle cx="10" cy="4" r="3.2"/><rect x="5" y="8" width="10" height="9" rx="2.5"/><rect x="1.5" y="8.5" width="3" height="9" rx="1.5"/><rect x="15.5" y="8.5" width="3" height="9" rx="1.5"/></g><g fill="'+d+'" opacity="'+o2+'"><rect x="5.5" y="18" width="4" height="10" rx="2"/><rect x="10.5" y="18" width="4" height="10" rx="2"/></g></svg>'}
-function pRow(o,i){return '<div class="it ex" data-pi="'+i+'"><div class="xh" style="flex:1"><div class="ph" style="cursor:inherit">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span>'+gls(o)+'</span></div></div><button class="del" data-pe="'+i+'" aria-label="Modifier">'+PEN+'</button><button class="del" data-pd="'+i+'" aria-label="Supprimer"'+(pdel===i?' style="color:#e03131;font-size:13px;font-weight:700"':'')+'>'+(pdel===i?'Supprimer ?':'✕')+'</button></div>'}
+var pCnt={};
+function pRow(o,i){var n=pCnt[o.x.toLowerCase()]||0;return '<div class="it ex" data-pi="'+i+'"><div class="xh" style="flex:1"><div class="ph" style="cursor:inherit">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span>'+gls(o)+'</span><em class="pcnt'+(n?'':' never')+'">'+(n?n+' séance'+(n>1?'s':''):'Jamais fait')+'</em></div></div><button class="del" data-pe="'+i+'" aria-label="Modifier">'+PEN+'</button><button class="del" data-pd="'+i+'" aria-label="Supprimer"'+(pdel===i?' style="color:#e03131;font-size:13px;font-weight:700"':'')+'>'+(pdel===i?'Supprimer ?':'✕')+'</button></div>'}
 function exFreq(){var d=new Date();d.setDate(d.getDate()-90);var lim=d.toLocaleDateString('sv-SE'),R={},A={};
  data.entries.forEach(function(e){var k=String(e.x).toLowerCase(),w=String(e.wk||('d'+e.d));(A[k]=A[k]||{})[w]=1;if(e.d>=lim)(R[k]=R[k]||{})[w]=1});
- var f={};Object.keys(A).forEach(function(k){f[k]=(R[k]?Object.keys(R[k]).length:0)*1000+Object.keys(A[k]).length});return f}
+ var f={};pCnt={};Object.keys(A).forEach(function(k){pCnt[k]=Object.keys(A[k]).length;f[k]=(R[k]?Object.keys(R[k]).length:0)*1000+pCnt[k]});return f}
 function renderPick(){plib=libList();if(!plib.length){$('#plist').innerHTML='<p class="mu">Aucun exercice pour l’instant. Appuie sur + pour en créer un.</p>';return}
  var T={h:'Haut du corps',b:'Bas du corps',o:'Cardio et autres'},h='',F=exFreq(),sc=function(o){return F[o.x.toLowerCase()]||0};
  var q=nrm($('#psr').value),hd=function(ic,t){return '<div class="day" style="display:flex;align-items:center;gap:6px;text-transform:none;font-weight:700">'+ic+' '+t+'</div>'};
