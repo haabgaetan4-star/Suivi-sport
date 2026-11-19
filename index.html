@@ -642,38 +642,20 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #p1 .rtc .rtb{margin-right:4px!important}
 #sordb{display:block;width:100%;margin-top:12px;padding:12px}
 #sord .orr .ph{width:38px;height:38px;display:flex;align-items:center;justify-content:center}
-/* Ouverture : le personnage monte et « soulève », FOCUS sort de derrière, un trait orange se trace */
+/* Ouverture : apparition du personnage (comme avant), FOCUS glisse de derrière lui avec un léger rebond */
 #splash::before,#splash .lg::after{display:none!important;animation:none!important}
-#splash{transition:opacity .45s ease .05s,visibility .5s}
-#splash .lg{animation:none!important;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .4s ease!important}
-#splash .lg .sfg{animation:sfin 1s cubic-bezier(.16,1,.3,1) .1s both}
-@keyframes sfin{0%{opacity:0;transform:translateY(28px) scale(.9);filter:blur(6px)}55%{opacity:1;filter:blur(0)}72%{transform:translateY(-7px) scale(1.01)}100%{opacity:1;transform:none;filter:blur(0)}}
-#splash .stx{padding-bottom:12px}
-#splash .stx img{animation:stxin .7s .6s cubic-bezier(.2,.85,.25,1) both!important}
-#splash .stx .sln{display:block;height:3px;width:56px;margin:9px auto 0;border-radius:2px;background:#f0602c;transform:scaleX(0);animation:slnin .45s 1.15s cubic-bezier(.3,.9,.3,1) both}
-@keyframes slnin{to{transform:scaleX(1)}}
-#splash.out .lg{transform:translateY(-16px) scale(1.03)!important;filter:none!important;opacity:0}
-@media (prefers-reduced-motion:reduce){#splash .lg .sfg,#splash .stx img,#splash .stx .sln{animation:none!important;transform:none;opacity:1}}
-#plt .pbars{display:flex;align-items:center;gap:10px;padding:12px 0 4px;border-top:1px solid var(--bd)}
-#plt .pbars>span{font-size:14px;color:var(--mu);flex:none}
-#plt .pbars>div{display:flex;flex-wrap:wrap;gap:6px}
-#plt .pbars button{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:7px 11px;font:inherit;font-size:13px;font-weight:600}
-#plt .pbars button em{font-style:normal;font-weight:400;color:var(--mu);font-size:12px}
-#plt .pbars button.on{background:var(--g2);border-color:var(--g2);color:#fff}
-#plt .pbars button.on em{color:#fff}
-#plt .pbars+.pmain{border-top:0}
-#pltbtn{position:absolute!important;right:auto!important;z-index:6!important;padding:6px 11px 6px 9px!important;font-size:13px!important;box-shadow:0 4px 12px rgba(0,0,0,.5)!important}
-#pltbtn svg{width:18px!important;height:18px!important}
-#exs .srw{position:relative;overflow:hidden;border-radius:8px;touch-action:pan-y}
-#exs .srw>.sr{position:relative;z-index:1;background:var(--card);transition:transform .22s cubic-bezier(.2,.8,.2,1);will-change:transform}
-#exs .srw>.sr.ok{background:#1d2e22}
-#exs .srdel{position:absolute;right:0;top:2px;bottom:2px;width:70px;border:0;border-radius:8px;background:#d64545;color:#fff;display:flex;align-items:center;justify-content:center;visibility:hidden}
-#exs .srw.sw .srdel,#exs .srw.open .srdel{visibility:visible}
-#exs .srdel .pen{stroke:#fff;width:22px;height:22px}
-#plist .pcnt{display:block;font-style:normal;font-size:12px;color:var(--mu);margin-top:1px}
-#plist .pcnt.never{color:#e0b532;font-weight:600}
+#splash .lg .sfg{animation:none}
+#splash .stx{padding-bottom:4px}
+#splash .stx .sln{display:none}
+#splash .stx img{animation:stxin2 .95s .55s cubic-bezier(.22,1,.36,1) both!important}
+@keyframes stxin2{0%{transform:translateY(-120%) scale(.96);opacity:0;filter:blur(4px)}
+ 35%{opacity:1}
+ 70%{transform:translateY(5%) scale(1);filter:blur(0)}
+ 85%{transform:translateY(-1.5%)}
+ 100%{transform:none;opacity:1;filter:none}}
+@media (prefers-reduced-motion:reduce){#splash .stx img{animation:none!important;transform:none;opacity:1}}
 </style></head>
-<body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"><i class="sln"></i></div></div></div>
+<body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
 <div id="glow"><i></i><i></i></div>
 <main>
@@ -766,7 +748,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 141</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 142</p>
  </div></div>
 </main>
 <script>
