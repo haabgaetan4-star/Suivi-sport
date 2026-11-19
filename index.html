@@ -662,6 +662,8 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #plt .pbars button.on{background:var(--g2);border-color:var(--g2);color:#fff}
 #plt .pbars button.on em{color:#fff}
 #plt .pbars+.pmain{border-top:0}
+#pltbtn{position:absolute!important;right:auto!important;z-index:6!important;padding:6px 11px 6px 9px!important;font-size:13px!important;box-shadow:0 4px 12px rgba(0,0,0,.5)!important}
+#pltbtn svg{width:18px!important;height:18px!important}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"><i class="sln"></i></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -756,7 +758,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 137</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 138</p>
  </div></div>
 </main>
 <script>
@@ -1029,13 +1031,17 @@ $('#plt').addEventListener('click',function(e){var b=e.target.closest('[data-bar
 $('#plt').addEventListener('input',function(e){if(!plt)return;if(e.target.id==='pltb'){plt.c.b=num(e.target.value)||0;pltUpd()}});
 $('#plt').addEventListener('change',function(e){if(plt&&e.target.id==='pltd'){plt.c.two=e.target.checked;pltUpd()}});
 $('#pltc').onclick=function(){$('#plt').classList.add('hide')};
-// bouton « Disques » au-dessus du clavier quand on touche un champ kg
-(function(){var bt=$('#pltbtn'),vv=window.visualViewport,ht=0;
- function place(){if(bt.classList.contains('hide'))return;var h=vv?vv.height:innerHeight,top=(vv?vv.offsetTop:0)+h-bt.offsetHeight-10;if(!vv||h>innerHeight-80)top=innerHeight-bt.offsetHeight-150;bt.style.top=Math.round(top)+'px'}
- $('#exs').addEventListener('focusin',function(e){var t=e.target;if(t.tagName!=='INPUT'||t.getAttribute('data-f')!=='w')return;var ox=cur&&cur.ex[+t.getAttribute('data-i')];if(!ox||noPl(ox.x)){bt.classList.add('hide');return}clearTimeout(ht);pltT={i:+t.getAttribute('data-i'),j:+t.getAttribute('data-j')};bt.classList.remove('hide');place();setTimeout(place,250);setTimeout(place,600)});
- $('#exs').addEventListener('focusout',function(){clearTimeout(ht);ht=setTimeout(function(){var a=document.activeElement;if(!(a&&a.getAttribute&&a.getAttribute('data-f')==='w'))bt.classList.add('hide')},180)});
- if(vv){vv.addEventListener('resize',place);vv.addEventListener('scroll',place)}
- function go(e){e.preventDefault();if(!pltT)return;var t=pltT;try{document.activeElement.blur()}catch(x){}bt.classList.add('hide');openPlt(t.i,t.j)}
+// bouton « Disques » : posé sur la colonne « Précédent » de la série en cours de saisie.
+// Il est placé dans la zone qui défile (main), donc il reste collé à la ligne même quand le clavier s'ouvre.
+(function(){var bt=$('#pltbtn'),ht=0,cur_t=null,M=document.querySelector('main');M.appendChild(bt);
+ function place(){if(bt.classList.contains('hide')||!cur_t||!cur_t.isConnected)return;var row=cur_t.closest('.sr'),cell=row&&row.children[1];if(!cell)return;
+  var r=cell.getBoundingClientRect(),m=M.getBoundingClientRect();
+  bt.style.left=Math.round(r.left-m.left+M.scrollLeft+(r.width-bt.offsetWidth)/2)+'px';bt.style.top=Math.round(r.top-m.top+M.scrollTop+(r.height-bt.offsetHeight)/2)+'px'}
+ $('#exs').addEventListener('focusin',function(e){var t=e.target;if(t.tagName!=='INPUT'||t.getAttribute('data-f')!=='w')return;var ox=cur&&cur.ex[+t.getAttribute('data-i')];if(!ox||noPl(ox.x)){bt.classList.add('hide');return}
+  clearTimeout(ht);cur_t=t;pltT={i:+t.getAttribute('data-i'),j:+t.getAttribute('data-j')};bt.classList.remove('hide');place();requestAnimationFrame(place)});
+ $('#exs').addEventListener('focusout',function(){clearTimeout(ht);ht=setTimeout(function(){var a=document.activeElement;if(!(a&&a.getAttribute&&a.getAttribute('data-f')==='w')){bt.classList.add('hide');cur_t=null}},180)});
+ window.addEventListener('resize',place);
+ function go(e){e.preventDefault();if(!pltT)return;var t=pltT;try{document.activeElement.blur()}catch(x){}bt.classList.add('hide');cur_t=null;openPlt(t.i,t.j)}
  bt.addEventListener('pointerdown',go);bt.addEventListener('click',function(e){e.preventDefault()})})();
 
 function renderOrd(){var n=cur?cur.ex.length:0;$('#ordl').innerHTML=n?cur.ex.map(function(o,i){return '<div class="orr"><div class="ph">'+thumb(o.x,o.g)+'</div><b>'+esc(o.x)+'</b><button data-ou="'+i+'" aria-label="Monter"'+(i?'':' disabled')+'>↑</button><button data-od="'+i+'" aria-label="Descendre"'+(i<n-1?'':' disabled')+'>↓</button></div>'}).join(''):'<p class="mu">Aucun exercice.</p>'}
