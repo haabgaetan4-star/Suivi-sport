@@ -664,6 +664,12 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 #plt .pbars+.pmain{border-top:0}
 #pltbtn{position:absolute!important;right:auto!important;z-index:6!important;padding:6px 11px 6px 9px!important;font-size:13px!important;box-shadow:0 4px 12px rgba(0,0,0,.5)!important}
 #pltbtn svg{width:18px!important;height:18px!important}
+#exs .srw{position:relative;overflow:hidden;border-radius:8px;touch-action:pan-y}
+#exs .srw>.sr{position:relative;z-index:1;background:var(--card);transition:transform .22s cubic-bezier(.2,.8,.2,1);will-change:transform}
+#exs .srw>.sr.ok{background:#1d2e22}
+#exs .srdel{position:absolute;right:0;top:2px;bottom:2px;width:70px;border:0;border-radius:8px;background:#d64545;color:#fff;display:flex;align-items:center;justify-content:center;visibility:hidden}
+#exs .srw.sw .srdel,#exs .srw.open .srdel{visibility:visible}
+#exs .srdel .pen{stroke:#fff;width:22px;height:22px}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"><i class="sln"></i></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -758,7 +764,7 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 138</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 139</p>
  </div></div>
 </main>
 <script>
@@ -955,7 +961,7 @@ function renderLive(){
  $('#ordb').style.display=cur.ex.length>1?'':'none';$('#exs').innerHTML=cur.ex.map(function(o,i){if(o.g==='cardio')return cardioCard(o,i);var pv=prev(o.x);if(RESTS.indexOf(o.rest)<0)o.rest=120;
   return '<div class="card"><div class="xh"><div class="ph" data-p="'+esc(o.x)+'">'+thumb(o.x,o.g)+'</div><div><b>'+esc(o.x)+'</b><span class="mu">'+gls(o)+'</span><div class="rt">⏱ Repos :<select data-rs="'+i+'">'+RESTS.map(function(r){return '<option value="'+r+'"'+(r===o.rest?' selected':'')+'>'+fmtR(r)+'</option>'}).join('')+'</select></div></div><button class="del" data-xe="'+i+'" aria-label="Modifier l’exercice">'+PEN+'</button><button class="del" data-rx="'+i+'" aria-label="Retirer l’exercice">'+XIC+'</button></div>'
   +'<div class="sr h"><span>SÉRIE</span><span>PRÉCÉDENT</span><span>KG</span><span>REPS</span><span></span></div>'
-  +o.sets.map(function(s,j){var nb=0;for(var q=0;q<=j;q++)if(!o.sets[q].t||o.sets[q].t==='')nb++;var lab=s.t==='w'?'É':s.t==='d'?'D':s.t==='f'?'F':nb;return '<div class="sr'+(s.ok?' ok':'')+(s.t?' ty-'+s.t:'')+'"><button class="sn" data-st="'+i+'-'+j+'" aria-label="Type de série">'+lab+'</button><span class="mu">'+(pv[j]?pv[j].w+' kg × '+pv[j].r:'–')+'</span><input data-f="w" data-i="'+i+'" data-j="'+j+'" inputmode="decimal" value="'+esc(s.w)+'"><input data-f="r" data-i="'+i+'" data-j="'+j+'" inputmode="numeric" value="'+esc(s.r)+'"><button class="ck" data-ck="'+i+'-'+j+'">✓</button></div>'}).join('')
+  +o.sets.map(function(s,j){var nb=0;for(var q=0;q<=j;q++)if(!o.sets[q].t||o.sets[q].t==='')nb++;var lab=s.t==='w'?'É':s.t==='d'?'D':s.t==='f'?'F':nb;return '<div class="srw"><button class="srdel" type="button" data-sdel="'+i+'-'+j+'" aria-label="Supprimer cette série">'+XIC+'</button><div class="sr'+(s.ok?' ok':'')+(s.t?' ty-'+s.t:'')+'"><button class="sn" data-st="'+i+'-'+j+'" aria-label="Type de série">'+lab+'</button><span class="mu">'+(pv[j]?pv[j].w+' kg × '+pv[j].r:'–')+'</span><input data-f="w" data-i="'+i+'" data-j="'+j+'" inputmode="decimal" value="'+esc(s.w)+'"><input data-f="r" data-i="'+i+'" data-j="'+j+'" inputmode="numeric" value="'+esc(s.r)+'"><button class="ck" data-ck="'+i+'-'+j+'">✓</button></div></div>'}).join('')
   +'<div style="display:flex;gap:8px"><button class="sa" data-as="'+i+'" style="width:50%;font-size:13px">+ Ajouter une série</button><button class="sa" data-ds="'+i+'" style="width:50%;font-size:13px;color:#e03131">− Supprimer une série</button></div></div>';
  }).join('');
 }
@@ -988,6 +994,23 @@ $('#rm').onclick=function(){if(rend)rend-=30000};
 $('#rp').onclick=function(){if(rend)rend+=30000};
 $('#exs').onchange=function(e){var i=e.target.getAttribute('data-rs');if(i===null)return;cur.ex[i].rest=+e.target.value;saveCur()};
 $('#addx').onclick=openPick;
+/* ---- Glisser une série vers la gauche pour la supprimer ---- */
+(function(){var W=74,sx=0,sy=0,row=null,wrap=null,dx=0,mode=0,base=0;
+ function closeAll(ex){document.querySelectorAll('#exs .srw.open').forEach(function(w){if(w!==ex){w.classList.remove('open');w.querySelector('.sr').style.transform=''}})}
+ var E=$('#exs');
+ E.addEventListener('touchstart',function(e){var w=e.target.closest('.srw');if(!w||e.target.closest('.srdel'))return;wrap=w;row=w.querySelector('.sr');sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;mode=0;base=w.classList.contains('open')?-W:0;closeAll(w)},{passive:true});
+ E.addEventListener('touchmove',function(e){if(!row)return;var x=e.touches[0].clientX-sx,y=e.touches[0].clientY-sy;
+  if(!mode){if(Math.abs(x)<8&&Math.abs(y)<8)return;mode=Math.abs(x)>Math.abs(y)*1.2?1:2}
+  if(mode!==1)return;dx=Math.max(-W-24,Math.min(0,base+x));wrap.classList.add('sw');row.style.transition='none';row.style.transform='translateX('+dx+'px)'},{passive:true});
+ function end(){if(!row)return;if(mode===1){row.style.transition='';var open=dx<-W/2;wrap.classList.toggle('open',open);row.style.transform=open?'translateX(-'+W+'px)':'';if(!open)setTimeout(function(w){return function(){if(!w.classList.contains('open'))w.classList.remove('sw')}}(wrap),220);
+   try{document.activeElement&&document.activeElement.blur&&mode===1&&document.activeElement.closest&&document.activeElement.closest('.srw')===wrap&&document.activeElement.blur()}catch(x){}}
+  row=null;wrap=null;mode=0}
+ E.addEventListener('touchend',end);E.addEventListener('touchcancel',end);
+ document.addEventListener('touchstart',function(e){if(!e.target.closest('#exs .srw'))closeAll(null)},{passive:true});
+ E.addEventListener('click',function(e){var b=e.target.closest('[data-sdel]');if(!b)return;e.stopPropagation();var p=b.getAttribute('data-sdel').split('-'),o=cur&&cur.ex[+p[0]];if(!o)return;
+  if(o.sets.length<=1){toast('Il faut garder au moins une série (utilise la croix en haut pour retirer l’exercice)');closeAll(null);return}
+  o.sets.splice(+p[1],1);saveCur();renderLive();toast('Série supprimée')},true);
+})();
 /* ---- Calculateur de disques ---- */
 var PLD=[25,20,15,10,5,2.5,1.25],PLC={25:'#d63e3e',20:'#3a6fd8',15:'#e0b532',10:'#3fa35b',5:'#e8e8e8','2.5':'#c0392b','1.25':'#9aa0a6'},plt=null,pltT=null;
 function pltCol(w){return PLC[String(w)]||'#8a8a8a'}
