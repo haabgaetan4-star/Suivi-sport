@@ -662,6 +662,25 @@ h1 #ttl{background:none;color:var(--g2);-webkit-text-fill-color:var(--g2)}
 body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
 @keyframes zin{from{transform:scale(1.18);filter:blur(12px);opacity:0}to{transform:none;filter:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){#splash.out .lg{animation:none!important;opacity:0}body.zin main,body.zin .tabs{animation:none}}
+/* styles rétablis (perdus en v142) */
+#plt .pbars{display:flex;align-items:center;gap:10px;padding:12px 0 4px;border-top:1px solid var(--bd)}
+#plt .pbars>span{font-size:14px;color:var(--mu);flex:none}
+#plt .pbars>div{display:flex;flex-wrap:wrap;gap:6px}
+#plt .pbars button{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:7px 11px;font:inherit;font-size:13px;font-weight:600}
+#plt .pbars button em{font-style:normal;font-weight:400;color:var(--mu);font-size:12px}
+#plt .pbars button.on{background:var(--g2);border-color:var(--g2);color:#fff}
+#plt .pbars button.on em{color:#fff}
+#plt .pbars+.pmain{border-top:0}
+#pltbtn{position:absolute!important;right:auto!important;z-index:6!important;padding:6px 11px 6px 9px!important;font-size:13px!important;box-shadow:0 4px 12px rgba(0,0,0,.5)!important}
+#pltbtn svg{width:18px!important;height:18px!important}
+#exs .srw{position:relative;overflow:hidden;border-radius:8px;touch-action:pan-y}
+#exs .srw>.sr{position:relative;z-index:1;background:var(--card);transition:transform .22s cubic-bezier(.2,.8,.2,1);will-change:transform}
+#exs .srw>.sr.ok{background:#1d2e22}
+#exs .srdel{position:absolute;right:0;top:2px;bottom:2px;width:70px;border:0;border-radius:8px;background:#d64545;color:#fff;display:flex;align-items:center;justify-content:center;visibility:hidden}
+#exs .srw.sw .srdel,#exs .srw.open .srdel{visibility:visible}
+#exs .srdel .pen{stroke:#fff;width:22px;height:22px}
+#plist .pcnt{display:block;font-style:normal;font-size:12px;color:var(--mu);margin-top:1px}
+#plist .pcnt.never{color:#e0b532;font-weight:600}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -756,7 +775,7 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 143</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 144</p>
  </div></div>
 </main>
 <script>
