@@ -1,7 +1,7 @@
 const C = 'muscu-v144';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-v6-192.png', './icon-v6-512.png', './touch-v6.png', './splash-fig.png', './splash-txt.png', './body-v5.png', './tab-train-white.png', './tab-prof-white.png', './tab-supp-white.png'];
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(FILES.map(u => new Request(u, {cache: 'reload'}))))); });
-self.addEventListener('activate', e => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== C).map(x => caches.delete(x)))).then(() => self.clients.claim())));
+self.addEventListener('activate', e => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x.startsWith('muscu-') && x !== C).map(x => caches.delete(x)))).then(() => self.clients.claim())));
 // Réseau d'abord (pour recevoir les mises à jour), cache en secours.
 // Si le réseau ne répond pas en 3 s (wifi de salle faible), on sert la version en cache.
 self.addEventListener('fetch', e => {
