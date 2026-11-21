@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b4f73">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Garage">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="touch.png">
+<link rel="icon" href="icon-192.png">
+<title>Garage</title>
+<style>
+:root{--bg:#f2f4f6;--card:#fff;--tx:#14171a;--mu:#68707a;--ac:#0b5f8a;--ac2:#e6f0f6;--bd:#e0e4e8;--red:#c62828;--redb:#fdecec;--amb:#b45f06;--ambb:#fdf2e3;--grn:#2e7d32;--grnb:#e9f5ea;--nd:#8a9199;--ndb:#eef0f2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1014;--card:#171b20;--tx:#f1f3f5;--mu:#98a1ab;--ac:#4aa3d8;--ac2:#14293a;--bd:#2a3038;--red:#ef6b6b;--redb:#3a1a1c;--amb:#f0a64a;--ambb:#38281a;--grn:#6cc070;--grnb:#1a2e1c;--nd:#8a9199;--ndb:#22272d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1014;--card:#171b20;--tx:#f1f3f5;--mu:#98a1ab;--ac:#4aa3d8;--ac2:#14293a;--bd:#2a3038;--red:#ef6b6b;--redb:#3a1a1c;--amb:#f0a64a;--ambb:#38281a;--grn:#6cc070;--grnb:#1a2e1c;--nd:#8a9199;--ndb:#22272d;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(100px + env(safe-area-inset-bottom,0px))}
+h1{font-size:26px;margin:6px 0 14px;letter-spacing:-.3px}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.6px;color:var(--mu);margin:22px 0 8px;font-weight:700}
+button{font:inherit;color:inherit;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
+.veh{display:flex;align-items:center;gap:12px;cursor:pointer}
+.veh .ic{font-size:30px;width:52px;height:52px;border-radius:14px;background:var(--ac2);display:flex;align-items:center;justify-content:center;flex:none}
+.veh .bd{flex:1;min-width:0}
+.veh b{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mu{color:var(--mu)}.sm{font-size:13px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pill{font-size:12px;font-weight:700;padding:3px 8px;border-radius:99px}
+.p-retard{background:var(--redb);color:var(--red)}.p-bientot{background:var(--ambb);color:var(--amb)}.p-ok{background:var(--grnb);color:var(--grn)}.p-nd{background:var(--ndb);color:var(--nd)}
+.btn{display:block;width:100%;padding:13px;border:0;border-radius:12px;background:var(--ac);color:#fff;font-weight:700;text-align:center}
+.btn.sec{background:var(--card);color:var(--ac);border:1px solid var(--bd)}
+.btn.dng{background:none;color:var(--red);border:1px solid var(--bd)}
+.btn+.btn{margin-top:8px}
+.top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.back{border:0;background:none;color:var(--ac);font-weight:600;padding:6px 0;font-size:16px}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.hero h1{margin:0}
+.km{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.kmb{border:1px solid var(--bd);background:var(--card);color:var(--ac);border-radius:10px;padding:8px 10px;font-size:14px;font-weight:600;white-space:nowrap}
+.seg{display:flex;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:3px;margin:16px 0 12px;position:sticky;top:calc(6px + env(safe-area-inset-top,0px));z-index:3}
+.seg button{flex:1;border:0;background:none;padding:8px 2px;border-radius:9px;font-size:14px;color:var(--mu);font-weight:600}
+.seg button.on{background:var(--ac);color:#fff}
+.due{display:flex;gap:12px;align-items:center;padding:12px 14px;border-left:4px solid var(--nd)}
+.due.retard{border-left-color:var(--red)}.due.bientot{border-left-color:var(--amb)}.due.ok{border-left-color:var(--grn)}
+.due .bd{flex:1;min-width:0}.due b{display:block}
+.due .when{font-size:13px;color:var(--mu);margin-top:2px}
+.due .when strong{color:var(--tx);font-weight:600}
+.retard .when strong{color:var(--red)}.bientot .when strong{color:var(--amb)}
+.done{border:1px solid var(--bd);background:var(--bg);border-radius:10px;padding:8px 10px;font-size:13px;font-weight:700;color:var(--ac);flex:none}
+.bar{height:5px;border-radius:3px;background:var(--bd);margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--grn)}
+.bientot .bar i{background:var(--amb)}.retard .bar i{background:var(--red)}
+.year{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 8px}
+.year b{font-size:18px}
+.ent{cursor:pointer}
+.ent .l1{display:flex;justify-content:space-between;gap:8px}
+.ent .ops{margin-top:4px;font-weight:600}
+.ent .cost{font-weight:700;white-space:nowrap}
+.pl{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 0;border-top:1px solid var(--bd);cursor:pointer}
+.pl:first-child{border-top:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stats b{display:block;font-size:19px}.stats span{font-size:12px;color:var(--mu)}
+.kv{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--bd)}.kv:first-child{border-top:0}
+.empty{text-align:center;color:var(--mu);padding:28px 10px}
+.empty .big{font-size:44px}
+.fab{position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:5;border:0;border-radius:99px;background:var(--ac);color:#fff;font-weight:700;padding:15px 20px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+/* feuille modale */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .2s}
+.ov.in{opacity:1}
+.sh{background:var(--card);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(30px);transition:transform .2s}
+.ov.in .sh{transform:none}
+.sh h3{margin:0 0 14px;font-size:20px}
+label{display:block;font-size:13px;color:var(--mu);margin:12px 0 4px;font-weight:600}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit;font-size:16px}
+textarea{min-height:64px;resize:vertical}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g2 label{margin-top:12px}
+.chk{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+.chk label{margin:0;display:flex;gap:8px;align-items:center;padding:9px 10px;border:1px solid var(--bd);border-radius:10px;color:var(--tx);font-weight:500;font-size:14px;cursor:pointer;background:var(--bg)}
+.chk input{width:auto;margin:0;accent-color:var(--ac)}
+.chk label.on{border-color:var(--ac);background:var(--ac2)}
+.tseg{display:flex;gap:8px}
+.tseg button{flex:1;padding:12px;border:1px solid var(--bd);background:var(--bg);border-radius:10px;font-weight:600}
+.tseg button.on{border-color:var(--ac);background:var(--ac2);color:var(--ac)}
+.acts{margin-top:18px}
+.hint{font-size:12px;color:var(--mu);margin-top:4px}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.in{opacity:1}
+.foot{margin-top:28px}
+.foot .row{display:flex;gap:8px}.foot .row .btn{margin:0}
+.vname{font-size:12px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+</style>
+</head><body>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+<input type="file" id="file" accept="application/json,.json" hidden>
+<script>
+'use strict';
+const KEY = 'garage';
+const $ = s => document.querySelector(s);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+const pd = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+const addMonths = (s, n) => { const d = pd(s); const day = d.getDate(); d.setDate(1); d.setMonth(d.getMonth()+n); const last = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); d.setDate(Math.min(day, last)); return iso(d); };
+const daysBetween = (a, b) => Math.round((pd(b) - pd(a)) / 864e5);
+const fdate = s => s ? pd(s).toLocaleDateString('fr-FR', {day:'numeric', month:'short', year:'numeric'}) : '';
+const fkm = n => Math.round(n).toLocaleString('fr-FR') + ' km';
+const feur = n => (Number(n)||0).toLocaleString('fr-FR', {style:'currency', currency:'EUR', maximumFractionDigits: (Number(n)%1 ? 2 : 0)});
+const num = v => { const n = parseFloat(String(v).replace(/\s/g,'').replace(',', '.')); return isFinite(n) ? n : null; };
+
+/* ---------- Plans d'entretien par défaut (indicatifs, à adapter au carnet constructeur) ---------- */
+const DEF = {
+  voiture: [
+    ['Vidange + filtre à huile', 15000, 12],
+    ['Filtre à air', 30000, 24],
+    ['Filtre d\'habitacle', 15000, 12],
+    ['Filtre à carburant', 60000, 48],
+    ['Bougies', 60000, 48],
+    ['Liquide de frein', null, 24],
+    ['Plaquettes de frein', 30000, null],
+    ['Disques de frein', 60000, null],
+    ['Pneus', 40000, 60],
+    ['Courroie de distribution', 120000, 72],
+    ['Liquide de refroidissement', null, 48],
+    ['Recharge climatisation', null, 24],
+    ['Batterie', null, 60],
+    ['Balais d\'essuie-glace', null, 12],
+    ['Contrôle technique', null, 24, 48],
+  ],
+  moto: [
+    ['Vidange + filtre à huile', 6000, 12],
+    ['Graissage chaîne', 800, null],
+    ['Kit chaîne', 20000, null],
+    ['Filtre à air', 12000, 24],
+    ['Bougies', 12000, 24],
+    ['Liquide de frein', null, 24],
+    ['Plaquettes de frein', 10000, null],
+    ['Pneu avant', 12000, 60],
+    ['Pneu arrière', 8000, 60],
+    ['Jeu aux soupapes', 24000, null],
+    ['Liquide de refroidissement', null, 24],
+    ['Batterie', null, 48],
+    ['Contrôle technique', null, 36, 60],
+  ],
+};
+const defPlan = type => DEF[type].map(([nom, km, mois, premier]) => ({id: uid(), nom, km, mois, premier: premier || null}));
+
+/* ---------- Données ---------- */
+let D = {vehicles: [], entries: []};
+try { const j = JSON.parse(localStorage.getItem(KEY) || 'null'); if (j && Array.isArray(j.vehicles)) D = j; } catch (e) {}
+D.entries = D.entries || [];
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { toast('Enregistrement impossible sur cet appareil'); } };
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+
+const veh = id => D.vehicles.find(v => v.id === id);
+const entriesOf = vid => D.entries.filter(e => e.vid === vid).sort((a, b) => b.date.localeCompare(a.date) || (b.km||0) - (a.km||0));
+const curKm = v => Math.max(v.km || 0, ...entriesOf(v.id).map(e => e.km || 0));
+
+// Relevés kilométriques (pour estimer le rythme de roulage)
+function readings(v) {
+  const r = (v.releves || []).slice();
+  entriesOf(v.id).forEach(e => { if (e.km) r.push({date: e.date, km: e.km}); });
+  return r.filter(x => x.date && x.km != null).sort((a, b) => a.date.localeCompare(b.date) || a.km - b.km);
+}
+function kmPerDay(v) {
+  const r = readings(v);
+  if (r.length < 2) return null;
+  const a = r[0], b = r[r.length - 1];
+  const d = daysBetween(a.date, b.date), k = b.km - a.km;
+  return d >= 30 && k > 0 ? k / d : null;
+}
+
+// Calcul de l'échéance d'une opération du plan
+function due(v, p, rate, km) {
+  const last = entriesOf(v.id).find(e => (e.ops || []).includes(p.id));
+  const t = today();
+  let baseDate, baseKm, months;
+  if (last) { baseDate = last.date; baseKm = last.km || 0; months = p.mois; }
+  else if (p.premier && v.mec) { baseDate = v.mec; baseKm = 0; months = p.premier; }
+  else return {p, status: 'nd', last: null, score: 1e9};
+  const dueDate = months && baseDate ? addMonths(baseDate, months) : null;
+  const dueKm = p.km ? baseKm + p.km : null;
+  const daysLeft = dueDate ? daysBetween(t, dueDate) : null;
+  const kmLeft = dueKm != null ? dueKm - km : null;
+  const kmDays = kmLeft != null && rate ? kmLeft / rate : null;
+  const projDate = kmDays != null ? iso(new Date(pd(t).getTime() + kmDays * 864e5)) : null;
+  const seuil = Math.min(v.type === 'moto' ? 500 : 1500, p.km ? p.km * 0.15 : Infinity);
+  let status = 'ok';
+  if ((daysLeft != null && daysLeft < 0) || (kmLeft != null && kmLeft <= 0)) status = 'retard';
+  else if ((daysLeft != null && daysLeft <= 30) || (kmLeft != null && kmLeft <= seuil) || (kmDays != null && kmDays <= 30)) status = 'bientot';
+  // Avancement (0 → 1) pour la barre
+  let prog = 0;
+  if (dueKm != null && p.km) prog = Math.max(prog, (km - baseKm) / p.km);
+  if (dueDate && months) prog = Math.max(prog, daysBetween(baseDate, t) / Math.max(1, daysBetween(baseDate, dueDate)));
+  const score = Math.min(daysLeft ?? 1e8, kmDays ?? (kmLeft != null ? kmLeft / 30 : 1e8));
+  return {p, status, last, dueDate, dueKm, daysLeft, kmLeft, projDate, prog: Math.max(0, Math.min(1, prog)), score};
+}
+const ORDER = {retard: 0, bientot: 1, ok: 2, nd: 3};
+function dues(v) {
+  const rate = kmPerDay(v), km = curKm(v);
+  return (v.plan || []).map(p => due(v, p, rate, km)).sort((a, b) => ORDER[a.status] - ORDER[b.status] || a.score - b.score);
+}
+function counts(v) { const c = {retard: 0, bientot: 0, ok: 0, nd: 0}; dues(v).forEach(d => c[d.status]++); return c; }
+
+/* ---------- Affichage ---------- */
+let S = {view: 'home', vid: null, tab: 'due'};
+const icon = v => v.type === 'moto' ? '🏍️' : '🚗';
+const LAB = {retard: 'En retard', bientot: 'Bientôt', ok: 'À jour', nd: 'Non renseigné'};
+
+function render() {
+  const a = $('#app');
+  if (S.view === 'veh' && veh(S.vid)) a.innerHTML = viewVeh(veh(S.vid));
+  else { S.view = 'home'; a.innerHTML = viewHome(); }
+}
+
+function viewHome() {
+  let h = '<h1>Garage</h1>';
+  if (!D.vehicles.length) {
+    h += `<div class="card empty"><div class="big">🚗 🏍️</div><p>Ajoute ta voiture et ta moto pour suivre leurs entretiens, les prochaines échéances et ce qu'elles te coûtent.</p></div>
+      <button class="btn" data-a="addVeh">Ajouter un véhicule</button>`;
+  } else {
+    D.vehicles.forEach(v => {
+      const c = counts(v);
+      const pills = ['retard', 'bientot'].filter(k => c[k]).map(k => `<span class="pill p-${k}">${c[k]} ${k === 'retard' ? 'en retard' : 'bientôt'}</span>`).join('') || '<span class="pill p-ok">Tout est à jour</span>';
+      h += `<div class="card veh" data-a="open" data-id="${v.id}"><div class="ic">${icon(v)}</div><div class="bd"><b>${esc(v.nom)}</b><span class="mu sm">${esc([v.marque, v.modele].filter(Boolean).join(' '))}${v.marque || v.modele ? ' · ' : ''}${fkm(curKm(v))}</span><div class="pills">${pills}</div></div><span class="mu">›</span></div>`;
+    });
+    const all = [];
+    D.vehicles.forEach(v => dues(v).filter(d => d.status === 'retard' || d.status === 'bientot').forEach(d => all.push([v, d])));
+    all.sort((x, y) => ORDER[x[1].status] - ORDER[y[1].status] || x[1].score - y[1].score);
+    if (all.length) {
+      h += '<h2>À prévoir</h2>';
+      all.forEach(([v, d]) => h += dueCard(v, d, true));
+    }
+    h += '<div style="margin-top:14px"><button class="btn sec" data-a="addVeh">+ Ajouter un véhicule</button></div>';
+  }
+  h += `<div class="foot"><h2>Sauvegarde</h2><div class="card"><p class="sm mu" style="margin:0 0 10px">Tes données restent sur ce téléphone. Exporte-les de temps en temps pour ne rien perdre (changement de téléphone, nettoyage du navigateur…).</p>
+    <div class="row"><button class="btn sec" data-a="export">Exporter</button><button class="btn sec" data-a="import">Importer</button></div></div></div>`;
+  return h;
+}
+
+function whenText(d) {
+  if (d.status === 'nd') return 'Pas encore renseigné';
+  const parts = [];
+  if (d.kmLeft != null) parts.push(d.kmLeft <= 0 ? `<strong>dépassé de ${fkm(-d.kmLeft)}</strong>` : `<strong>dans ${fkm(d.kmLeft)}</strong>${d.projDate ? ' (≈ ' + fdate(d.projDate) + ')' : ''}`);
+  if (d.dueDate) parts.push(d.daysLeft < 0 ? `<strong>depuis le ${fdate(d.dueDate)}</strong>` : (d.kmLeft != null ? 'ou ' : '') + `<strong>avant le ${fdate(d.dueDate)}</strong>`);
+  let s = parts.join(' ');
+  if (d.last) s += `<br>Dernier : ${fdate(d.last.date)}${d.last.km ? ' · ' + fkm(d.last.km) : ''}`;
+  else if (d.p.premier) s += '<br>1<sup>re</sup> échéance calculée depuis la mise en circulation';
+  return s;
+}
+function dueCard(v, d, showVeh) {
+  return `<div class="card due ${d.status}"><div class="bd">${showVeh ? `<div class="vname">${icon(v)} ${esc(v.nom)}</div>` : ''}<b>${esc(d.p.nom)}</b><div class="when">${whenText(d)}</div>${d.status !== 'nd' ? `<div class="bar"><i style="width:${Math.round(d.prog * 100)}%"></i></div>` : ''}</div>
+    <button class="done" data-a="doOp" data-vid="${v.id}" data-pid="${d.p.id}">${d.status === 'nd' ? 'Renseigner' : 'Fait'}</button></div>`;
+}
+
+function viewVeh(v) {
+  const km = curKm(v);
+  let h = `<div class="top"><button class="back" data-a="home">‹ Garage</button></div>
+    <div class="hero"><div><div class="mu sm">${icon(v)} ${esc([v.marque, v.modele].filter(Boolean).join(' ') || (v.type === 'moto' ? 'Moto' : 'Voiture'))}${v.immat ? ' · ' + esc(v.immat) : ''}</div><h1>${esc(v.nom)}</h1><div class="km">${fkm(km)}</div></div>
+    <button class="kmb" data-a="km">Mettre à jour le km</button></div>
+    <div class="seg">${[['due', 'À prévoir'], ['hist', 'Historique'], ['plan', 'Plan'], ['info', 'Infos']].map(([k, l]) => `<button data-a="tab" data-t="${k}" class="${S.tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (S.tab === 'due') {
+    const ds = dues(v);
+    if (!ds.length) h += '<div class="card empty">Aucune opération dans le plan. Ajoute-en dans l\'onglet Plan.</div>';
+    let cur = null;
+    ds.forEach(d => { if (d.status !== cur) { cur = d.status; h += `<h2>${LAB[cur]}</h2>`; } h += dueCard(v, d, false); });
+  } else if (S.tab === 'hist') {
+    const es = entriesOf(v.id);
+    if (!es.length) h += '<div class="card empty"><div class="big">🔧</div>Aucun entretien enregistré.<br>Appuie sur « + Entretien » pour commencer.</div>';
+    let y = null;
+    es.forEach(e => {
+      const yy = e.date.slice(0, 4);
+      if (yy !== y) { y = yy; const tot = es.filter(x => x.date.startsWith(yy)).reduce((s, x) => s + (Number(x.cout) || 0), 0); h += `<div class="year"><b>${yy}</b><span class="mu sm">${feur(tot)}</span></div>`; }
+      const ops = (e.ops || []).map(id => (v.plan.find(p => p.id === id) || {}).nom).filter(Boolean);
+      if (e.libre) ops.push(e.libre);
+      h += `<div class="card ent" data-a="editEnt" data-id="${e.id}"><div class="l1"><span class="mu sm">${fdate(e.date)}${e.km ? ' · ' + fkm(e.km) : ''}</span>${e.cout ? `<span class="cost">${feur(e.cout)}</span>` : ''}</div>
+        <div class="ops">${esc(ops.join(', ') || '—')}</div>${e.garage || e.notes ? `<div class="mu sm">${esc([e.garage, e.notes].filter(Boolean).join(' — '))}</div>` : ''}</div>`;
+    });
+  } else if (S.tab === 'plan') {
+    h += '<p class="sm mu" style="margin:0 0 10px">Intervalles indicatifs : adapte-les au carnet d\'entretien de ton véhicule. L\'échéance retenue est la première atteinte (km ou durée).</p><div class="card" style="padding:4px 14px">';
+    (v.plan || []).forEach(p => {
+      const iv = [p.km ? 'tous les ' + fkm(p.km) : '', p.mois ? (p.km ? 'ou ' : 'tous les ') + dur(p.mois) : ''].filter(Boolean).join(' ');
+      h += `<div class="pl" data-a="editPlan" data-id="${p.id}"><div><b>${esc(p.nom)}</b><div class="mu sm">${iv || 'Sans rappel'}${p.premier ? ' · 1<sup>er</sup> à ' + dur(p.premier) : ''}</div></div><span class="mu">›</span></div>`;
+    });
+    h += '</div><button class="btn sec" data-a="editPlan">+ Ajouter une opération</button>';
+  } else {
+    const es = entriesOf(v.id), tot = es.reduce((s, e) => s + (Number(e.cout) || 0), 0);
+    const yr = String(new Date().getFullYear()), totY = es.filter(e => e.date.startsWith(yr)).reduce((s, e) => s + (Number(e.cout) || 0), 0);
+    const r = readings(v), kmRoule = r.length > 1 ? r[r.length - 1].km - r[0].km : 0, rate = kmPerDay(v);
+    h += `<h2>Dépenses d'entretien</h2><div class="card stats"><div><b>${feur(tot)}</b><span>Total</span></div><div><b>${feur(totY)}</b><span>En ${yr}</span></div><div><b>${kmRoule > 0 && tot ? (tot / kmRoule * 100).toLocaleString('fr-FR', {maximumFractionDigits: 1}) + ' €' : '—'}</b><span>pour 100 km</span></div></div>
+      <h2>Véhicule</h2><div class="card">
+      ${kv('Type', v.type === 'moto' ? 'Moto' : 'Voiture')}${kv('Marque / modèle', [v.marque, v.modele].filter(Boolean).join(' '))}${kv('Immatriculation', v.immat)}${kv('Mise en circulation', fdate(v.mec))}${kv('Kilométrage', fkm(km))}${kv('Rythme estimé', rate ? Math.round(rate * 365).toLocaleString('fr-FR') + ' km/an' : '')}${kv('Entretiens enregistrés', String(es.length))}
+      </div><button class="btn sec" data-a="editVeh">Modifier le véhicule</button>`;
+  }
+  h += '<button class="fab" data-a="addEnt">+ Entretien</button>';
+  return h;
+}
+const kv = (k, v) => v ? `<div class="kv"><span class="mu">${k}</span><span>${esc(v)}</span></div>` : '';
+const dur = m => m % 12 === 0 ? (m / 12) + ' an' + (m > 12 ? 's' : '') : m + ' mois';
+
+/* ---------- Feuilles (formulaires) ---------- */
+let closeSheet = null;
+function sheet(html, onReady) {
+  if (closeSheet) closeSheet();
+  const ov = document.createElement('div'); ov.className = 'ov';
+  ov.innerHTML = `<div class="sh">${html}</div>`;
+  document.body.appendChild(ov);
+  requestAnimationFrame(() => ov.classList.add('in'));
+  const close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 200); closeSheet = null; };
+  closeSheet = close;
+  ov.addEventListener('click', e => { if (e.target === ov || e.target.closest('[data-x]')) close(); });
+  onReady && onReady(ov.querySelector('.sh'), close);
+}
+const val = (root, n) => root.querySelector(`[name="${n}"]`).value.trim();
+
+function vehForm(v) {
+  const isNew = !v; v = v || {type: 'voiture'};
+  let type = v.type;
+  sheet(`<h3>${isNew ? 'Nouveau véhicule' : 'Modifier le véhicule'}</h3>
+    ${isNew ? '<div class="tseg"><button type="button" data-ty="voiture">🚗 Voiture</button><button type="button" data-ty="moto">🏍️ Moto</button></div>' : ''}
+    <label>Nom</label><input name="nom" value="${esc(v.nom)}" placeholder="ex. Ma Clio, La MT-07…">
+    <div class="g2"><div><label>Marque</label><input name="marque" value="${esc(v.marque)}"></div><div><label>Modèle</label><input name="modele" value="${esc(v.modele)}"></div></div>
+    <div class="g2"><div><label>Immatriculation</label><input name="immat" value="${esc(v.immat)}" autocapitalize="characters"></div><div><label>Mise en circulation</label><input type="date" name="mec" value="${esc(v.mec)}"></div></div>
+    <label>Kilométrage actuel</label><input name="km" inputmode="numeric" value="${v.id ? curKm(v) : ''}" placeholder="ex. 45 000">
+    ${isNew ? '<p class="hint">Un plan d\'entretien type est créé selon le type de véhicule ; tu pourras l\'ajuster.</p>' : ''}
+    <div class="acts"><button class="btn" data-ok>Enregistrer</button>${isNew ? '' : '<button class="btn dng" data-del>Supprimer ce véhicule</button>'}<button class="btn sec" data-x>Annuler</button></div>`, (r, close) => {
+    const segs = r.querySelectorAll('[data-ty]');
+    const upd = () => segs.forEach(b => b.classList.toggle('on', b.dataset.ty === type));
+    segs.forEach(b => b.onclick = () => { type = b.dataset.ty; upd(); }); upd();
+    r.querySelector('[data-ok]').onclick = () => {
+      const nom = val(r, 'nom');
+      if (!nom) return toast('Donne un nom au véhicule');
+      const km = num(val(r, 'km'));
+      const o = isNew ? {id: uid(), type, plan: defPlan(type), releves: []} : v;
+      Object.assign(o, {nom, marque: val(r, 'marque'), modele: val(r, 'modele'), immat: val(r, 'immat').toUpperCase(), mec: val(r, 'mec')});
+      if (km != null && km !== o.km) { o.km = km; (o.releves = o.releves || []).push({date: today(), km}); }
+      if (isNew) D.vehicles.push(o);
+      save(); close();
+      if (isNew) go('veh', o.id, 'due'); else render();
+    };
+    const del = r.querySelector('[data-del]');
+    if (del) del.onclick = () => {
+      if (!confirm(`Supprimer « ${v.nom} » et tout son historique ?`)) return;
+      D.vehicles = D.vehicles.filter(x => x.id !== v.id); D.entries = D.entries.filter(e => e.vid !== v.id);
+      save(); close(); go('home');
+    };
+  });
+}
+
+function kmForm(v) {
+  sheet(`<h3>Kilométrage — ${esc(v.nom)}</h3><label>Compteur aujourd'hui</label><input name="km" inputmode="numeric" value="${curKm(v)}">
+    <p class="hint">Mettre le compteur à jour régulièrement permet d'estimer la date des prochaines échéances.</p>
+    <div class="acts"><button class="btn" data-ok>Enregistrer</button><button class="btn sec" data-x>Annuler</button></div>`, (r, close) => {
+    const i = r.querySelector('input'); i.focus(); i.select();
+    r.querySelector('[data-ok]').onclick = () => {
+      const km = num(i.value);
+      if (km == null || km < 0) return toast('Kilométrage invalide');
+      if (km < curKm(v) && !confirm('Ce kilométrage est inférieur au dernier relevé. Continuer ?')) return;
+      v.km = km; (v.releves = v.releves || []).push({date: today(), km}); save(); close(); render(); toast('Kilométrage mis à jour');
+    };
+  });
+}
+
+function entForm(v, e, preOp) {
+  const isNew = !e;
+  e = e || {date: today(), km: curKm(v) || '', ops: preOp ? [preOp] : []};
+  const sel = new Set(e.ops || []);
+  sheet(`<h3>${isNew ? 'Nouvel entretien' : 'Modifier l\'entretien'}</h3><div class="vname">${icon(v)} ${esc(v.nom)}</div>
+    <div class="g2"><div><label>Date</label><input type="date" name="date" value="${esc(e.date)}"></div><div><label>Kilométrage</label><input name="km" inputmode="numeric" value="${esc(e.km)}"></div></div>
+    <label>Opérations réalisées</label><div class="chk">${(v.plan || []).map(p => `<label class="${sel.has(p.id) ? 'on' : ''}"><input type="checkbox" value="${p.id}" ${sel.has(p.id) ? 'checked' : ''}>${esc(p.nom)}</label>`).join('')}</div>
+    <label>Autre intervention</label><input name="libre" value="${esc(e.libre)}" placeholder="ex. Remplacement ampoule de phare">
+    <div class="g2"><div><label>Coût (€)</label><input name="cout" inputmode="decimal" value="${e.cout ?? ''}"></div><div><label>Garage / fait par</label><input name="garage" value="${esc(e.garage)}" placeholder="ex. Moi-même"></div></div>
+    <label>Notes</label><textarea name="notes" placeholder="Références des pièces, huile utilisée…">${esc(e.notes)}</textarea>
+    <div class="acts"><button class="btn" data-ok>Enregistrer</button>${isNew ? '' : '<button class="btn dng" data-del>Supprimer</button>'}<button class="btn sec" data-x>Annuler</button></div>`, (r, close) => {
+    r.querySelectorAll('.chk input').forEach(c => c.onchange = () => c.parentNode.classList.toggle('on', c.checked));
+    r.querySelector('[data-ok]').onclick = () => {
+      const ops = [...r.querySelectorAll('.chk input:checked')].map(c => c.value);
+      const libre = val(r, 'libre'), date = val(r, 'date');
+      if (!ops.length && !libre) return toast('Coche au moins une opération ou décris l\'intervention');
+      if (!date) return toast('Indique la date');
+      const o = isNew ? {id: uid(), vid: v.id} : e;
+      Object.assign(o, {date, km: num(val(r, 'km')), ops, libre, cout: num(val(r, 'cout')), garage: val(r, 'garage'), notes: val(r, 'notes')});
+      if (isNew) D.entries.push(o);
+      if (o.km != null && o.km > (v.km || 0)) v.km = o.km;
+      save(); close(); render(); toast(isNew ? 'Entretien enregistré' : 'Modifié');
+    };
+    const del = r.querySelector('[data-del]');
+    if (del) del.onclick = () => { if (!confirm('Supprimer cet entretien ?')) return; D.entries = D.entries.filter(x => x.id !== e.id); save(); close(); render(); };
+  });
+}
+
+function planForm(v, p) {
+  const isNew = !p; p = p || {nom: '', km: null, mois: null, premier: null};
+  sheet(`<h3>${isNew ? 'Nouvelle opération' : 'Modifier l\'opération'}</h3>
+    <label>Nom</label><input name="nom" value="${esc(p.nom)}" placeholder="ex. Vidange de boîte">
+    <div class="g2"><div><label>Tous les … km</label><input name="km" inputmode="numeric" value="${p.km ?? ''}" placeholder="—"></div><div><label>Tous les … mois</label><input name="mois" inputmode="numeric" value="${p.mois ?? ''}" placeholder="—"></div></div>
+    <label>1<sup>re</sup> échéance après mise en circulation (mois)</label><input name="premier" inputmode="numeric" value="${p.premier ?? ''}" placeholder="facultatif — ex. 48 pour le 1er contrôle technique">
+    <p class="hint">Laisse vide ce qui ne s'applique pas. Le rappel se déclenche au premier des deux seuils atteint.</p>
+    <div class="acts"><button class="btn" data-ok>Enregistrer</button>${isNew ? '' : '<button class="btn dng" data-del>Retirer du plan</button>'}<button class="btn sec" data-x>Annuler</button></div>`, (r, close) => {
+    r.querySelector('[data-ok]').onclick = () => {
+      const nom = val(r, 'nom'); if (!nom) return toast('Donne un nom à l\'opération');
+      const pos = x => { const n = num(x); return n && n > 0 ? Math.round(n) : null; };
+      const o = isNew ? {id: uid()} : p;
+      Object.assign(o, {nom, km: pos(val(r, 'km')), mois: pos(val(r, 'mois')), premier: pos(val(r, 'premier'))});
+      if (isNew) v.plan.push(o);
+      save(); close(); render();
+    };
+    const del = r.querySelector('[data-del]');
+    if (del) del.onclick = () => {
+      if (!confirm(`Retirer « ${p.nom} » du plan ? L'historique est conservé.`)) return;
+      v.plan = v.plan.filter(x => x.id !== p.id);
+      D.entries.forEach(e => { if (e.vid === v.id && (e.ops || []).includes(p.id)) { e.ops = e.ops.filter(x => x !== p.id); e.libre = [e.libre, p.nom].filter(Boolean).join(', '); } });
+      save(); close(); render();
+    };
+  });
+}
+
+/* ---------- Navigation & actions ---------- */
+function go(view, vid, tab) {
+  const was = S.view;
+  S = {view, vid: vid || null, tab: tab || 'due'};
+  if (view === 'veh' && was !== 'veh') history.pushState({v: vid}, '');
+  else if (view === 'home' && was === 'veh' && history.state && history.state.v) { history.back(); return; }
+  render(); scrollTo(0, 0);
+}
+addEventListener('popstate', () => { if (closeSheet) { closeSheet(); } S = {view: 'home', vid: null, tab: 'due'}; render(); });
+
+document.addEventListener('click', ev => {
+  const t = ev.target.closest('[data-a]'); if (!t || t.closest('.ov')) return;
+  const v = veh(t.dataset.vid || S.vid);
+  switch (t.dataset.a) {
+    case 'addVeh': return vehForm();
+    case 'open': return go('veh', t.dataset.id, 'due');
+    case 'home': return go('home');
+    case 'tab': S.tab = t.dataset.t; return render();
+    case 'km': return kmForm(v);
+    case 'editVeh': return vehForm(v);
+    case 'addEnt': return entForm(v);
+    case 'doOp': return entForm(v, null, t.dataset.pid);
+    case 'editEnt': return entForm(v, D.entries.find(e => e.id === t.dataset.id));
+    case 'editPlan': return planForm(v, t.dataset.id ? v.plan.find(p => p.id === t.dataset.id) : null);
+    case 'export': return exportData();
+    case 'import': return $('#file').click();
+  }
+});
+
+function exportData() {
+  const blob = new Blob([JSON.stringify({app: 'garage', version: 1, exporte: new Date().toISOString(), ...D}, null, 2)], {type: 'application/json'});
+  const name = `garage-${today()}.json`;
+  const f = new File([blob], name, {type: 'application/json'});
+  if (navigator.canShare && navigator.canShare({files: [f]})) { navigator.share({files: [f], title: 'Sauvegarde Garage'}).catch(() => {}); return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+$('#file').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    const j = JSON.parse(await f.text());
+    if (!j || !Array.isArray(j.vehicles) || !Array.isArray(j.entries)) throw 0;
+    if (!confirm(`Remplacer les données actuelles par cette sauvegarde (${j.vehicles.length} véhicule(s), ${j.entries.length} entretien(s)) ?`)) return;
+    D = {vehicles: j.vehicles, entries: j.entries}; save(); go('home'); toast('Sauvegarde importée');
+  } catch (err) { toast('Fichier de sauvegarde invalide'); }
+};
+
+let tt; function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('in'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('in'), 2200); }
+
+render();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body></html>
