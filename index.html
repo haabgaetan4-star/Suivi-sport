@@ -681,6 +681,12 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
 #exs .srdel .pen{stroke:#fff;width:22px;height:22px}
 #plist .pcnt{display:block;font-style:normal;font-size:12px;color:var(--mu);margin-top:1px}
 #plist .pcnt.never{color:#e0b532;font-weight:600}
+#sdb .schint{text-transform:none;letter-spacing:0;font-weight:400;font-size:11px;color:var(--mu);font-family:inherit}
+#sdb .scal i{cursor:pointer}
+#sdb .scal i.pick{box-shadow:0 0 0 2px #fff}
+#sdb .sfdq{display:flex;gap:6px;margin:0 0 8px}
+#sdb .sfdq button{flex:1;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:8px 0;font:inherit;font-size:13px;font-weight:600}
+#sdb .sfdq button.on{background:var(--g2);border-color:var(--g2);color:#fff}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -775,7 +781,7 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 144</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 145</p>
  </div></div>
 </main>
 <script>
@@ -1119,15 +1125,18 @@ function renderSupD(){var o=data.sup.filter(function(x){return x.id===supS})[0];
  var show=supAll?L:L.slice(0,8);
  $('#sdb').innerHTML='<div class="xfh"><div class="sim big">'+supIc(o,70)+'</div><div><b>'+esc(o.n)+'</b><span>'+fq(o.q)+' '+esc(o.u)+' par prise · objectif '+(o.go||1)+' / jour</span></div></div>'
   +'<div class="stats"><div><b>'+L.length+'</b><span>Prises</span></div><div><b>'+nw+'</b><span>Cette semaine</span></div><div><b>'+supStreak(o.id)+' j</b><span>Série en cours</span></div></div>'
-  +'<div class="day" style="margin-top:14px">4 dernières semaines</div><div class="scal">'+days.map(function(x){return '<i class="'+(ds[x]?'on':'')+(x===today()?' td':'')+'" title="'+x+'"></i>'}).join('')+'</div>'
-  +'<div class="day" style="margin-top:14px">Ajouter une prise</div><div class="sfm"><label>Quantité<span><input id="sfq" inputmode="decimal" value="'+fq(o.q)+'"><em>'+esc(o.u)+'</em></span></label><label>Date<input id="sfd" type="date" value="'+today()+'" max="'+today()+'"></label><label>Heure<input id="sft" type="time" value="'+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+'"></label></div><button class="add" id="sfa" style="margin-top:10px">Enregistrer la prise</button>'
+  +'<div class="day" style="margin-top:14px">4 dernières semaines <span class="schint">· touche un jour pour y ajouter une prise</span></div><div class="scal">'+days.map(function(x){return '<i data-sday="'+x+'" class="'+(ds[x]?'on':'')+(x===today()?' td':'')+'" title="'+x+'"></i>'}).join('')+'</div>'
+  +'<div class="day" style="margin-top:14px">Ajouter une prise</div><div class="sfdq"><button type="button" data-sfd="'+today()+'" class="on">Aujourd’hui</button><button type="button" data-sfd="'+(function(){var y=new Date();y.setDate(y.getDate()-1);return y.toLocaleDateString('sv-SE')})()+'">Hier</button><button type="button" data-sfd="'+(function(){var y=new Date();y.setDate(y.getDate()-2);return y.toLocaleDateString('sv-SE')})()+'">Avant-hier</button></div><div class="sfm"><label>Quantité<span><input id="sfq" inputmode="decimal" value="'+fq(o.q)+'"><em>'+esc(o.u)+'</em></span></label><label>Date<input id="sfd" type="date" value="'+today()+'" max="'+today()+'"></label><label>Heure<input id="sft" type="time" value="'+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+'"></label></div><button class="add" id="sfa" style="margin-top:10px">Enregistrer la prise</button>'
   +'<div class="day" style="margin-top:14px">Historique</div>'+(L.length?show.map(function(l){return '<div class="mrow"><span class="dt" style="width:96px">'+l.d.slice(8,10)+'/'+l.d.slice(5,7)+'/'+l.d.slice(2,4)+'<i style="font-style:normal;color:var(--mu);font-weight:400"> '+l.t+'</i></span><span class="sts"><span class="st"><b>'+fq(l.q)+'</b><i>'+esc(o.u)+'</i></span></span><button class="del" data-sx="'+l.id+'" aria-label="Supprimer cette prise">✕</button></div>'}).join('')+(L.length>8?'<button class="mxl" id="sfm">'+(supAll?'Réduire ‹':'Voir les '+L.length+' prises ›')+'</button>':''):'<p class="mu" style="font-size:14px">Aucune prise enregistrée.</p>')}
 $('#sgrid').onclick=function(e){var l=e.target.closest('[data-sl]'),c=e.target.closest('[data-so]');if(e.target.closest('#snew')){openSupE(null);return}
  if(l){var id=+l.getAttribute('data-sl'),o=data.sup.filter(function(x){return x.id===id})[0];supLog(id,o.q);toast(o.n+' : '+fq(o.q)+' '+o.u+' enregistré');return}
  if(c)openSupD(+c.getAttribute('data-so'))};
 $('#sdb').onclick=function(e){var x=e.target.closest('[data-sx]');if(x){var id=+x.getAttribute('data-sx');data.supLog=data.supLog.filter(function(l){return l.id!==id});save();renderSup();return}
  if(e.target.closest('#sfm')){supAll=!supAll;renderSupD();return}
- if(e.target.closest('#sfa')){var q=num($('#sfq').value),d=$('#sfd').value||today(),t=$('#sft').value||'12:00';if(!(q>0)){toast('Saisis une quantité');return}if(d>today()){toast('La date ne peut pas être dans le futur');return}supLog(supS,q,d,t);toast('Prise enregistrée')}};
+ var dq=e.target.closest('[data-sfd],[data-sday]');if(dq){var dv=dq.getAttribute('data-sfd')||dq.getAttribute('data-sday');$('#sfd').value=dv;
+  document.querySelectorAll('#sdb [data-sfd]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-sfd')===dv)});document.querySelectorAll('#sdb [data-sday]').forEach(function(b){b.classList.toggle('pick',b.getAttribute('data-sday')===dv)});
+  if(dv!==today())$('#sft').value='12:00';if(dq.getAttribute('data-sday'))$('#sfa').scrollIntoView({behavior:'smooth',block:'center'});$('#sfa').textContent='Enregistrer la prise · '+(dv===today()?'aujourd’hui':dRel(dv));return}
+ if(e.target.closest('#sfa')){var q=num($('#sfq').value),d=$('#sfd').value||today(),t=$('#sft').value||'12:00';if(!(q>0)){toast('Saisis une quantité');return}if(d>today()){toast('La date ne peut pas être dans le futur');return}supLog(supS,q,d,t);toast('Prise enregistrée '+(d===today()?'aujourd’hui':dRel(d)))}};
 $('#sdc').onclick=function(){$('#sdt').classList.add('hide')};$('#sdt').onclick=function(e){if(e.target===this)this.classList.add('hide')};
 $('#sde').onclick=function(){openSupE(supS)};
 function openSupE(id){supE=id;spx='';var o=id===null?null:data.sup.filter(function(x){return x.id===id})[0];$('#set2').textContent=o?'Modifier le complément':'Nouveau complément';$('#snm').value=o?o.n:'';$('#sqt').value=o?fq(o.q):'';var us=[].map.call($('#sun').options,function(p){return p.value});if(o&&us.indexOf(o.u)<0){var op=document.createElement('option');op.textContent=o.u;$('#sun').appendChild(op)}$('#sun').value=o?o.u:'g';$('#sgo').value=String(o?(o.go||1):1);$('#sph').innerHTML=(o&&ph[supK(o.id)])?'<img src="'+ph[supK(o.id)]+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">':'📷<br>Photo';$('#sdl').style.display=o?'':'none';$('#sdl').textContent='Supprimer ce complément';$('#sed').classList.remove('hide')}
