@@ -687,6 +687,12 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
 #sdb .sfdq{display:flex;gap:6px;margin:0 0 8px}
 #sdb .sfdq button{flex:1;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:999px;padding:8px 0;font:inherit;font-size:13px;font-weight:600}
 #sdb .sfdq button.on{background:var(--g2);border-color:var(--g2);color:#fff}
+#sdb .scal{gap:6px}
+#sdb .scal .scw{text-align:center;font-size:11px;font-weight:600;color:var(--mu)}
+#sdb .scal i{position:relative;max-height:none;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:15px;font-weight:600;color:var(--mu);border-radius:10px}
+#sdb .scal i.on{color:#fff}
+#sdb .scal i.fu{opacity:.3;cursor:default}
+#sdb .scal i sup{position:absolute;top:3px;right:4px;font-size:9px;font-weight:700;line-height:1}
 </style></head>
 <body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
@@ -781,7 +787,7 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 145</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 146</p>
  </div></div>
 </main>
 <script>
@@ -1121,11 +1127,11 @@ function renderSup(){supInit();$('#sordb').style.display=data.sup.length>1?'':'n
 function supLog(id,q,d,tm){var o=data.sup.filter(function(x){return x.id===id})[0];if(!o)return;var n=new Date();data.supLog.push({id:Date.now(),s:id,d:d||today(),t:tm||('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2),q:q});save();renderSup()}
 function openSupD(id){supS=id;supAll=false;renderSupD();$('#sdt').classList.remove('hide');$('#sdt .sheet').scrollTop=0}
 function renderSupD(){var o=data.sup.filter(function(x){return x.id===supS})[0];if(!o){$('#sdt').classList.add('hide');return}var L=supLogs(o.id),wk=supWeek(),nw=0,tot=0,n=new Date();L.forEach(function(l){tot+=l.q;if(wk.indexOf(l.d)>=0)nw++});
- var days=[],d=new Date();d.setDate(d.getDate()-27);var ds={};L.forEach(function(l){ds[l.d]=(ds[l.d]||0)+1});for(var i=0;i<28;i++){days.push(d.toLocaleDateString('sv-SE'));d.setDate(d.getDate()+1)}
+ var days=[],d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7)-21);var ds={};L.forEach(function(l){ds[l.d]=(ds[l.d]||0)+1});for(var i=0;i<28;i++){days.push(d.toLocaleDateString('sv-SE'));d.setDate(d.getDate()+1)}
  var show=supAll?L:L.slice(0,8);
  $('#sdb').innerHTML='<div class="xfh"><div class="sim big">'+supIc(o,70)+'</div><div><b>'+esc(o.n)+'</b><span>'+fq(o.q)+' '+esc(o.u)+' par prise · objectif '+(o.go||1)+' / jour</span></div></div>'
   +'<div class="stats"><div><b>'+L.length+'</b><span>Prises</span></div><div><b>'+nw+'</b><span>Cette semaine</span></div><div><b>'+supStreak(o.id)+' j</b><span>Série en cours</span></div></div>'
-  +'<div class="day" style="margin-top:14px">4 dernières semaines <span class="schint">· touche un jour pour y ajouter une prise</span></div><div class="scal">'+days.map(function(x){return '<i data-sday="'+x+'" class="'+(ds[x]?'on':'')+(x===today()?' td':'')+'" title="'+x+'"></i>'}).join('')+'</div>'
+  +'<div class="day" style="margin-top:14px">4 dernières semaines <span class="schint">· touche un jour pour y ajouter une prise</span></div><div class="scal">'+['L','M','M','J','V','S','D'].map(function(j){return '<b class="scw">'+j+'</b>'}).join('')+days.map(function(x){var fu=x>today();return '<i '+(fu?'':'data-sday="'+x+'" ')+'class="'+(ds[x]?'on':'')+(x===today()?' td':'')+(fu?' fu':'')+'" title="'+x+'">'+(+x.slice(8,10))+(ds[x]>1?'<sup>×'+ds[x]+'</sup>':'')+'</i>'}).join('')+'</div>'
   +'<div class="day" style="margin-top:14px">Ajouter une prise</div><div class="sfdq"><button type="button" data-sfd="'+today()+'" class="on">Aujourd’hui</button><button type="button" data-sfd="'+(function(){var y=new Date();y.setDate(y.getDate()-1);return y.toLocaleDateString('sv-SE')})()+'">Hier</button><button type="button" data-sfd="'+(function(){var y=new Date();y.setDate(y.getDate()-2);return y.toLocaleDateString('sv-SE')})()+'">Avant-hier</button></div><div class="sfm"><label>Quantité<span><input id="sfq" inputmode="decimal" value="'+fq(o.q)+'"><em>'+esc(o.u)+'</em></span></label><label>Date<input id="sfd" type="date" value="'+today()+'" max="'+today()+'"></label><label>Heure<input id="sft" type="time" value="'+('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)+'"></label></div><button class="add" id="sfa" style="margin-top:10px">Enregistrer la prise</button>'
   +'<div class="day" style="margin-top:14px">Historique</div>'+(L.length?show.map(function(l){return '<div class="mrow"><span class="dt" style="width:96px">'+l.d.slice(8,10)+'/'+l.d.slice(5,7)+'/'+l.d.slice(2,4)+'<i style="font-style:normal;color:var(--mu);font-weight:400"> '+l.t+'</i></span><span class="sts"><span class="st"><b>'+fq(l.q)+'</b><i>'+esc(o.u)+'</i></span></span><button class="del" data-sx="'+l.id+'" aria-label="Supprimer cette prise">✕</button></div>'}).join('')+(L.length>8?'<button class="mxl" id="sfm">'+(supAll?'Réduire ‹':'Voir les '+L.length+' prises ›')+'</button>':''):'<p class="mu" style="font-size:14px">Aucune prise enregistrée.</p>')}
 $('#sgrid').onclick=function(e){var l=e.target.closest('[data-sl]'),c=e.target.closest('[data-so]');if(e.target.closest('#snew')){openSupE(null);return}
