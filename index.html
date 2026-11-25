@@ -693,8 +693,35 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
 #sdb .scal i.on{color:#fff}
 #sdb .scal i.fu{opacity:.3;cursor:default}
 #sdb .scal i sup{position:absolute;top:3px;right:4px;font-size:9px;font-weight:700;line-height:1}
+/* Ouverture « mise au point » (motion design) : un viseur se resserre, le personnage passe du flou au net,
+   le viseur verrouille (orange), puis FOCUS se révèle lettre par lettre ; sortie en zoom à travers le logo */
+#splash.md .lg{animation:none!important}
+#splash.md.out .lg{animation:zout .62s cubic-bezier(.6,0,.9,.4) forwards!important}
+#splash.md .lg .sfg{animation:mdfig 1.05s .12s cubic-bezier(.2,.8,.2,1) both!important}
+@keyframes mdfig{0%{opacity:0;transform:scale(1.1);filter:blur(16px) brightness(1)}30%{opacity:1}55%{transform:scale(1);filter:blur(0) brightness(1)}64%{filter:blur(2.5px) brightness(1.1)}78%{filter:blur(0) brightness(1.22)}100%{opacity:1;transform:none;filter:blur(0) brightness(1)}}
+#splash.md .af{position:absolute;left:-30px;right:-30px;top:-26px;bottom:-66px;z-index:3;pointer-events:none;animation:mdaf 1.75s .05s cubic-bezier(.2,.9,.2,1) both}
+#splash.md .af i{position:absolute;width:28px;height:28px;border:0 solid #fff;animation:mdafc 1.75s .05s linear both}
+#splash.md .af .tl{top:0;left:0;border-top-width:3px;border-left-width:3px;border-top-left-radius:7px}
+#splash.md .af .tr{top:0;right:0;border-top-width:3px;border-right-width:3px;border-top-right-radius:7px}
+#splash.md .af .bl{bottom:0;left:0;border-bottom-width:3px;border-left-width:3px;border-bottom-left-radius:7px}
+#splash.md .af .br{bottom:0;right:0;border-bottom-width:3px;border-right-width:3px;border-bottom-right-radius:7px}
+@keyframes mdaf{0%{transform:scale(1.9);opacity:0}24%{transform:scale(1);opacity:1}44%{transform:scale(1)}49%{transform:scale(.92)}56%{transform:scale(1.015)}61%{transform:scale(1)}80%{transform:scale(1);opacity:1}100%{transform:scale(1.15);opacity:0}}
+@keyframes mdafc{0%,45%{border-color:#fff}50%,100%{border-color:#f0602c}}
+#splash.md .ping{position:absolute;left:50%;top:46%;width:44px;height:44px;margin:-22px 0 0 -22px;border:2px solid #f0602c;border-radius:50%;z-index:3;opacity:0;pointer-events:none;animation:mdping .6s .88s cubic-bezier(.2,.8,.3,1) both}
+@keyframes mdping{0%{opacity:.95;transform:scale(.25)}100%{opacity:0;transform:scale(2.6)}}
+#splash.md .stx{display:flex;align-items:flex-start;overflow:visible;padding-top:10px}
+#splash.md .stx .lt{display:block;flex:none;overflow:hidden;animation-duration:.9s;animation-delay:.95s;animation-timing-function:cubic-bezier(.2,.9,.2,1);animation-fill-mode:both}
+#splash.md .stx .lt>i{display:block;animation:mdlt .6s cubic-bezier(.2,.9,.25,1) both}
+#splash.md .stx svg{display:block;width:100%;height:auto;fill:#f5f5f5}
+@keyframes mdlt{from{transform:translateY(108%)}to{transform:none}}
+@keyframes mdtrk0{from{transform:translateX(-21px)}to{transform:none}}
+@keyframes mdtrk1{from{transform:translateX(-11px)}to{transform:none}}
+@keyframes mdtrk2{from{transform:translateX(0px)}to{transform:none}}
+@keyframes mdtrk3{from{transform:translateX(11px)}to{transform:none}}
+@keyframes mdtrk4{from{transform:translateX(21px)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){#splash.md .lg .sfg,#splash.md .stx .lt,#splash.md .stx .lt>i{animation:none!important;opacity:1;transform:none;filter:none}#splash.md .af,#splash.md .ping{display:none}}
 </style></head>
-<body><div id="splash"><div class="lg"><img class="sfg" src="splash-fig.png" alt=""><div class="stx"><img src="splash-txt.png" alt="Focus"></div></div></div>
+<body><div id="splash" class="md"><div class="lg"><div class="af" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div><b class="ping" aria-hidden="true"></b><img class="sfg" src="splash-fig.png" alt=""><div class="stx" role="img" aria-label="Focus"><span class="lt" style="width:13.894%;animation-name:mdtrk0"><i style="animation-delay:0.95s"><svg viewBox="60 -821 350 833"><path transform="scale(1,-1)" d="M60 0V810H410V689H239V485H388V360H239V0Z"/></svg></i></span><span class="lt" style="width:19.373%;margin-left:2.779%;animation-name:mdtrk1"><i style="animation-delay:1.01s"><svg viewBox="49 -821 488 833"><path transform="scale(1,-1)" d="M292 -12Q201 -12 148.0 20.0Q95 52 72.0 112.0Q49 172 49 255V556Q49 640 72.0 699.0Q95 758 148.0 789.5Q201 821 292 821Q384 821 437.5 789.5Q491 758 514.0 699.0Q537 640 537 556V255Q537 172 514.0 112.0Q491 52 437.5 20.0Q384 -12 292 -12ZM292 115Q320 115 333.0 129.0Q346 143 350.0 165.0Q354 187 354 210V600Q354 624 350.0 645.5Q346 667 333.0 681.0Q320 695 292 695Q266 695 253.0 681.0Q240 667 236.0 645.5Q232 624 232 600V210Q232 187 235.5 165.0Q239 143 251.5 129.0Q264 115 292 115Z"/></svg></i></span><span class="lt" style="width:18.896%;margin-left:2.779%;animation-name:mdtrk2"><i style="animation-delay:1.07s"><svg viewBox="49 -821 476 833"><path transform="scale(1,-1)" d="M292 -12Q200 -12 146.5 21.5Q93 55 71.0 115.5Q49 176 49 258V550Q49 634 71.0 694.5Q93 755 146.5 788.0Q200 821 292 821Q382 821 432.5 791.5Q483 762 504.0 709.0Q525 656 525 587V517H350V598Q350 622 347.5 644.0Q345 666 333.0 680.5Q321 695 292 695Q264 695 250.5 680.0Q237 665 233.5 642.5Q230 620 230 595V214Q230 187 234.5 164.5Q239 142 252.5 128.5Q266 115 292 115Q320 115 332.0 129.5Q344 144 347.0 167.0Q350 190 350 214V299H525V229Q525 160 504.5 105.5Q484 51 433.5 19.5Q383 -12 292 -12Z"/></svg></i></span><span class="lt" style="width:19.055%;margin-left:2.779%;animation-name:mdtrk3"><i style="animation-delay:1.13s"><svg viewBox="54 -821 480 833"><path transform="scale(1,-1)" d="M294 -12Q201 -12 148.5 18.5Q96 49 75.0 107.5Q54 166 54 251V810H231V224Q231 199 235.0 174.0Q239 149 252.5 133.0Q266 117 294 117Q323 117 336.0 133.0Q349 149 352.5 174.0Q356 199 356 224V810H534V251Q534 166 512.5 107.5Q491 49 439.0 18.5Q387 -12 294 -12Z"/></svg></i></span><span class="lt" style="width:17.666%;margin-left:2.779%;animation-name:mdtrk4"><i style="animation-delay:1.19s"><svg viewBox="42 -821 445 833"><path transform="scale(1,-1)" d="M275 -12Q199 -12 148.0 15.0Q97 42 71.0 98.5Q45 155 42 245L195 268Q196 216 204.5 184.0Q213 152 228.5 138.0Q244 124 266 124Q294 124 302.5 143.0Q311 162 311 183Q311 233 287.0 267.5Q263 302 222 337L152 398Q106 437 74.5 486.5Q43 536 43 609Q43 712 104.0 766.5Q165 821 270 821Q335 821 374.5 799.0Q414 777 434.5 741.5Q455 706 462.5 666.5Q470 627 471 591L317 572Q316 608 312.5 634.5Q309 661 298.0 675.5Q287 690 264 690Q239 690 227.5 669.0Q216 648 216 627Q216 582 237.5 553.5Q259 525 294 494L361 435Q414 390 450.5 333.0Q487 276 487 192Q487 135 461.0 88.5Q435 42 387.5 15.0Q340 -12 275 -12Z"/></svg></i></span></div></div></div>
 <div id="land"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>Tourne ton téléphone à la verticale</b></div>
 <div id="glow"><i></i><i></i></div>
 <main>
@@ -787,7 +814,7 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 146</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 147</p>
  </div></div>
 </main>
 <script>
@@ -1542,6 +1569,6 @@ $('#bko').onclick=function(){if(!bkd)return;data=bkd.data;ldd=true;if(!data.rout
 setInterval(tickFn,500);
 if(!cur){tab=2;show(2)}
 render();load();setTimeout(goCur,60);
-(function(){var t0=Date.now(),done=false;function out(){if(done)return;done=true;setTimeout(function(){var e=$('#splash');e.classList.add('out');setTimeout(function(){document.body.classList.add('zin');setTimeout(function(){document.body.classList.remove('zin')},800)},260);setTimeout(function(){e.remove()},600)},Math.max(0,1750-(Date.now()-t0)))}if(document.readyState==='complete')out();else window.addEventListener('load',out);setTimeout(out,3000)})();
+(function(){var t0=Date.now(),done=false;function out(){if(done)return;done=true;setTimeout(function(){var e=$('#splash');e.classList.add('out');setTimeout(function(){document.body.classList.add('zin');setTimeout(function(){document.body.classList.remove('zin')},800)},260);setTimeout(function(){e.remove()},600)},Math.max(0,2000-(Date.now()-t0)))}if(document.readyState==='complete')out();else window.addEventListener('load',out);setTimeout(out,3000)})();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){try{r.update()}catch(e){}}).catch(function(){})});var hadC=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',function(){if(!hadC){hadC=true;return}if(window.__rl||(typeof cur!=='undefined'&&cur))return;window.__rl=1;location.reload()})}
 </script></body></html>
