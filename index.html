@@ -816,7 +816,7 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 152</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 153</p>
  </div></div>
 </main>
 <script>
@@ -1580,18 +1580,22 @@ function morphOut(e,tgt,M,fg){
  var fly=fg.cloneNode();fly.removeAttribute('class');fly.setAttribute('aria-hidden','true');
  fly.style.cssText='position:fixed;left:'+fr.left+'px;top:'+fr.top+'px;width:'+fr.width+'px;height:'+fr.height+'px;margin:0;z-index:10001;pointer-events:none;transform-origin:'+(fr.width/2)+'px '+(HF*fr.height)+'px';
  document.body.appendChild(fly);
- var imp=function(el,p,v){el.style.setProperty(p,v,'important')},svgs=[].slice.call(document.querySelectorAll('#bodies svg')),back=svgs[1],
-  bx=back?back.getBoundingClientRect().left-b.left:0;
- svgs.forEach(function(v){imp(v,'transition','none');imp(v,'opacity','0')});imp(tgt,'filter','blur(6px)');if(back)imp(back,'transform','translateX('+(-bx)+'px)');
+ var svgs=[].slice.call(document.querySelectorAll('#bodies svg')),back=svgs[1],bx=back?back.getBoundingClientRect().left-b.left:0,P='perspective(700px) ',an=[];
+ // 1) le personnage vole jusqu'à la silhouette de face, puis pivote sur lui-même jusqu'à être vu de profil (invisible)
+ var T='translate('+dx+'px,'+dy+'px) scale('+k+')';
+ an.push(fly.animate([{transform:'translate(0px,0px) scale(1) '+P+'rotateY(0deg)',filter:'brightness(1)'},
+  {offset:.7,transform:T+' '+P+'rotateY(0deg)',filter:'brightness(1)',easing:'cubic-bezier(.55,0,.9,.45)'},
+  {transform:T+' '+P+'rotateY(90deg)',filter:'brightness(1.9)'}],{duration:720,easing:'cubic-bezier(.65,0,.3,1)',fill:'forwards'}));
+ // 2) la silhouette de face termine le pivot : elle apparaît de profil et tourne jusqu'à faire face
+ an.push(tgt.animate([{opacity:0,transform:P+'rotateY(-90deg)',filter:'brightness(1.9)'},{offset:.01,opacity:1},
+  {opacity:1,transform:P+'rotateY(0deg)',filter:'brightness(1)'}],{duration:340,delay:715,easing:'cubic-bezier(.2,.85,.25,1)',fill:'both'}));
+ // 3) la vue de dos « se retourne » en sortant de la silhouette de face
+ if(back)an.push(back.animate([{opacity:0,transform:'translateX('+(-bx)+'px) '+P+'rotateY(90deg)'},{offset:.01,opacity:1},
+  {opacity:1,transform:'translateX(0px) '+P+'rotateY(0deg)'}],{duration:620,delay:980,easing:'cubic-bezier(.3,.8,.25,1)',fill:'both'}));
  M.style.transition='none';M.style.opacity='0';M.style.transform='translateY(14px)';M.getBoundingClientRect();
  e.classList.add('out','morph');
- requestAnimationFrame(function(){requestAnimationFrame(function(){
-  fly.style.transition='transform .62s cubic-bezier(.65,0,.3,1),opacity .26s linear .42s,filter .62s ease';
-  fly.style.transform='translate('+dx+'px,'+dy+'px) scale('+k+')';fly.style.opacity='0';fly.style.filter='saturate(.5) brightness(1.2)';
-  M.style.transition='opacity .45s ease .1s,transform .6s cubic-bezier(.16,1,.3,1) .1s';M.style.opacity='1';M.style.transform='translateY(0px)'})});
- setTimeout(function(){imp(tgt,'transition','opacity .32s ease,filter .45s ease');imp(tgt,'opacity','1');imp(tgt,'filter','blur(0px)')},420);
- if(back)setTimeout(function(){imp(back,'transition','opacity .3s ease,transform .55s cubic-bezier(.16,1,.3,1)');imp(back,'opacity','1');imp(back,'transform','translateX(0px)')},560);
- setTimeout(function(){fly.remove();e.remove();M.style.transition=M.style.opacity=M.style.transform='';svgs.forEach(function(v){['transition','opacity','transform','filter'].forEach(function(p){v.style.removeProperty(p)})})},1250)}
+ requestAnimationFrame(function(){requestAnimationFrame(function(){M.style.transition='opacity .45s ease .1s,transform .6s cubic-bezier(.16,1,.3,1) .1s';M.style.opacity='1';M.style.transform='translateY(0px)'})});
+ setTimeout(function(){fly.remove();e.remove();M.style.transition=M.style.opacity=M.style.transform='';an.forEach(function(x){try{x.cancel()}catch(y){}})},1700)}
 // Sortie de l'écran d'ouverture : le logo fonce vers l'écran (zoom accéléré) et l'appli apparaît
 // à travers lui dans un cercle qui s'agrandit depuis le centre du personnage.
 function splashOut(e){if(!e)return;var M=document.querySelector('main'),lg=e.querySelector('.lg'),fg=e.querySelector('.sfg'),red=false;
