@@ -1,4 +1,4 @@
-const C = 'muscu-v153';
+const C = 'muscu-v154';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-v6-192.png', './icon-v6-512.png', './touch-v6.png', './splash-fig.png', './body-v5.png', './tab-train-white.png', './tab-prof-white.png', './tab-supp-white.png'];
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(C).then(c => c.addAll(FILES.map(u => new Request(u, {cache: 'reload'}))))); });
 self.addEventListener('activate', e => e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== C).map(x => caches.delete(x)))).then(() => self.clients.claim())));
