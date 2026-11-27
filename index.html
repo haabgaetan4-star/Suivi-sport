@@ -812,7 +812,7 @@ body.zin main,body.zin .tabs{animation:zin .6s cubic-bezier(.16,1,.3,1) both}
  </div>
   <div id="stp"><p style="margin:18px 0 0;font-weight:600">Types de série</p><p class="mu" style="font-size:13px;margin:4px 0 6px">Choisis les types proposés quand tu touches le numéro d’une série pendant l’entraînement. « Normale » reste toujours disponible.</p>
   <label><input type="checkbox" data-sty="w"><i class="w">É</i><span>Échauffement</span></label><label><input type="checkbox" data-sty="d"><i class="d">D</i><span>Dégressive</span></label><label><input type="checkbox" data-sty="f"><i class="f">F</i><span>Jusqu’à l’échec</span></label></div>
-  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 154</p>
+  <p class="mu" style="font-size:12px;text-align:center;margin:16px 0 0;opacity:.7">Version 155</p>
  </div></div>
 </main>
 <script>
@@ -1573,26 +1573,39 @@ var PSRC='HQVzKSkfBGMoJB8Es4aA3QNQJiIVCnYsKRYMayIcFhD/xsEWBk8tJRcKoFBTGQZjLykeC5
 function morphOut(e,tgt,M,fg){
  var svgs=[].slice.call(document.querySelectorAll('#bodies svg'));if(svgs.length<2)throw 0;
  var fr=fg.getBoundingClientRect(),R=svgs.map(function(v){var b=v.getBoundingClientRect(),vb=v.viewBox.baseVal,sc=Math.min(b.width/vb.width,b.height/vb.height);return {w:vb.width*sc,h:vb.height*sc,l:b.left+(b.width-vb.width*sc)/2,t:b.top+(b.height-vb.height*sc)/2}});
- var sb=atob(PSRC),tb=atob(PTGT),n=sb.length/5|0,P=[];
- for(var i=0;i<n;i++){var a=i*5,f=tb.charCodeAt(a),r=R[f],X=(tb.charCodeAt(a+1)<<8|tb.charCodeAt(a+2))/65535,Y=(tb.charCodeAt(a+3)<<8|tb.charCodeAt(a+4))/65535,sy=sb.charCodeAt(a+1)/255;
-  P.push({x0:fr.left+sb.charCodeAt(a)/255*fr.width,y0:fr.top+sy*fr.height,r:sb.charCodeAt(a+2),g:sb.charCodeAt(a+3),b:sb.charCodeAt(a+4),x1:r.l+X*r.w,y1:r.t+Y*r.h,d:.04+sy*.14+Math.random()*.16,arc:(Math.random()-.5)*80})}
+ var cx0=fr.left+fr.width/2,cy0=fr.top+fr.height*.45,sb=atob(PSRC),tb=atob(PTGT),n=sb.length/5|0,P=[];
+ for(var i=0;i<n;i++){var a=i*5,f=tb.charCodeAt(a),r=R[f],X=(tb.charCodeAt(a+1)<<8|tb.charCodeAt(a+2))/65535,Y=(tb.charCodeAt(a+3)<<8|tb.charCodeAt(a+4))/65535,
+   x0=fr.left+sb.charCodeAt(a)/255*fr.width,y0=fr.top+sb.charCodeAt(a+1)/255*fr.height,x2=r.l+X*r.w,y2=r.t+Y*r.h,
+   ox=x0-cx0,oy=y0-cy0,ol=Math.hypot(ox,oy)||1,bu=45+Math.random()*75,sd=(Math.random()-.5)*60,
+   lum=(sb.charCodeAt(a+2)+sb.charCodeAt(a+3)+sb.charCodeAt(a+4))/765;
+  P.push({x0:x0,y0:y0,x2:x2,y2:y2,x1:x0+ox/ol*bu-oy/ol*sd+(x2-x0)*.3,y1:y0+oy/ol*bu+ox/ol*sd+(y2-y0)*.3-20,
+   d:.1+Y*.34+Math.random()*.09,s:.75+Math.random()*.6,c0:lum>.35?1:0})}
+ // braises : petits halos lumineux précalculés, du rouge du logo au blanc chaud
+ var TINT=[[150,18,22],[215,45,38],[240,96,44],[248,150,95],[252,205,170],[255,240,228]],SP=TINT.map(function(c){var o=document.createElement('canvas');o.width=o.height=32;
+  var x=o.getContext('2d'),gr=x.createRadialGradient(16,16,0,16,16,16),cc=c.join(','),hi=c.map(function(v){return Math.round(v+(255-v)*.55)}).join(',');
+  gr.addColorStop(0,'rgba('+hi+',1)');gr.addColorStop(.22,'rgba('+cc+',.95)');gr.addColorStop(.5,'rgba('+cc+',.28)');gr.addColorStop(1,'rgba('+cc+',0)');x.fillStyle=gr;x.fillRect(0,0,32,32);return o});
  var W=innerWidth,H=innerHeight,dpr=Math.min(2,window.devicePixelRatio||1),cv=document.createElement('canvas');cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
  cv.setAttribute('aria-hidden','true');cv.style.cssText='position:fixed;left:0;top:0;width:'+W+'px;height:'+H+'px;z-index:10001;pointer-events:none';document.body.appendChild(cv);
  var g=cv.getContext('2d');g.scale(dpr,dpr);
- var an=svgs.map(function(v,k){return v.animate([{opacity:0,filter:'brightness(1.7)'},{opacity:1,filter:'brightness(1)'}],{duration:340,delay:960+k*70,easing:'ease-out',fill:'both'})});
- an.push(fg.animate([{opacity:1},{opacity:0}],{duration:200,easing:'ease-in',fill:'forwards'}));
+ var an=[fg.animate([{opacity:1,filter:'brightness(1)'},{offset:.45,opacity:1,filter:'brightness(1.7)'},{opacity:0,filter:'brightness(2.2)'}],{duration:260,easing:'ease-in',fill:'forwards'})];
+ // les silhouettes s'allument du haut vers le bas, au rythme des particules qui se posent
+ svgs.forEach(function(v,k){an.push(v.animate([{opacity:0,clipPath:'inset(0 0 100% 0)',webkitClipPath:'inset(0 0 100% 0)',filter:'brightness(2.2)'},{offset:.05,opacity:1},
+  {opacity:1,clipPath:'inset(0 0 0% 0)',webkitClipPath:'inset(0 0 0% 0)',filter:'brightness(1)'}],{duration:560,delay:830+k*40,easing:'cubic-bezier(.45,0,.25,1)',fill:'both'}))});
  M.style.transition='none';M.style.opacity='0';M.style.transform='translateY(14px)';M.getBoundingClientRect();
  e.classList.add('out','morph');
  requestAnimationFrame(function(){requestAnimationFrame(function(){M.style.transition='opacity .45s ease .12s,transform .6s cubic-bezier(.16,1,.3,1) .12s';M.style.opacity='1';M.style.transform='translateY(0px)'})});
- var t0=performance.now(),D=.74,ease=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2},alive=true;
- function frame(now){if(!alive)return;var t=(now-t0)/1000;g.clearRect(0,0,W,H);
-  g.globalAlpha=t<.16?t/.16:(t>1.02?Math.max(0,1-(t-1.02)/.3):1);
-  for(var i=0;i<n;i++){var p=P[i],u=Math.min(1,Math.max(0,(t-p.d)/D)),q=ease(u),ex=p.x1-p.x0,ey=p.y1-p.y0,l=Math.hypot(ex,ey)||1,o=Math.sin(Math.PI*q)*p.arc,
-    x=p.x0+ex*q+ey/l*o,y=p.y0+ey*q-ex/l*o,z=2.3-.9*q;
-   g.fillStyle='rgb('+((p.r+(240-p.r)*q)|0)+','+((p.g+(236-p.g)*q)|0)+','+((p.b+(232-p.b)*q)|0)+')';g.fillRect(x-z/2,y-z/2,z,z)}
-  if(t<1.36)requestAnimationFrame(frame)}
+ var t0=performance.now(),D=.78,alive=true;
+ function frame(now){if(!alive)return;var t=(now-t0)/1000;
+  g.globalCompositeOperation='destination-out';g.fillStyle='rgba(0,0,0,'+(t>1.45?.6:.36)+')';g.fillRect(0,0,W,H);g.globalCompositeOperation='lighter';
+  var on=t<.12?t/.12:1;
+  for(var i=0;i<n;i++){var p=P[i],u=(t-p.d)/D,q,x,y,al=on,sz;
+   if(u<=0){x=p.x0;y=p.y0;q=0}else{if(u>1)u=1;q=1-Math.pow(1-u,3);var m=1-q;x=m*m*p.x0+2*m*q*p.x1+q*q*p.x2;y=m*m*p.y0+2*m*q*p.y1+q*q*p.y2;
+    var lt=t-p.d-D;if(lt>.1)al=Math.max(0,1-(lt-.1)/.32)}
+   if(al<=0)continue;sz=(9-4.6*q)*p.s;g.globalAlpha=al*.8;
+   g.drawImage(SP[Math.min(5,Math.floor(p.c0+q*5.2))],x-sz/2,y-sz/2,sz,sz)}
+  g.globalAlpha=1;if(t<1.8)requestAnimationFrame(frame)}
  requestAnimationFrame(frame);
- setTimeout(function(){alive=false;cv.remove();e.remove();M.style.transition=M.style.opacity=M.style.transform='';an.forEach(function(x){try{x.cancel()}catch(y){}})},1500)}
+ setTimeout(function(){alive=false;cv.remove();e.remove();M.style.transition=M.style.opacity=M.style.transform='';an.forEach(function(x){try{x.cancel()}catch(y){}})},1850)}
 // Sortie de l'écran d'ouverture : le logo fonce vers l'écran (zoom accéléré) et l'appli apparaît
 // à travers lui dans un cercle qui s'agrandit depuis le centre du personnage.
 function splashOut(e){if(!e)return;var M=document.querySelector('main'),lg=e.querySelector('.lg'),fg=e.querySelector('.sfg'),red=false;
